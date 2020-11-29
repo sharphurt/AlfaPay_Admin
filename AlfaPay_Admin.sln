@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlfaPay_Admin", "AlfaPay_Admin\AlfaPay_Admin.csproj", "{AECB3D30-95B1-46F2-BBE4-F5B232A7ADD5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AECB3D30-95B1-46F2-BBE4-F5B232A7ADD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AECB3D30-95B1-46F2-BBE4-F5B232A7ADD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AECB3D30-95B1-46F2-BBE4-F5B232A7ADD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AECB3D30-95B1-46F2-BBE4-F5B232A7ADD5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
