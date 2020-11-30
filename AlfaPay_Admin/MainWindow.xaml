@@ -4,24 +4,131 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AlfaPay_Admin"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1200"
         Background="White">
     <Window.Resources>
-        <ControlTemplate TargetType="Button" x:Key="btTemplate">
-            <Border CornerRadius="4" BorderBrush="#600B1F35" BorderThickness="1"
-                    Background="#ffffff" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" >
-                <ContentControl FontFamily="Segoe UI" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" />
-            </Border>
-        </ControlTemplate>
-        <BitmapImage x:Key="SendIcon" UriSource="Resources/send.png"></BitmapImage>
-        <BitmapImage x:Key="TickIcon" UriSource="Resources/tick.png"></BitmapImage>
-        <BitmapImage x:Key="RejectIcon" UriSource="Resources/reject.png"></BitmapImage>
+        <BitmapImage x:Key="SendIcon" UriSource="Resources/send.png" />
+        <BitmapImage x:Key="TickIcon" UriSource="Resources/tick.png" />
+        <BitmapImage x:Key="RejectIcon" UriSource="Resources/reject.png" />
+        <BitmapImage x:Key="SearchIcon" UriSource="Resources/search.png" />
 
+        <Color x:Key="BorderColor">#9da6af</Color>
+        <Color x:Key="MouseOverBorderColor">#172b41</Color>
+        <Color x:Key="ClickedBackground">#f3f4f5</Color>
+
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}" x:Name="MainControlTemplate">
+                        <ControlTemplate.Resources>
+                            <LinearGradientBrush x:Key="ButtonBorderBrush" StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="{StaticResource BorderColor}" Offset="0" />
+                            </LinearGradientBrush>
+                            <LinearGradientBrush x:Key="ClickedButtonBackground" StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="{StaticResource ClickedBackground}" Offset="0" />
+                            </LinearGradientBrush>
+                        </ControlTemplate.Resources>
+                        <Grid>
+                            <Border x:Name="border" CornerRadius="4" BorderThickness="1"
+                                    BorderBrush="{StaticResource ButtonBorderBrush}"
+                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True" />
+
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Name="content" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border"
+                                                            Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                                            To="{StaticResource MouseOverBorderColor}"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border"
+                                                            Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                                            To="{StaticResource BorderColor}"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource ClickedButtonBackground}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="HeaderLabel" TargetType="Label">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Semibold" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="MainText" TargetType="Label">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style x:Key="SecondaryText" TargetType="Label">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style x:Key="TertiaryText" TargetType="Label">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Foreground" Value="#b6bcc3" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <ControlTemplate x:Key="ListBoxElement" TargetType="ListBoxItem">
+            <ListBoxItem>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Style="{DynamicResource HeaderLabel}" Content="Павел" />
+                    <Label Grid.Column="0" Grid.Row="1" Style="{DynamicResource SecondaryText}"
+                           Content="+7 866 373 92 10" />
+                    <Label Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{DynamicResource TertiaryText}"
+                           Content="12.09.2020" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+
+                </Grid>
+            </ListBoxItem>
+        </ControlTemplate>
     </Window.Resources>
-    
-    
-    <Grid ShowGridLines="True" Margin="30">
+
+
+    <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
@@ -31,20 +138,32 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
+        <Border CornerRadius="4" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#f3f4f5">
+            <WrapPanel Orientation="Horizontal" Margin="2,2,2,2" VerticalAlignment="Center">
+                <Image Source="{DynamicResource SearchIcon}" Width="16" Height="16" Margin="25,0,0,0" />
+               
+                <TextBox x:Name="searchTextBox" Margin="10,0,0,0" Background="#f3f4f5" BorderThickness="0"
+                         FontFamily="Segoe UI"
+                         FontSize="16"
+                         FontWeight="Light"
+                         Text="Поиск по компаниям"
+                         GotFocus="OnContentChanged" />
+            </WrapPanel>
+        </Border>
         <GroupBox Grid.Column="0" Grid.Row="1" Margin="0,0,5,5">
             <GroupBox.Header>
-                <Label FontSize="18" Background="White" FontFamily="Segoe UI" FontWeight="Bold" Padding="10,0,10,10" Margin="0,5,0,0">
+                <Label FontSize="18" Background="White" FontFamily="Segoe UI" FontWeight="Bold" Padding="5,0,5,5"
+                       Margin="0,5,0,0">
                     Информация о клиенте
                 </Label>
             </GroupBox.Header>
-            
-            <Grid ShowGridLines="True" Margin="15,0,15,0">
+
+            <Grid Margin="15,0,15,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="32 px" />
                     <ColumnDefinition Width="150 px" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="48 px" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -53,24 +172,85 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Style="{DynamicResource HeaderLabel}" Content="Имя" />
+                <Label Grid.Column="0" Grid.Row="1" Style="{DynamicResource HeaderLabel}" Content="Email" />
+                <Label Grid.Column="0" Grid.Row="2" Style="{DynamicResource HeaderLabel}" Content="Телефон" />
+                <Label Grid.Column="0" Grid.Row="3" Style="{DynamicResource HeaderLabel}" Content="ИНН компании" />
+                <Label Grid.Column="0" Grid.Row="4" Style="{DynamicResource HeaderLabel}" Content="Дата подачи" />
+
+                <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource MainText}" Content="Владислав" />
+                <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource MainText}"
+                       Content="gorrgorr174@gmail.com" />
+                <Label Grid.Column="1" Grid.Row="2" Style="{DynamicResource MainText}" Content="+7 999 888 76 54" />
+                <Label Grid.Column="1" Grid.Row="3" Style="{DynamicResource MainText}" Content="9760984309" />
+                <Label Grid.Column="1" Grid.Row="4" Style="{DynamicResource MainText}" Content="26.10.2020" />
+
+                <Image Grid.Column="2" Grid.Row="1" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
+                <Image Grid.Column="2" Grid.Row="2" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
+                <Image Grid.Column="2" Grid.Row="3" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
+
+                <TextBlock Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Hyperlink NavigateUri="">
+                        Подробнее о компании
+                    </Hyperlink>
+                </TextBlock>
+
+                <Label Grid.Column="3" Grid.Row="4" Style="{DynamicResource TertiaryText}" Content="5 дней назад" />
             </Grid>
         </GroupBox>
-        
+
         <Grid Grid.Column="0" Row="2" VerticalAlignment="Top" Margin="0,0,6,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
-            <Button Grid.Column="0" Template="{StaticResource btTemplate}" Height="40 px" Margin="0,5,7,0">
+
+            <Button Grid.Column="0" Style="{StaticResource ButtonStyle}" Height="40 px" Margin="0,5,7,0">
                 <WrapPanel Orientation="Horizontal">
-                    <Image Source="Resources/send.png" Width="32" Height="32"></Image>
-                    <Label FontFamily="Segoe UI" FontSize="16" FontWeight="Light">Связаться с клиентом</Label>
+                    <Image Source="{StaticResource SendIcon}" Width="16" Height="16" Margin="0,0,10,0" />
+                    <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Связаться с клиентом</Label>
                 </WrapPanel>
             </Button>
-            <Button Grid.Column="1" Template="{StaticResource btTemplate}" Content="Связаться с клиентом"  Height="40 px" Margin="7,5,7,0"/>
-            <Button Grid.Column="2" Template="{StaticResource btTemplate}" Content="Связаться с клиентом"  Height="40 px" Margin="7,5,0,0"/>
+            <Button Grid.Column="1" Style="{StaticResource ButtonStyle}" Height="40 px" Margin="7,5,7,0">
+                <WrapPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource TickIcon}" Width="16" Height="16" Margin="0,0,10,0" />
+                    <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Одобрить заявку</Label>
+                </WrapPanel>
+            </Button>
+            <Button Grid.Column="2" Style="{StaticResource ButtonStyle}" Height="40 px" Margin="7,5,0,0">
+                <WrapPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource RejectIcon}" Width="14" Height="14" Margin="0,0,10,0" />
+                    <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Отклонить заявку</Label>
+                </WrapPanel>
+            </Button>
         </Grid>
+        <GroupBox Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0,0,5,5">
+            <GroupBox.Header>
+                <Label FontSize="18" Background="White" FontFamily="Segoe UI" FontWeight="Bold" Padding="5,0,5,5"
+                       Margin="0,5,0,0">
+                    Заявки на рассмотрение
+                </Label>
+            </GroupBox.Header>
+            <ListBox HorizontalContentAlignment="Stretch"
+                     VerticalContentAlignment="Stretch" BorderThickness="0">
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+                <ListBoxItem Template="{DynamicResource ListBoxElement}" />
+            </ListBox>
+        </GroupBox>
     </Grid>
 </Window>
