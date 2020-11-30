@@ -6,17 +6,18 @@
         xmlns:local="clr-namespace:AlfaPay_Admin"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1200"
-        Background="White">
+        Title="AlfaPay Admin" Height="600" Width="1200"
+        Icon="Resources/alfabank_logo.png"
+        RenderOptions.BitmapScalingMode="HighQuality"
+        Background="White"
+        MouseDown="MainWindow_OnMouseDown">
+
     <Window.Resources>
         <BitmapImage x:Key="SendIcon" UriSource="Resources/send.png" />
         <BitmapImage x:Key="TickIcon" UriSource="Resources/tick.png" />
         <BitmapImage x:Key="RejectIcon" UriSource="Resources/reject.png" />
         <BitmapImage x:Key="SearchIcon" UriSource="Resources/search.png" />
-
-        <Color x:Key="BorderColor">#9da6af</Color>
-        <Color x:Key="MouseOverBorderColor">#172b41</Color>
-        <Color x:Key="ClickedBackground">#f3f4f5</Color>
+        <BitmapImage x:Key="LogOutIcon" UriSource="Resources/logout.png" />
 
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="14" />
@@ -24,17 +25,53 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}" x:Name="MainControlTemplate">
-                        <ControlTemplate.Resources>
-                            <LinearGradientBrush x:Key="ButtonBorderBrush" StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="{StaticResource BorderColor}" Offset="0" />
-                            </LinearGradientBrush>
-                            <LinearGradientBrush x:Key="ClickedButtonBackground" StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="{StaticResource ClickedBackground}" Offset="0" />
-                            </LinearGradientBrush>
-                        </ControlTemplate.Resources>
                         <Grid>
                             <Border x:Name="border" CornerRadius="4" BorderThickness="1"
-                                    BorderBrush="{StaticResource ButtonBorderBrush}"
+                                    BorderBrush="#9da6af"
+                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Name="content" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border"
+                                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                            To="#172A3F"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border"
+                                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                            To="#440B1F35"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#f3f4f5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LogoutButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}" x:Name="MainControlTemplate">
+                        <Grid>
+                            <Border x:Name="border" CornerRadius="25" BorderThickness="1"
+                                    BorderBrush="Transparent"
                                     Background="{TemplateBinding Background}" SnapsToDevicePixels="True" />
 
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Name="content" />
@@ -44,9 +81,8 @@
                                 <Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="border"
-                                                            Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)"
-                                                            To="{StaticResource MouseOverBorderColor}"
+                                            <ColorAnimation To="#E6E8EA"
+                                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                                             Duration="0:0:0.2" />
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -54,16 +90,15 @@
                                 <Trigger.ExitActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="border"
-                                                            Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)"
-                                                            To="{StaticResource BorderColor}"
+                                            <ColorAnimation To="#f3f4f5"
+                                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                                             Duration="0:0:0.2" />
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="{StaticResource ClickedButtonBackground}" />
+                                <Setter Property="Background" Value="#CED2D7" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -121,14 +156,13 @@
                            Content="+7 866 373 92 10" />
                     <Label Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{DynamicResource TertiaryText}"
                            Content="12.09.2020" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-
                 </Grid>
             </ListBoxItem>
         </ControlTemplate>
     </Window.Resources>
 
 
-    <Grid Margin="20">
+    <Grid Margin="5,5,0,5" Focusable="True" x:Name="Grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
@@ -138,17 +172,36 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border CornerRadius="4" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#f3f4f5">
-            <WrapPanel Orientation="Horizontal" Margin="2,2,2,2" VerticalAlignment="Center">
-                <Image Source="{DynamicResource SearchIcon}" Width="16" Height="16" Margin="25,0,0,0" />
-               
-                <TextBox x:Name="searchTextBox" Margin="10,0,0,0" Background="#f3f4f5" BorderThickness="0"
-                         FontFamily="Segoe UI"
-                         FontSize="16"
-                         FontWeight="Light"
-                         Text="Поиск по компаниям"
-                         GotFocus="OnContentChanged" />
-            </WrapPanel>
+        <Border CornerRadius="4" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#f3f4f5" Margin="0,0,5,0">
+            <DockPanel Margin="2,2,0,2" VerticalAlignment="Center">
+                <WrapPanel DockPanel.Dock="Left" x:Name="SearchPanel" Orientation="Horizontal" Margin="15,0,0,0"
+                           Background="Transparent"
+                           VerticalAlignment="Center">
+                    <Image Source="{DynamicResource SearchIcon}" x:Name="SearchIcon"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                           Stretch="UniformToFill" Width="14" Height="14" Opacity="0.3" />
+                    <WrapPanel Orientation="Vertical" Margin="10,0,0,0">
+                        <TextBox x:Name="SearchTextBox" Style="{DynamicResource SearchTextBoxStyle}" Margin="0,0,0,4"
+                                 Background="Transparent" BorderThickness="0"
+                                 Foreground="#B6BCC3"
+                                 FontFamily="Segoe UI"
+                                 Width="250 px"
+                                 FontSize="14"
+                                 FontWeight="Light"
+                                 Text="Поиск по компаниям"
+                                 VerticalContentAlignment="Center"
+                                 GotFocus="SearchTextBox_OnGotFocus"
+                                 LostFocus="SearchTextBox_OnLostFocus" />
+                        <Line x:Name="LineUnderSearch" Width="250" StrokeThickness="1" Stroke="#B6BCC3" X1="0" Y1="0"
+                              X2="250" Y2="0" />
+                    </WrapPanel>
+                </WrapPanel>
+                <Button DockPanel.Dock="Right" Width="32" Margin="10,0,15,0"
+                        Style="{DynamicResource LogoutButtonStyle}">
+                    <Image Source="{DynamicResource LogOutIcon}" Stretch="UniformToFill" Width="16" Height="16" />
+                </Button>
+                <Label DockPanel.Dock="Right" Style="{DynamicResource MainText}">Лукоянов Павел Валерьевич</Label>
+            </DockPanel>
         </Border>
         <GroupBox Grid.Column="0" Grid.Row="1" Margin="0,0,5,5">
             <GroupBox.Header>
@@ -207,21 +260,24 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Style="{StaticResource ButtonStyle}" Height="40 px" Margin="0,5,7,0">
+            <Button Grid.Column="0" Style="{StaticResource ButtonStyle}"  Height="40 px" Margin="0,5,7,0">
                 <WrapPanel Orientation="Horizontal">
-                    <Image Source="{StaticResource SendIcon}" Width="16" Height="16" Margin="0,0,10,0" />
-                    <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Связаться с клиентом</Label>
+                    <Image Source="{StaticResource SendIcon}" RenderOptions.BitmapScalingMode="HighQuality" Width="16"
+                           Height="16" Margin="10,0,10,0" />
+                    <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3" Content="Связаться с клиентом" />
                 </WrapPanel>
             </Button>
             <Button Grid.Column="1" Style="{StaticResource ButtonStyle}" Height="40 px" Margin="7,5,7,0">
                 <WrapPanel Orientation="Horizontal">
-                    <Image Source="{StaticResource TickIcon}" Width="16" Height="16" Margin="0,0,10,0" />
+                    <Image Source="{StaticResource TickIcon}" RenderOptions.BitmapScalingMode="HighQuality" Width="16"
+                           Height="16" Margin="10,0,10,0" />
                     <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Одобрить заявку</Label>
                 </WrapPanel>
             </Button>
             <Button Grid.Column="2" Style="{StaticResource ButtonStyle}" Height="40 px" Margin="7,5,0,0">
                 <WrapPanel Orientation="Horizontal">
-                    <Image Source="{StaticResource RejectIcon}" Width="14" Height="14" Margin="0,0,10,0" />
+                    <Image Source="{StaticResource RejectIcon}" RenderOptions.BitmapScalingMode="HighQuality"
+                           Width="14" Height="14" Margin="10,0,10,0" />
                     <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Отклонить заявку</Label>
                 </WrapPanel>
             </Button>
@@ -234,7 +290,9 @@
                 </Label>
             </GroupBox.Header>
             <ListBox HorizontalContentAlignment="Stretch"
-                     VerticalContentAlignment="Stretch" BorderThickness="0">
+                     VerticalContentAlignment="Stretch"
+                     BorderThickness="0"
+                     ScrollViewer.CanContentScroll="False">
                 <ListBoxItem Template="{DynamicResource ListBoxElement}" />
                 <ListBoxItem Template="{DynamicResource ListBoxElement}" />
                 <ListBoxItem Template="{DynamicResource ListBoxElement}" />
