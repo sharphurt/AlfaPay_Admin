@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -11,10 +10,14 @@ namespace AlfaPay_Admin
     /// </summary>
     public partial class MainWindow
     {
+        private readonly ApplicationViewModel _model = new ApplicationViewModel();
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ApplicationViewModel();
         }
+
 
         private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
