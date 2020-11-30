@@ -22,6 +22,8 @@
         [JsonPropertyName("createdAt")]
         public string CreatedAt { get; set; }
 
+        public bool Selected { get; set; }
+
         public override string ToString()
         {
             return $"{Name} \t {Phone}";

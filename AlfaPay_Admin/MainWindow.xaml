@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AlfaPay_Admin"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:model="clr-namespace:AlfaPay_Admin.Model"
         mc:Ignorable="d"
         Title="AlfaPay Admin" Height="600" Width="1200"
         Icon="Resources/alfabank_logo.png"
@@ -139,11 +140,32 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
 
-        <ControlTemplate x:Key="ListBoxElement" TargetType="ListBoxItem">
-            <ListBoxItem>
+        <Style x:Key="ListBoxElement" TargetType="Grid">
+            <Setter Property="Background" Value="Transparent" />
+            <Style.Triggers>
 
-            </ListBoxItem>
-        </ControlTemplate>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="#E6E8EA"
+                                                Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                                Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="Transparent"
+                                                Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                                Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
 
@@ -196,7 +218,7 @@
                 </Label>
             </GroupBox.Header>
 
-            <Grid Margin="15,0,15,0">
+            <Grid Margin="15,0,15,0" DataContext="{Binding SelectedApplication}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150 px" />
                     <ColumnDefinition Width="*" />
@@ -217,12 +239,12 @@
                 <Label Grid.Column="0" Grid.Row="3" Style="{DynamicResource HeaderLabel}" Content="ИНН компании" />
                 <Label Grid.Column="0" Grid.Row="4" Style="{DynamicResource HeaderLabel}" Content="Дата подачи" />
 
-                <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource MainText}" Content="Владислав" />
+                <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource MainText}" Content="{Binding Name}" />
                 <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource MainText}"
-                       Content="gorrgorr174@gmail.com" />
-                <Label Grid.Column="1" Grid.Row="2" Style="{DynamicResource MainText}" Content="+7 999 888 76 54" />
-                <Label Grid.Column="1" Grid.Row="3" Style="{DynamicResource MainText}" Content="9760984309" />
-                <Label Grid.Column="1" Grid.Row="4" Style="{DynamicResource MainText}" Content="26.10.2020" />
+                       Content="{Binding Email}" />
+                <Label Grid.Column="1" Grid.Row="2" Style="{DynamicResource MainText}" Content="{Binding Phone}" />
+                <Label Grid.Column="1" Grid.Row="3" Style="{DynamicResource MainText}" Content="{Binding Inn}" />
+                <Label Grid.Column="1" Grid.Row="4" Style="{DynamicResource MainText}" Content="{Binding CreatedAt}" />
 
                 <Image Grid.Column="2" Grid.Row="1" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
                 <Image Grid.Column="2" Grid.Row="2" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
@@ -279,15 +301,24 @@
                      VerticalContentAlignment="Stretch"
                      BorderThickness="0"
                      ItemsSource="{Binding Applications, UpdateSourceTrigger=PropertyChanged}"
-                     ScrollViewer.CanContentScroll="False">
+                     ScrollViewer.CanContentScroll="False"
+                     SelectionChanged="ApplicationsListBox_OnSelectionChanged"
+                     SelectedItem="{Binding SelectedApplication}">
                 <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Focusable" Value="False"></Setter>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Height="50 px" Background="Transparent">
+                        <Grid Height="50 px" Style="{DynamicResource ListBoxElement}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5 px" />
                                 <ColumnDefinition Width="*" />
@@ -297,15 +328,17 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-
-                            <Line x:Name="SelectionLine" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" X1="0" X2="0" Y1="0"
-                                  Y2="60" Stroke="#F15045" StrokeThickness="3" Visibility="Hidden" />
+                            
+                            <Line x:Name="SelectionLine" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" X1="0" X2="0"
+                                  Y1="0" Y2="60" Stroke="#F15045" StrokeThickness="3"
+                                  Visibility="Collapsed" />
                             <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource HeaderLabel}"
                                    Content="{Binding Path=Name}" Height="30" />
                             <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource SecondaryText}"
                                    Content="{Binding Path=Phone}" />
                             <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Style="{DynamicResource TertiaryText}"
-                                   Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                                   Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

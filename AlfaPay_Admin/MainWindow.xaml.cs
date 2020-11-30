@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace AlfaPay_Admin
 {
@@ -10,15 +13,12 @@ namespace AlfaPay_Admin
     /// </summary>
     public partial class MainWindow
     {
-        private readonly ApplicationViewModel _model = new ApplicationViewModel();
-
         public MainWindow()
         {
             InitializeComponent();
             DataContext = new ApplicationViewModel();
         }
-
-
+        
         private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
             if (SearchTextBox.Text == "Поиск по компаниям")
@@ -40,6 +40,33 @@ namespace AlfaPay_Admin
         private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             Grid.Focus();
+        }
+
+        private void ApplicationsListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            for (var i = 0; i < ApplicationsListBox.Items.Count; i++)
+            {
+                var myListBoxItem = (ListBoxItem) ApplicationsListBox.ItemContainerGenerator.ContainerFromIndex(i);
+                var myContentPresenter = FindVisualChild<ContentPresenter>(myListBoxItem);
+                var myDataTemplate = myContentPresenter.ContentTemplate;
+                var target = (Line) myDataTemplate.FindName("SelectionLine", myContentPresenter);
+                target.Visibility = myListBoxItem.IsSelected ? Visibility.Visible : Visibility.Hidden;
+            }
+        }
+
+        private TChildItem FindVisualChild<TChildItem>(DependencyObject obj) where TChildItem : DependencyObject
+        {
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+                if (child is TChildItem item)
+                    return item;
+
+                var childOfChild = FindVisualChild<TChildItem>(child);
+                if (childOfChild != null)
+                    return childOfChild;
+            }
+            return null;
         }
     }
 }

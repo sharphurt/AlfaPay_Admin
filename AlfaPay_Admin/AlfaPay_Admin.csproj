@@ -131,6 +131,7 @@
         <Compile Include="Model\ApiResponse.cs" />
         <Compile Include="Model\ClientApplication.cs" />
         <Compile Include="Model\Deserializer.cs" />
+        <Compile Include="Model\RelayCommand.cs" />
         <Compile Include="Properties\Annotations.cs" />
         <Compile Include="Properties\AssemblyInfo.cs">
             <SubType>Code</SubType>

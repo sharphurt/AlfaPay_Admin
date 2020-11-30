@@ -11,6 +11,8 @@ namespace AlfaPay_Admin
     public class ApplicationViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<ClientApplication> _applications;
+        private ClientApplication _selectedApplication;
+        
         public ObservableCollection<ClientApplication> Applications
         {
             get => _applications;
@@ -21,10 +23,22 @@ namespace AlfaPay_Admin
             }
         }
 
+        public ClientApplication SelectedApplication
+        {
+            get => _selectedApplication;
+            set
+            {
+                _selectedApplication = value;
+                OnPropertyChanged(nameof(SelectedApplication));
+            }
+        }
+        
+        
+
         private ApplicationContext db = new ApplicationContext("http://localhost:8080/");
         public bool IsLoadedSuccessfully;
-        
-        
+
+
         public ApplicationViewModel()
         {
             Applications = new ObservableCollection<ClientApplication>();
