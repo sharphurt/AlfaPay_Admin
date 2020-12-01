@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:AlfaPay_Admin"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:model="clr-namespace:AlfaPay_Admin.Model"
+        xmlns:global="clr-namespace:"
+        xmlns:converter="clr-namespace:AlfaPay_Admin.Converter"
         mc:Ignorable="d"
         Title="AlfaPay Admin" Height="600" Width="1200"
         Icon="Resources/alfabank_logo.png"
@@ -19,6 +21,13 @@
         <BitmapImage x:Key="RejectIcon" UriSource="Resources/reject.png" />
         <BitmapImage x:Key="SearchIcon" UriSource="Resources/search.png" />
         <BitmapImage x:Key="LogOutIcon" UriSource="Resources/logout.png" />
+        <BitmapImage x:Key="SpinIcon" UriSource="Resources/spin.png" />
+
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+        <converter:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
+        <converter:InvertedObjectToVisibilityConverter x:Key="InvertedObjectToVisibilityConverter" />
+        <converter:DateTimeConverter x:Key="DateTimeConverter" />
 
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="14" />
@@ -105,6 +114,13 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style x:Key="LightText" TargetType="Label">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
         <Style x:Key="HeaderLabel" TargetType="Label">
@@ -217,50 +233,60 @@
                     Информация о клиенте
                 </Label>
             </GroupBox.Header>
+            <Grid>
+                <Label Panel.ZIndex="1" HorizontalAlignment="Center" Style="{DynamicResource LightText}"
+                       FontSize="22"
+                       Opacity="0.5"
+                       Visibility="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource InvertedObjectToVisibilityConverter}}"
+                       Content="Выберите заявку из списка" />
 
-            <Grid Margin="15,0,15,0" DataContext="{Binding SelectedApplication}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150 px" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="48 px" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                <Grid Margin="15,0,15,0" DataContext="{Binding SelectedApplication}"
+                      Visibility="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150 px" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="48 px" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Style="{DynamicResource HeaderLabel}" Content="Имя" />
+                    <Label Grid.Column="0" Grid.Row="1" Style="{DynamicResource HeaderLabel}" Content="Email" />
+                    <Label Grid.Column="0" Grid.Row="2" Style="{DynamicResource HeaderLabel}" Content="Телефон" />
+                    <Label Grid.Column="0" Grid.Row="3" Style="{DynamicResource HeaderLabel}" Content="ИНН компании" />
+                    <Label Grid.Column="0" Grid.Row="4" Style="{DynamicResource HeaderLabel}" Content="Дата подачи" />
 
-                <Label Grid.Column="0" Grid.Row="0" Style="{DynamicResource HeaderLabel}" Content="Имя" />
-                <Label Grid.Column="0" Grid.Row="1" Style="{DynamicResource HeaderLabel}" Content="Email" />
-                <Label Grid.Column="0" Grid.Row="2" Style="{DynamicResource HeaderLabel}" Content="Телефон" />
-                <Label Grid.Column="0" Grid.Row="3" Style="{DynamicResource HeaderLabel}" Content="ИНН компании" />
-                <Label Grid.Column="0" Grid.Row="4" Style="{DynamicResource HeaderLabel}" Content="Дата подачи" />
+                    <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource MainText}" Content="{Binding Name}" />
+                    <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource MainText}" Content="{Binding Email}" />
+                    <Label Grid.Column="1" Grid.Row="2" Style="{DynamicResource MainText}" Content="{Binding Phone}" />
+                    <Label Grid.Column="1" Grid.Row="3" Style="{DynamicResource MainText}" Content="{Binding Inn}" />
+                    <Label Grid.Column="1" Grid.Row="4" Style="{DynamicResource MainText}"
+                           Content="{Binding CreatedAt, Converter={StaticResource DateTimeConverter}}" />
 
-                <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource MainText}" Content="{Binding Name}" />
-                <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource MainText}"
-                       Content="{Binding Email}" />
-                <Label Grid.Column="1" Grid.Row="2" Style="{DynamicResource MainText}" Content="{Binding Phone}" />
-                <Label Grid.Column="1" Grid.Row="3" Style="{DynamicResource MainText}" Content="{Binding Inn}" />
-                <Label Grid.Column="1" Grid.Row="4" Style="{DynamicResource MainText}" Content="{Binding CreatedAt}" />
+                    <Image Grid.Column="2" Grid.Row="1" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
+                    <Image Grid.Column="2" Grid.Row="2" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
+                    <Image Grid.Column="2" Grid.Row="3" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
 
-                <Image Grid.Column="2" Grid.Row="1" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
-                <Image Grid.Column="2" Grid.Row="2" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
-                <Image Grid.Column="2" Grid.Row="3" Source="{DynamicResource TickIcon}" Width="16" Height="16" />
+                    <TextBlock Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Hyperlink NavigateUri="">
+                            Подробнее о компании
+                        </Hyperlink>
+                    </TextBlock>
 
-                <TextBlock Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <Hyperlink NavigateUri="">
-                        Подробнее о компании
-                    </Hyperlink>
-                </TextBlock>
-
-                <Label Grid.Column="3" Grid.Row="4" Style="{DynamicResource TertiaryText}" Content="5 дней назад" />
+                    <Label Grid.Column="3" Grid.Row="4" Style="{DynamicResource TertiaryText}"
+                           Content="{Binding DaysPassed}" />
+                </Grid>
             </Grid>
         </GroupBox>
 
-        <Grid Grid.Column="0" Row="2" VerticalAlignment="Top" Margin="0,3,6,0">
+        <Grid Grid.Column="0" Row="2"
+              IsEnabled="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToBoolConverter}}"
+              VerticalAlignment="Top" Margin="0,3,6,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -296,53 +322,66 @@
                     Заявки на рассмотрение
                 </Label>
             </GroupBox.Header>
-            <ListBox x:Name="ApplicationsListBox"
-                     HorizontalContentAlignment="Stretch"
-                     VerticalContentAlignment="Stretch"
-                     BorderThickness="0"
-                     ItemsSource="{Binding Applications, UpdateSourceTrigger=PropertyChanged}"
-                     ScrollViewer.CanContentScroll="False"
-                     SelectionChanged="ApplicationsListBox_OnSelectionChanged"
-                     SelectedItem="{Binding SelectedApplication}">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
+            <Grid>
+                <ListBox x:Name="ApplicationsListBox"
+                         HorizontalContentAlignment="Stretch"
+                         VerticalContentAlignment="Stretch"
+                         BorderThickness="0"
+                         ItemsSource="{Binding Applications, UpdateSourceTrigger=PropertyChanged}"
+                         ScrollViewer.CanContentScroll="False"
+                         SelectionChanged="ApplicationsListBox_OnSelectionChanged"
+                         SelectedItem="{Binding SelectedApplication}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Height="50 px" Style="{DynamicResource ListBoxElement}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="5 px" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            
-                            <Line x:Name="SelectionLine" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" X1="0" X2="0"
-                                  Y1="0" Y2="60" Stroke="#F15045" StrokeThickness="3"
-                                  Visibility="Collapsed" />
-                            <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource HeaderLabel}"
-                                   Content="{Binding Path=Name}" Height="30" />
-                            <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource SecondaryText}"
-                                   Content="{Binding Path=Phone}" />
-                            <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Style="{DynamicResource TertiaryText}"
-                                   Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
-                                   VerticalAlignment="Bottom" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="50 px" Style="{DynamicResource ListBoxElement}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5 px" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Line x:Name="SelectionLine" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" X1="0"
+                                      X2="0"
+                                      Y1="0" Y2="60" Stroke="#F15045" StrokeThickness="5"
+                                      Visibility="Collapsed" />
+                                <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource HeaderLabel}"
+                                       Content="{Binding Path=Name}" Height="30" />
+                                <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource SecondaryText}"
+                                       Content="{Binding Path=Phone}" />
+                                <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                       Style="{DynamicResource TertiaryText}"
+                                       Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <WrapPanel Panel.ZIndex="1"
+                           Visibility="{Binding IsLoadedSuccessfully, Converter={StaticResource BoolToVisibilityConverter}}"
+                           Opacity="0.5"
+                           Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Margin="0,0,0,30">
+                    <fa:ImageAwesome Panel.ZIndex="1" Source="{DynamicResource SpinIcon}" SpinDuration="0.8"
+                                     Spin="true" Height="40" Width="40" />
+                    <Label Style="{DynamicResource LightText}" Content="Данные загружаются" Margin="0,10,0,0" />
+                </WrapPanel>
+            </Grid>
         </GroupBox>
     </Grid>
 </Window>

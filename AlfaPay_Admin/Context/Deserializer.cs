@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
+using AlfaPay_Admin.Model;
 
-namespace AlfaPay_Admin.Model
+namespace AlfaPay_Admin.Context
 {
     public static class Deserializer
     {
@@ -17,4 +18,5 @@ namespace AlfaPay_Admin.Model
             return new ApiResponse<T>(r, null);
         }
     }
+    
 }

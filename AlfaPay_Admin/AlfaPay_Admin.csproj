@@ -34,6 +34,10 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466">
+          <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="MaterialDesignColors, Version=2.0.0.2273, Culture=neutral, PublicKeyToken=df2a72020bd7962a">
           <HintPath>..\packages\MaterialDesignColors.2.0.0-ci2273\lib\net452\MaterialDesignColors.dll</HintPath>
           <Private>True</Private>
@@ -115,6 +119,19 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Include="Context\ApplicationContext.cs" />
+        <Compile Include="Context\DataCorrectnessChecker.cs" />
+        <Compile Include="Context\Deserializer.cs" />
+        <Compile Include="Context\RelayCommand.cs" />
+        <Compile Include="Converter\BoolToVisibleConverter.cs" />
+        <Compile Include="Converter\DateTimeConverter.cs" />
+        <Compile Include="Converter\InvertedObjectToVisibilityConverter.cs" />
+        <Compile Include="Converter\ObjectToBoolConverter.cs" />
+        <Compile Include="Converter\ObjectToVisibilityConverter.cs" />
+        <Compile Include="Entity\ApiAnswer.cs" />
+        <Compile Include="Entity\ApiError.cs" />
+        <Compile Include="Entity\ApiResponse.cs" />
+        <Compile Include="Entity\ClientApplication.cs" />
         <Compile Include="LoginWindow.xaml.cs">
           <DependentUpon>LoginWindow.xaml</DependentUpon>
         </Compile>
@@ -125,13 +142,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="ApplicationViewModel.cs" />
-        <Compile Include="Model\ApiAnswer.cs" />
-        <Compile Include="Model\ApplicationContext.cs" />
-        <Compile Include="Model\ApiError.cs" />
-        <Compile Include="Model\ApiResponse.cs" />
-        <Compile Include="Model\ClientApplication.cs" />
-        <Compile Include="Model\Deserializer.cs" />
-        <Compile Include="Model\RelayCommand.cs" />
         <Compile Include="Properties\Annotations.cs" />
         <Compile Include="Properties\AssemblyInfo.cs">
             <SubType>Code</SubType>
@@ -183,6 +193,17 @@
     </ItemGroup>
     <ItemGroup>
       <Resource Include="Resources\alfabank_logo.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="fonts\fontawesome-webfont.eot" />
+      <Content Include="fonts\fontawesome-webfont.svg" />
+      <Content Include="fonts\fontawesome-webfont.ttf" />
+      <Content Include="fonts\fontawesome-webfont.woff" />
+      <Content Include="fonts\fontawesome-webfont.woff2" />
+      <Content Include="fonts\FontAwesome.otf" />
+      <Resource Include="Resources\spin.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
     </ItemGroup>

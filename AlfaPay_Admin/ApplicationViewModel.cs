@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using AlfaPay_Admin.Annotations;
+using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Model;
 
 namespace AlfaPay_Admin
@@ -12,7 +14,7 @@ namespace AlfaPay_Admin
     {
         private ObservableCollection<ClientApplication> _applications;
         private ClientApplication _selectedApplication;
-        
+
         public ObservableCollection<ClientApplication> Applications
         {
             get => _applications;
@@ -33,10 +35,19 @@ namespace AlfaPay_Admin
             }
         }
         
-        
+        private bool _isSuccessfullyLoaded;
+
+        public bool IsLoadedSuccessfully
+        {
+            get => _isSuccessfullyLoaded;
+            set
+            {
+                _isSuccessfullyLoaded = value;
+                OnPropertyChanged(nameof(IsLoadedSuccessfully));
+            }
+        }
 
         private ApplicationContext db = new ApplicationContext("http://localhost:8080/");
-        public bool IsLoadedSuccessfully;
 
 
         public ApplicationViewModel()
@@ -45,19 +56,20 @@ namespace AlfaPay_Admin
             LoadApplications(0, 10);
         }
 
-        public async void LoadApplications(int from, int count)
+        private async void LoadApplications(int from, int count)
         {
             var result = await db.SendApiRequest($"api/applications/get?from={from}&count={count}", null);
             if (result == "Error")
-            {
                 IsLoadedSuccessfully = false;
-            }
 
             var response = Deserializer.DeserializeApiResponse<List<ClientApplication>>(result);
             if (response.Response != null)
             {
+                IsLoadedSuccessfully = true;
                 Applications = new ObservableCollection<ClientApplication>(response.Response);
             }
+            else
+                IsLoadedSuccessfully = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
