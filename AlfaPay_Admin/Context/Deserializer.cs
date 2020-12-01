@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using AlfaPay_Admin.Entity;
 using AlfaPay_Admin.Model;
 
 namespace AlfaPay_Admin.Context

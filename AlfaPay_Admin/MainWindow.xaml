@@ -8,6 +8,7 @@
         xmlns:model="clr-namespace:AlfaPay_Admin.Model"
         xmlns:global="clr-namespace:"
         xmlns:converter="clr-namespace:AlfaPay_Admin.Converter"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="AlfaPay Admin" Height="600" Width="1200"
         Icon="Resources/alfabank_logo.png"
@@ -22,6 +23,7 @@
         <BitmapImage x:Key="SearchIcon" UriSource="Resources/search.png" />
         <BitmapImage x:Key="LogOutIcon" UriSource="Resources/logout.png" />
         <BitmapImage x:Key="SpinIcon" UriSource="Resources/spin.png" />
+        <BitmapImage x:Key="ErrorIcon" UriSource="Resources/error.png" />
 
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
@@ -73,6 +75,67 @@
             </Setter>
         </Style>
 
+
+        <Style x:Key="RefreshButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#f3f4f5" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}" x:Name="MainControlTemplate">
+                        <Grid>
+                            <Border x:Name="border" CornerRadius="4" BorderThickness="1"
+                                    BorderBrush="Transparent"
+                                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True" />
+
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Name="content" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="#E6E8EA"
+                                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="#f3f4f5"
+                                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="#8A0B1F35"
+                                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="#E6E8EA"
+                                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="LogoutButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="1" />
@@ -108,7 +171,24 @@
                                 </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#CED2D7" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="#8A0B1F35"
+                                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation To="#E6E8EA"
+                                                            Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -182,6 +262,81 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="FadeInFadeOutEffectControl" TargetType="Control">
+            <Style.Triggers>
+                <Trigger Property="Visibility" Value="Visible">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="1.0"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="0.0"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="FadeInFadeOutEffectPanel" TargetType="Panel">
+            <Style.Triggers>
+                <Trigger Property="Visibility" Value="Visible">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="1.0"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="0.0"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="FadeInFadeOutEffectShape" TargetType="Shape">
+            <Style.Triggers>
+                <Trigger Property="Visibility" Value="Visible">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="1.0"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="0.0"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
 
@@ -234,14 +389,18 @@
                 </Label>
             </GroupBox.Header>
             <Grid>
-                <Label Panel.ZIndex="1" HorizontalAlignment="Center" Style="{DynamicResource LightText}"
-                       FontSize="22"
+                <Label Panel.ZIndex="1" HorizontalAlignment="Center"
+                       Style="{DynamicResource FadeInFadeOutEffectControl}"
+                       FontFamily="Segoe UI"
+                       FontWeight="Light"
+                       FontSize="20"
                        Opacity="0.5"
                        Visibility="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource InvertedObjectToVisibilityConverter}}"
                        Content="Выберите заявку из списка" />
 
                 <Grid Margin="15,0,15,0" DataContext="{Binding SelectedApplication}"
-                      Visibility="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                      Visibility="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToVisibilityConverter}}"
+                      Style="{DynamicResource FadeInFadeOutEffectPanel}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="150 px" />
                         <ColumnDefinition Width="*" />
@@ -359,7 +518,8 @@
                                 <Line x:Name="SelectionLine" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" X1="0"
                                       X2="0"
                                       Y1="0" Y2="60" Stroke="#F15045" StrokeThickness="5"
-                                      Visibility="Collapsed" />
+                                      Visibility="Collapsed"
+                                      Style="{DynamicResource FadeInFadeOutEffectShape}" />
                                 <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource HeaderLabel}"
                                        Content="{Binding Path=Name}" Height="30" />
                                 <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource SecondaryText}"
@@ -373,13 +533,27 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <WrapPanel Panel.ZIndex="1"
-                           Visibility="{Binding IsLoadedSuccessfully, Converter={StaticResource BoolToVisibilityConverter}}"
-                           Opacity="0.5"
+                           Visibility="{Binding ResponseReceived, Converter={StaticResource BoolToVisibilityConverter}}"
                            Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
-                           Margin="0,0,0,30">
+                           Margin="0,0,0,30"
+                           Style="{DynamicResource FadeInFadeOutEffectPanel}">
                     <fa:ImageAwesome Panel.ZIndex="1" Source="{DynamicResource SpinIcon}" SpinDuration="0.8"
                                      Spin="true" Height="40" Width="40" />
-                    <Label Style="{DynamicResource LightText}" Content="Данные загружаются" Margin="0,10,0,0" />
+                    <Label Style="{DynamicResource LightText}" Content="Данные загружаются" Margin="0,7,0,0" />
+                </WrapPanel>
+                <WrapPanel Panel.ZIndex="1"
+                           Visibility="{Binding Error, Converter={StaticResource ObjectToVisibilityConverter}}"
+                           Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Margin="0,0,0,30"
+                           Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                    <fa:ImageAwesome Panel.ZIndex="1" Source="{DynamicResource ErrorIcon}"
+                                     Height="40" Width="40" />
+                    <Label Style="{DynamicResource LightText}" HorizontalAlignment="Center" Content="Ошибка"
+                           Margin="0,7,0,0" />
+                    <Button Content="Попробовать снова" 
+                            Style="{DynamicResource RefreshButtonStyle}" Margin="0,10,0,0"
+                            Height="30" Width="150" Command="{Binding RefreshCommand}">
+                    </Button>
                 </WrapPanel>
             </Grid>
         </GroupBox>

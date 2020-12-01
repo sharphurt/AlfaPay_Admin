@@ -69,5 +69,9 @@ namespace AlfaPay_Admin
             return null;
         }
         
+        private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -34,18 +36,44 @@ namespace AlfaPay_Admin
                 OnPropertyChanged(nameof(SelectedApplication));
             }
         }
-        
-        private bool _isSuccessfullyLoaded;
 
-        public bool IsLoadedSuccessfully
+        private bool _responseReceived;
+
+        public bool ResponseReceived
         {
-            get => _isSuccessfullyLoaded;
+            get => _responseReceived;
             set
             {
-                _isSuccessfullyLoaded = value;
-                OnPropertyChanged(nameof(IsLoadedSuccessfully));
+                _responseReceived = value;
+                OnPropertyChanged(nameof(ResponseReceived));
             }
         }
+
+        private ApiError _error;
+
+        public ApiError Error
+        {
+            get => _error;
+            set
+            {
+                _error = value;
+                OnPropertyChanged(nameof(Error));
+            }
+        }
+
+        private RelayCommand _refreshCommand;
+
+        public RelayCommand RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand ?? (_refreshCommand = new RelayCommand(obj =>
+                {
+                    GetApplicationsFromServer(0, 10);
+                }));
+            }
+        }
+
 
         private ApplicationContext db = new ApplicationContext("http://localhost:8080/");
 
@@ -53,24 +81,36 @@ namespace AlfaPay_Admin
         public ApplicationViewModel()
         {
             Applications = new ObservableCollection<ClientApplication>();
-            LoadApplications(0, 10);
+            GetApplicationsFromServer(0, 10);
         }
 
-        private async void LoadApplications(int from, int count)
+        private async void GetApplicationsFromServer(int from, int count)
         {
-            var result = await db.SendApiRequest($"api/applications/get?from={from}&count={count}", null);
-            if (result == "Error")
-                IsLoadedSuccessfully = false;
-
-            var response = Deserializer.DeserializeApiResponse<List<ClientApplication>>(result);
-            if (response.Response != null)
+            ResponseReceived = false;
+            Error = null;
+            Applications = new ObservableCollection<ClientApplication>();
+            var result = await db.LoadApplications(from, count);
+            if (result.Error != null)
             {
-                IsLoadedSuccessfully = true;
-                Applications = new ObservableCollection<ClientApplication>(response.Response);
+                Error = result.Error;
+                ResponseReceived = true;
             }
             else
-                IsLoadedSuccessfully = false;
+            {
+                Applications = result.Response;
+                Error = null;
+                ResponseReceived = true;
+            }
         }
+
+        /*
+        private async void CheckApplicationDataCorrectness(ClientApplication application)
+        {
+            var isEmailCorrect = await db.CheckProperty("email", application.Email);
+            var isPhoneCorrect = await db.CheckProperty("phone", application.Email);
+            var isInnCorrect = await db.CheckProperty("inn", application.Email);
+        }
+        */
 
         public event PropertyChangedEventHandler PropertyChanged;
 

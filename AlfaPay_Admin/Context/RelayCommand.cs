@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace AlfaPay_Admin.Model
+namespace AlfaPay_Admin.Context
 {
     public class RelayCommand : ICommand
     {

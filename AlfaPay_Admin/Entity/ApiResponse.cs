@@ -1,4 +1,6 @@
-﻿namespace AlfaPay_Admin.Model
+﻿using AlfaPay_Admin.Model;
+
+namespace AlfaPay_Admin.Entity
 {
     public class ApiResponse<T>
     {
@@ -10,5 +12,7 @@
             Response = response;
             Error = error;
         }
+
+        public bool IsSuccessfully => Response != null;
     }
 }
