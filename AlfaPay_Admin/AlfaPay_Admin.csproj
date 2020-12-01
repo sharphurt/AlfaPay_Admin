@@ -118,7 +118,12 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Page Include="LoginWindow.xaml" />
+        <Compile Include="WindowPage\AcceptApplicationPage.xaml.cs">
+          <DependentUpon>AcceptApplicationPage.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="WindowPage\MainPage.xaml.cs">
+          <DependentUpon>MainPage.xaml</DependentUpon>
+        </Compile>
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -131,23 +136,27 @@
         <Compile Include="Context\DataCorrectnessChecker.cs" />
         <Compile Include="Context\Deserializer.cs" />
         <Compile Include="Context\RelayCommand.cs" />
+        <Compile Include="Converter\BoolToIconConverter.cs" />
         <Compile Include="Converter\BoolToVisibleConverter.cs" />
         <Compile Include="Converter\DateTimeConverter.cs" />
+        <Compile Include="Converter\ErrorToErroeMessageConverter.cs" />
+        <Compile Include="Converter\InvertedBoolToVisibilityConverter.cs" />
         <Compile Include="Converter\InvertedObjectToVisibilityConverter.cs" />
         <Compile Include="Converter\ObjectToBoolConverter.cs" />
         <Compile Include="Converter\ObjectToVisibilityConverter.cs" />
         <Compile Include="Entity\ApiAnswer.cs" />
         <Compile Include="Entity\ApiError.cs" />
         <Compile Include="Entity\ApiResponse.cs" />
-        <Compile Include="Entity\ClientApplication.cs" />
+        <Compile Include="Entity\Application.cs" />
         <Compile Include="Entity\DataCorrectnessReport.cs" />
-        <Compile Include="LoginWindow.xaml.cs">
-          <DependentUpon>LoginWindow.xaml</DependentUpon>
-        </Compile>
+        <Compile Include="Enum\ApplicationCorrectnessStatus.cs" />
         <Compile Include="MainWindow.xaml.cs">
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="Resources\ResourcesDictionary.xaml" />
+        <Page Include="WindowPage\AcceptApplicationPage.xaml" />
+        <Page Include="WindowPage\MainPage.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="ApplicationViewModel.cs" />
@@ -206,12 +215,6 @@
       </Resource>
     </ItemGroup>
     <ItemGroup>
-      <Content Include="fonts\fontawesome-webfont.eot" />
-      <Content Include="fonts\fontawesome-webfont.svg" />
-      <Content Include="fonts\fontawesome-webfont.ttf" />
-      <Content Include="fonts\fontawesome-webfont.woff" />
-      <Content Include="fonts\fontawesome-webfont.woff2" />
-      <Content Include="fonts\FontAwesome.otf" />
       <Resource Include="Resources\error.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>

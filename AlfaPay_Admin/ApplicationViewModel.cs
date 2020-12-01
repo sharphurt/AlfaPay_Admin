@@ -5,19 +5,22 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
+using AlfaPay_Admin.Entity;
 using AlfaPay_Admin.Model;
+using Application = AlfaPay_Admin.Entity.Application;
 
 namespace AlfaPay_Admin
 {
-    public class ApplicationViewModel : INotifyPropertyChanged
+    public sealed class ApplicationViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<ClientApplication> _applications;
-        private ClientApplication _selectedApplication;
+        private ObservableCollection<Application> _applications;
+        private Application _selectedApplication;
 
-        public ObservableCollection<ClientApplication> Applications
+        public ObservableCollection<Application> Applications
         {
             get => _applications;
             private set
@@ -27,7 +30,15 @@ namespace AlfaPay_Admin
             }
         }
 
-        public ClientApplication SelectedApplication
+        private int _selectedIndex;
+
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
+            set => _selectedIndex = value;
+        }
+
+        public Application SelectedApplication
         {
             get => _selectedApplication;
             set
@@ -46,6 +57,18 @@ namespace AlfaPay_Admin
             {
                 _responseReceived = value;
                 OnPropertyChanged(nameof(ResponseReceived));
+            }
+        }
+
+        private bool _isLoading;
+
+        public bool IsLoading
+        {
+            get =>  _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
             }
         }
 
@@ -74,48 +97,42 @@ namespace AlfaPay_Admin
             }
         }
 
-
         private ApplicationContext db = new ApplicationContext("http://localhost:8080/");
 
 
         public ApplicationViewModel()
         {
-            Applications = new ObservableCollection<ClientApplication>();
             GetApplicationsFromServer(0, 10);
+            
         }
 
         private async void GetApplicationsFromServer(int from, int count)
         {
             ResponseReceived = false;
             Error = null;
-            Applications = new ObservableCollection<ClientApplication>();
+            IsLoading = true;
             var result = await db.LoadApplications(from, count);
             if (result.Error != null)
             {
                 Error = result.Error;
-                ResponseReceived = true;
+                ResponseReceived = true;       
+                IsLoading = false;
+
             }
             else
             {
                 Applications = result.Response;
                 Error = null;
                 ResponseReceived = true;
+                IsLoading = false;
             }
-        }
 
-        /*
-        private async void CheckApplicationDataCorrectness(ClientApplication application)
-        {
-            var isEmailCorrect = await db.CheckProperty("email", application.Email);
-            var isPhoneCorrect = await db.CheckProperty("phone", application.Email);
-            var isInnCorrect = await db.CheckProperty("inn", application.Email);
         }
-        */
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

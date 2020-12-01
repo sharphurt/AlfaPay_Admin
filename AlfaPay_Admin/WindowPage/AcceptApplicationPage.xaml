@@ -1,0 +1,22 @@
+﻿<Page x:Class="AlfaPay_Admin.WindowPage.AcceptApplicationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      Title="AcceptApplicationPage">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40 px" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40 px" />
+        </Grid.RowDefinitions>
+        
+        
+    </Grid>
+</Page>

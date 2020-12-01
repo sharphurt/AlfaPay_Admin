@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-using AlfaPay_Admin.Annotations;
 
-namespace AlfaPay_Admin.Model
+namespace AlfaPay_Admin.Entity
 {
-    public class ClientApplication
+    public class Application
     {
         [JsonPropertyName("id")] public long Id { get; set; }
 
@@ -17,7 +16,7 @@ namespace AlfaPay_Admin.Model
         [JsonPropertyName("inn")] public long Inn { get; set; }
 
         [JsonPropertyName("createdAt")] public DateTime CreatedAt { get; set; }
-
+        
         public string DaysPassed
         {
             get

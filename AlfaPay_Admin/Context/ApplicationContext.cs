@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Entity;
+using AlfaPay_Admin.Model;
 
-namespace AlfaPay_Admin.Model
+namespace AlfaPay_Admin.Context
 {
     class ApplicationContext
     {
@@ -17,7 +16,7 @@ namespace AlfaPay_Admin.Model
         public ApplicationContext(string uri)
         {
             _client.BaseAddress = new Uri(uri);
-            _client.Timeout = TimeSpan.FromMinutes(2);
+            _client.Timeout = TimeSpan.FromSeconds(20);
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -27,13 +26,13 @@ namespace AlfaPay_Admin.Model
             return await _client.GetStringAsync(path);
         }
 
-        public async Task<ApiResponse<string>> SendApiRequest(string path, string token)
+        private async Task<ApiResponse<string>> SendApiRequest(string path, string token)
         {
             try
             {
                 if (token == null)
                     return new ApiResponse<string>(await GetAsync(path), null);
-                
+
                 if (_client.DefaultRequestHeaders.Contains("Authorization"))
                     _client.DefaultRequestHeaders.Remove("Authorization");
                 _client.DefaultRequestHeaders.Add("Authorization", token);
@@ -42,29 +41,27 @@ namespace AlfaPay_Admin.Model
             }
             catch (HttpRequestException e)
             {
+                return new ApiResponse<string>(null, new ApiError("Проблемы с интернет-соединением. Попробуйте еще раз",
+                    e.HResult,
+                    (e.InnerException as WebException).Status.ToString()));
+            }
+            catch (TaskCanceledException e)
+            {
                 return new ApiResponse<string>(null,
-                    new ApiError(e.InnerException.Message, e.HResult,
-                        (e.InnerException as WebException).Status.ToString()));
+                    new ApiError("Попробуйте еще раз", e.HResult, e.Message));
             }
         }
 
-        public async Task<ApiResponse<ObservableCollection<ClientApplication>>> LoadApplications(int from, int count)
+        private async Task<ApiResponse<T>> SendRequest<T>(string url, string token)
         {
-            var result = await SendApiRequest($"api/applications/get?from={from}&count={count}", null);
-            if (!result.IsSuccessfully)
-                return new ApiResponse<ObservableCollection<ClientApplication>>(null, result.Error);
-
-            return Deserializer.DeserializeApiResponse<ObservableCollection<ClientApplication>>(result.Response);
+            var result = await SendApiRequest(url, token);
+            return !result.IsSuccessfully
+                ? new ApiResponse<T>(default, result.Error)
+                : Deserializer.DeserializeApiResponse<T>(result.Response);
         }
 
-        /*
-        public async Task<bool?> CheckProperty(string name, string email)
-        {
-            var result = await SendApiRequest($"api/auth/check/{name}?{name}={email}", null);
-            if (result.StartsWith("Error"))
-                return null;
-            var response = Deserializer.DeserializeApiResponse<bool>(result);
-            return response.Response;
-        }*/
+        public async Task<ApiResponse<ObservableCollection<Application>>> LoadApplications(int from, int count) =>
+            await SendRequest<ObservableCollection<Application>>($"api/applications/get?from={from}&count={count}",
+                null);
     }
 }

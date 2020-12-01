@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\App.xaml
-22037783069
-6454200009
-2145959475
+41786498277
+
+26897426987
 131825438275
-LoginWindow.xaml;MainWindow.xaml;
+MainWindow.xaml;Resources\ResourcesDictionary.xaml;WindowPage\AcceptApplicationPage.xaml;WindowPage\MainPage.xaml;
 
 False
 

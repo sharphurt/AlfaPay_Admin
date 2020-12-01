@@ -13,8 +13,6 @@ C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\AlfaPay_Ad
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\AlfaPay_Admin.csproj.CoreCompileInputs.cache
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\AlfaPay_Admin.exe
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\AlfaPay_Admin.pdb
-C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\LoginWindow.g.cs
-C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\LoginWindow.baml
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\MaterialDesignColors.dll
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\MaterialDesignThemes.Wpf.dll
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\MaterialDesignColors.pdb
@@ -46,9 +44,14 @@ C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\System.Val
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\AlfaPay_Admin.exe.config
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\FontAwesome.WPF.dll
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\FontAwesome.WPF.xml
-C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\AlfaPay_Admin_Content.g.cs
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Microsoft.Expression.Interactions.dll
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\System.Windows.Interactivity.dll
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Microsoft.Expression.Interactions.xml
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\System.Windows.Interactivity.xml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\WindowPage\AcceptApplicationPage.g.cs
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\WindowPage\MainPage.g.cs
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\WindowPage\AcceptApplicationPage.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\WindowPage\MainPage.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\App.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\Resources\ResourcesDictionary.baml
