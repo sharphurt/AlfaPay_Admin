@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\App.xaml
-72006015517
+7-1539318920
 
-29-1166016247
+31-1934022984
 131825438275
-CustomControl\InputTextBox.xaml;CustomControl\HeadedLabel.xaml;MainWindow.xaml;Resources\ResourcesDictionary.xaml;TestWindow.xaml;WindowPage\AcceptApplicationPage.xaml;WindowPage\MainPage.xaml;
+CustomControl\HeadedTextBlock.xaml;CustomControl\InputTextBox.xaml;MainWindow.xaml;Resources\ResourcesDictionary.xaml;TestWindow.xaml;WindowPage\AcceptApplicationPage.xaml;WindowPage\MainPage.xaml;
 
 False
 

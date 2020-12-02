@@ -2,14 +2,17 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using AlfaPay_Admin.Model;
+using Application = AlfaPay_Admin.Entity.Application;
 
 namespace AlfaPay_Admin.WindowPage
 {
     public partial class AcceptApplicationPage : Page
     {
-        public AcceptApplicationPage()
+        public AcceptApplicationPage(RegistrationModel dataContext)
         {
             InitializeComponent();
+            DataContext = dataContext;
         }
 
         private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)

@@ -5,18 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:AlfaPay_Admin"
              mc:Ignorable="d"
-             Name="InputTextBoxWindow"
+             x:Name="InputTextBoxWindow"
              d:DesignHeight="60"
-             d:DesignWidth="270">
+             d:DesignWidth="270"
+             Validation.ErrorTemplate="{x:Null}">
     <Grid>
         <WrapPanel Orientation="Vertical">
             <Label Style="{DynamicResource SecondaryText}" FontSize="13"
-                   Content="{Binding ElementName=InputTextBoxWindow,Path=Header}" />
+                   Content="{Binding ElementName=InputTextBoxWindow, Path=Header}" />
             <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                     MinWidth="270"
                      Template="{DynamicResource TextBoxControlTemplate}"
-                     Width="270 px"
-                     Text="123"
-                     VerticalContentAlignment="Center" />
+                     VerticalContentAlignment="Center"
+                     Text="{Binding ElementName=InputTextBoxWindow, Path=Input, ValidatesOnDataErrors=True}">
+            </TextBox>
         </WrapPanel>
     </Grid>
 </UserControl>

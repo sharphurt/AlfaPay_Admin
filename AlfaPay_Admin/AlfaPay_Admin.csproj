@@ -118,12 +118,16 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="CustomControl\HeadedTextBlock.xaml.cs">
+          <DependentUpon>HeadedTextBlock.xaml</DependentUpon>
+        </Compile>
         <Compile Include="CustomControl\InputTextBox.xaml.cs">
           <DependentUpon>InputTextBox.xaml</DependentUpon>
         </Compile>
-        <Compile Include="CustomControl\HeadedLabel.xaml.cs">
-          <DependentUpon>HeadedLabel.xaml</DependentUpon>
-        </Compile>
+        <Compile Include="Model\ApplicationViewModel.cs" />
+        <Compile Include="Model\CompanyModel.cs" />
+        <Compile Include="Model\RegistrationModel.cs" />
+        <Compile Include="Model\UserModel.cs" />
         <Compile Include="TestWindow.xaml.cs">
           <DependentUpon>TestWindow.xaml</DependentUpon>
           <SubType>Code</SubType>
@@ -134,8 +138,8 @@
         <Compile Include="WindowPage\MainPage.xaml.cs">
           <DependentUpon>MainPage.xaml</DependentUpon>
         </Compile>
+        <Page Include="CustomControl\HeadedTextBlock.xaml" />
         <Page Include="CustomControl\InputTextBox.xaml" />
-        <Page Include="CustomControl\HeadedLabel.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -145,7 +149,6 @@
             <SubType>Code</SubType>
         </Compile>
         <Compile Include="Context\ApplicationContext.cs" />
-        <Compile Include="Context\DataCorrectnessChecker.cs" />
         <Compile Include="Context\Deserializer.cs" />
         <Compile Include="Context\RelayCommand.cs" />
         <Compile Include="Converter\BoolToIconConverter.cs" />
@@ -175,7 +178,6 @@
         <Page Include="WindowPage\MainPage.xaml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="ApplicationViewModel.cs" />
         <Compile Include="Properties\Annotations.cs" />
         <Compile Include="Properties\AssemblyInfo.cs">
             <SubType>Code</SubType>

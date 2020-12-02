@@ -42,8 +42,7 @@ namespace AlfaPay_Admin.Context
             catch (HttpRequestException e)
             {
                 return new ApiResponse<string>(null, new ApiError("Проблемы с интернет-соединением. Попробуйте еще раз",
-                    e.HResult,
-                    (e.InnerException as WebException).Status.ToString()));
+                    e.HResult, ""));
             }
             catch (TaskCanceledException e)
             {
@@ -61,7 +60,7 @@ namespace AlfaPay_Admin.Context
         }
 
         public async Task<ApiResponse<ObservableCollection<Application>>> LoadApplications(int from, int count) =>
-            await SendRequest<ObservableCollection<Application>>($"api/applications/get?from={from}&count={count}",
+            await SendRequest<ObservableCollection<Application>>($"nfc-api/applications/get?from={from}&count={count}",
                 null);
     }
 }

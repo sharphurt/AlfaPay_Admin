@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace AlfaPay_Admin.Entity
@@ -43,5 +44,6 @@ namespace AlfaPay_Admin.Entity
         {
             return $"{Name} \t {Phone}";
         }
+        
     }
 }

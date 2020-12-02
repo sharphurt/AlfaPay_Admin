@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using AlfaPay_Admin.Model;
+using Application = AlfaPay_Admin.Entity.Application;
 
 namespace AlfaPay_Admin.WindowPage
 {
@@ -63,6 +65,21 @@ namespace AlfaPay_Admin.WindowPage
             }
 
             return null;
+        }
+
+        private void AcceptButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var navigationService = NavigationService;
+            var selectedApplication = ApplicationsListBox.SelectedItem as Application;
+            var user = new UserModel
+            {
+                Name = selectedApplication?.Name,
+                Email = selectedApplication?.Email,
+                Phone = selectedApplication?.Phone,
+            };
+            
+            var registrationModel = new RegistrationModel(user, new CompanyModel(), selectedApplication);
+            navigationService?.Navigate(new AcceptApplicationPage(registrationModel));
         }
     }
 }

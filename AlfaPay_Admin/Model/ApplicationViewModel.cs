@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
-using AlfaPay_Admin.Entity;
-using AlfaPay_Admin.Model;
 using Application = AlfaPay_Admin.Entity.Application;
 
-namespace AlfaPay_Admin
+namespace AlfaPay_Admin.Model
 {
     public sealed class ApplicationViewModel : INotifyPropertyChanged
     {
@@ -97,13 +89,11 @@ namespace AlfaPay_Admin
             }
         }
 
-        private ApplicationContext db = new ApplicationContext("http://localhost:8080/");
-
-
+        private ApplicationContext db = new ApplicationContext("http://catstack.net/");
+        
         public ApplicationViewModel()
         {
             GetApplicationsFromServer(0, 10);
-            
         }
 
         private async void GetApplicationsFromServer(int from, int count)

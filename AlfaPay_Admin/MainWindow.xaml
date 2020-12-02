@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="AlfaPay Admin" Height="600" Width="1200"
+        Title="AlfaPay Admin"
         Icon="Resources/alfabank_logo.png"
+        SizeToContent="WidthAndHeight"
         RenderOptions.BitmapScalingMode="HighQuality"
-        Background="White">
+        Background="White"
+        Loaded="MainWindow_OnLoaded">
     <Window.Resources />
     <Grid>
-        <Frame Source="WindowPage/AcceptApplicationPage.xaml" />
+        <Frame x:Name="MainFrame" Source="WindowPage/MainPage.xaml" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>
