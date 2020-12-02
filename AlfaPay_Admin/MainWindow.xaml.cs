@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using AlfaPay_Admin.WindowPage;
 
 namespace AlfaPay_Admin
 {
@@ -19,6 +12,8 @@ namespace AlfaPay_Admin
         {
             // TODO: Delete after debugging
             //  new TestWindow().Show();
+            NavigationCommands.BrowseBack.InputGestures.Clear();
+            NavigationCommands.BrowseForward.InputGestures.Clear();
             InitializeComponent();
         }
 

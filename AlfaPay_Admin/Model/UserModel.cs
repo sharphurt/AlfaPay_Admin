@@ -27,13 +27,17 @@ namespace AlfaPay_Admin.Model
                         if (!Regex.IsMatch(Surname, "[А-Яа-яЁё\\-]{2,}"))
                             return "Фамилия может содержать только русские буквы и символы дефиса";
                         break;
-                    case "Patronynic":
+                    case "Patronymic":
                         if (!Regex.IsMatch(Surname, "[А-Яа-яЁё\\-]{2,}") && HavePatronymic)
                             return "Отчество может содержать только русские буквы и символы дефиса";
                         break;
                     case "Email":
-                        if (!Regex.IsMatch(Surname, "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"))
+                        if (!Regex.IsMatch(Email, "[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+"))
                             return "Некорректный адрес электронной почты";
+                        break;
+                    case "Phone":
+                        if (!Regex.IsMatch(Phone, "\\+7[\\d]{10}"))
+                            return "Некорректный номер телефона";
                         break;
                     default:
                         return string.Empty;

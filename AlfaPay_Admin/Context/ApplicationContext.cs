@@ -13,9 +13,8 @@ namespace AlfaPay_Admin.Context
     {
         private readonly HttpClient _client = new HttpClient();
 
-        public ApplicationContext(string uri)
+        public ApplicationContext()
         {
-            _client.BaseAddress = new Uri(uri);
             _client.Timeout = TimeSpan.FromSeconds(20);
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -26,8 +25,9 @@ namespace AlfaPay_Admin.Context
             return await _client.GetStringAsync(path);
         }
 
-        private async Task<ApiResponse<string>> SendApiRequest(string path, string token)
+        private async Task<ApiResponse<string>> SendApiRequest(string uri, string path, string token)
         {
+            _client.BaseAddress = new Uri(uri);
             try
             {
                 if (token == null)
@@ -51,16 +51,12 @@ namespace AlfaPay_Admin.Context
             }
         }
 
-        private async Task<ApiResponse<T>> SendRequest<T>(string url, string token)
+        public async Task<ApiResponse<T>> SendRequest<T>(string uri, string path, string token)
         {
-            var result = await SendApiRequest(url, token);
+            var result = await SendApiRequest(uri, path, token);
             return !result.IsSuccessfully
                 ? new ApiResponse<T>(default, result.Error)
                 : Deserializer.DeserializeApiResponse<T>(result.Response);
         }
-
-        public async Task<ApiResponse<ObservableCollection<Application>>> LoadApplications(int from, int count) =>
-            await SendRequest<ObservableCollection<Application>>($"nfc-api/applications/get?from={from}&count={count}",
-                null);
     }
 }

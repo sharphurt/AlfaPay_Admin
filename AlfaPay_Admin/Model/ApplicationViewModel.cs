@@ -56,7 +56,7 @@ namespace AlfaPay_Admin.Model
 
         public bool IsLoading
         {
-            get =>  _isLoading;
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -89,8 +89,8 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        private ApplicationContext db = new ApplicationContext("http://catstack.net/");
-        
+        private ApplicationContext db = new ApplicationContext();
+
         public ApplicationViewModel()
         {
             GetApplicationsFromServer(0, 10);
@@ -101,13 +101,15 @@ namespace AlfaPay_Admin.Model
             ResponseReceived = false;
             Error = null;
             IsLoading = true;
-            var result = await db.LoadApplications(from, count);
+            var result = await db.SendRequest<ObservableCollection<Application>>(
+                "http://catstack.net",
+                $"nfc-api/applications/get?from={from}&count={count}",
+                null);
             if (result.Error != null)
             {
                 Error = result.Error;
-                ResponseReceived = true;       
+                ResponseReceived = true;
                 IsLoading = false;
-
             }
             else
             {
@@ -116,9 +118,8 @@ namespace AlfaPay_Admin.Model
                 ResponseReceived = true;
                 IsLoading = false;
             }
-
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

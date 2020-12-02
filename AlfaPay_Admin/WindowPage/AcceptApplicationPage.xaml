@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:customControl="clr-namespace:AlfaPay_Admin.CustomControl"
+      xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
       mc:Ignorable="d"
       Title="AcceptApplicationPage"
       MinHeight="620"
@@ -152,20 +153,52 @@
                     </Binding>
                 </TextBox>
             </WrapPanel>
+
             <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
                 <Label Style="{DynamicResource SecondaryText}" FontSize="13"
                        Content="Адрес" />
+                <customControl:PopupNonTopmost Placement="Bottom"
+                       x:Name="PopupNonTopmost"
+                       Style="{DynamicResource PopupStyle}"
+                       MinWidth="{Binding ElementName=AddressTextBox, Path=ActualWidth}"
+                       PlacementTarget="{Binding ElementName=AddressTextBox}">
+                    <ListBox
+                        x:Name="AutocompleteListBox"
+                        BorderThickness="0.5"
+                        SelectionChanged="Selector_OnSelected"
+                        Style="{DynamicResource AutocompleteListBoxStyle}"
+                        ItemsSource="{Binding Path=CompanyModel.AutocompleteAddresses, UpdateSourceTrigger=PropertyChanged}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="30" Background="White" Style="{DynamicResource ListBoxElement}">
+                                    <Label Content="{Binding}" Style="{DynamicResource PrimaryText}" FontSize="14" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </customControl:PopupNonTopmost>
                 <TextBox Style="{DynamicResource InputTextBoxStyle}"
                          MinWidth="270"
+                         x:Name="AddressTextBox"
+                         TextChanged="AddressTextBox_OnTextChanged"
                          Template="{DynamicResource TextBoxControlTemplate}"
                          Validation.ErrorTemplate="{StaticResource ValidationFailed}"
                          VerticalContentAlignment="Center">
-                    <Binding Path="CompanyModel.Address">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
+                    <Binding Path="CompanyModel.Address" UpdateSourceTrigger="PropertyChanged" />
                 </TextBox>
+
+
             </WrapPanel>
             <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
                 <Label Style="{DynamicResource SecondaryText}" FontSize="13"

@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Model;
 using Application = AlfaPay_Admin.Entity.Application;
 
@@ -9,8 +12,16 @@ namespace AlfaPay_Admin.WindowPage
 {
     public partial class AcceptApplicationPage : Page
     {
+        private static FieldInfo _menuDropAlignmentField;
+
         public AcceptApplicationPage(RegistrationModel dataContext)
         {
+            _menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
+            System.Diagnostics.Debug.Assert(_menuDropAlignmentField != null);
+
+            EnsureStandardPopupAlignment();
+            SystemParameters.StaticPropertyChanged += SystemParameters_StaticPropertyChanged;
+            
             InitializeComponent();
             DataContext = dataContext;
         }
@@ -36,6 +47,29 @@ namespace AlfaPay_Admin.WindowPage
         private void AcceptApplicationPage_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             Grid.Focus();
+        }
+        
+        private static void SystemParameters_StaticPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            EnsureStandardPopupAlignment();
+        }
+
+        private static void EnsureStandardPopupAlignment()
+        {
+            if (SystemParameters.MenuDropAlignment && _menuDropAlignmentField != null)
+            {
+                _menuDropAlignmentField.SetValue(null, false);
+            }
+        }
+
+        private void Selector_OnSelected(object sender, RoutedEventArgs e)
+        {
+            AddressTextBox.Text = AutocompleteListBox.SelectedItem as string ?? AddressTextBox.Text;
+        }
+
+        private void AddressTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            PopupNonTopmost.IsOpen = true;
         }
     }
 }
