@@ -9,7 +9,7 @@
       ShowsNavigationUI="False"
       MouseDown="MainPage_OnMouseDown">
 
-    <Grid Margin="5,5,0,5" Focusable="True" x:Name="Grid">
+    <Grid Margin="10" Focusable="True" x:Name="Grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
@@ -19,7 +19,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border CornerRadius="4" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#f3f4f5" Margin="0,0,5,0">
+        <Border CornerRadius="4" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#f3f4f5">
             <DockPanel Margin="2,2,0,2" VerticalAlignment="Center">
                 <WrapPanel DockPanel.Dock="Left" x:Name="SearchPanel" Orientation="Horizontal" Margin="15,0,0,0"
                            Background="Transparent"
@@ -29,12 +29,6 @@
                            Stretch="UniformToFill" Width="14" Height="14" Opacity="0.3" />
                     <WrapPanel Orientation="Vertical" Margin="10,0,0,0">
                         <TextBox x:Name="SearchTextBox" Style="{DynamicResource SearchTextBoxStyle}" Margin="0,0,0,4"
-                                 Background="Transparent" BorderThickness="0"
-                                 Foreground="#B6BCC3"
-                                 FontFamily="Segoe UI"
-                                 Width="250 px"
-                                 FontSize="14"
-                                 FontWeight="Light"
                                  Text="Поиск по компаниям"
                                  VerticalContentAlignment="Center"
                                  GotFocus="SearchTextBox_OnGotFocus"
@@ -45,17 +39,15 @@
                 </WrapPanel>
                 <Button DockPanel.Dock="Right" Width="32" Margin="10,0,15,0"
                         Style="{DynamicResource LogoutButtonStyle}">
-                    <Image Source="{DynamicResource LogOutIcon}" Stretch="UniformToFill" Width="16" Height="16" />
+                    <Image Source="{DynamicResource LogOutIcon}" RenderOptions.BitmapScalingMode="HighQuality" Stretch="UniformToFill" Margin="2,0,0,0" Width="14" Height="14" />
                 </Button>
-                <Label DockPanel.Dock="Right" Style="{DynamicResource MainText}">Лукоянов Павел Валерьевич</Label>
+                <Label DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{DynamicResource PrimaryText}">Лукоянов Павел Валерьевич</Label>
             </DockPanel>
         </Border>
         <GroupBox Grid.Column="0" Grid.Row="1" Margin="0,0,5,5">
             <GroupBox.Header>
-                <Label FontSize="18" Background="White" FontFamily="Segoe UI" FontWeight="Bold" Padding="5,0,5,5"
-                       Margin="0,5,0,0">
-                    Информация о клиенте
-                </Label>
+                <Label Background="White" Style="{DynamicResource PrimaryHeader}" Padding="5,0,5,5" Margin="0,5,0,0"
+                       Content="Информация о клиенте" />
             </GroupBox.Header>
             <Grid>
                 <Label HorizontalAlignment="Center"
@@ -75,7 +67,7 @@
                        Opacity="0.5"
                        Visibility="{Binding ElementName=ApplicationsListBox, Path=Items.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"
                        Content="Выберите заявку из списка" />
-                
+
                 <Label HorizontalAlignment="Center"
                        Style="{DynamicResource FadeInFadeOutEffectControl}"
                        FontFamily="Segoe UI"
@@ -84,7 +76,7 @@
                        Opacity="0.5"
                        Visibility="{Binding IsLoading, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
                        Content="Дождитесь окончания загрузки данных" />
-                
+
                 <Grid Margin="15,0,15,0" ZIndex="1" DataContext="{Binding SelectedApplication}"
                       Background="White"
                       Visibility="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToVisibilityConverter}}"
@@ -101,20 +93,32 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" Style="{DynamicResource HeaderLabel}" Content="Имя" />
-                    <Label Grid.Column="0" Grid.Row="1" Style="{DynamicResource HeaderLabel}" Content="Email" />
-                    <Label Grid.Column="0" Grid.Row="2" Style="{DynamicResource HeaderLabel}" Content="Телефон" />
-                    <Label Grid.Column="0" Grid.Row="3" Style="{DynamicResource HeaderLabel}" Content="ИНН компании" />
-                    <Label Grid.Column="0" Grid.Row="4" Style="{DynamicResource HeaderLabel}" Content="Дата подачи" />
+                    <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"
+                           Style="{DynamicResource SecondaryHeader}" Content="Имя" />
+                    <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"
+                           Style="{DynamicResource SecondaryHeader}" Content="Email" />
+                    <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"
+                           Style="{DynamicResource SecondaryHeader}" Content="Телефон" />
+                    <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"
+                           Style="{DynamicResource SecondaryHeader}"
+                           Content="ИНН компании" />
+                    <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"
+                           Style="{DynamicResource SecondaryHeader}" Content="Дата подачи" />
 
-                    <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource MainText}" Content="{Binding Name}" />
-                    <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource MainText}" Content="{Binding Email}" />
-                    <Label Grid.Column="1" Grid.Row="2" Style="{DynamicResource MainText}" Content="{Binding Phone}" />
-                    <Label Grid.Column="1" Grid.Row="3" Style="{DynamicResource MainText}" Content="{Binding Inn}" />
-                    <Label Grid.Column="1" Grid.Row="4" Style="{DynamicResource MainText}"
+                    <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"
+                           Style="{DynamicResource PrimaryText}" Content="{Binding Name}" />
+                    <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"
+                           Style="{DynamicResource PrimaryText}" Content="{Binding Email}" />
+                    <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"
+                           Style="{DynamicResource PrimaryText}" Content="{Binding Phone}" />
+                    <Label Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right"
+                           Style="{DynamicResource PrimaryText}" Content="{Binding Inn}" />
+                    <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right"
+                           Style="{DynamicResource PrimaryText}"
                            Content="{Binding CreatedAt, Converter={StaticResource DateTimeConverter}}" />
 
-                    <TextBlock Grid.Column="2" Margin="10,0,0,0" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBlock Grid.Column="2" Margin="10,0,0,0" Grid.Row="3" HorizontalAlignment="Left"
+                               VerticalAlignment="Center">
                         <Hyperlink NavigateUri="">
                             Подробнее о компании
                         </Hyperlink>
@@ -159,10 +163,8 @@
         </Grid>
         <GroupBox Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0,0,5,5">
             <GroupBox.Header>
-                <Label FontSize="18" Background="White" FontFamily="Segoe UI" FontWeight="Bold" Padding="5,0,5,5"
-                       Margin="0,5,0,0">
-                    Заявки на рассмотрение
-                </Label>
+                <Label Style="{DynamicResource PrimaryHeader}" Background="White" Padding="5,0,5,5" Margin="0,5,0,0"
+                       Content="Заявки на рассмотение" />
             </GroupBox.Header>
             <Grid>
                 <ListBox x:Name="ApplicationsListBox"
@@ -203,7 +205,7 @@
                                       Y1="0" Y2="60" Stroke="#F15045" StrokeThickness="5"
                                       Visibility="Collapsed"
                                       Style="{DynamicResource FadeInFadeOutEffectShape}" />
-                                <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource HeaderLabel}"
+                                <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource SecondaryHeader}"
                                        Content="{Binding Path=Name}" Height="30" />
                                 <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource SecondaryText}"
                                        Content="{Binding Path=Phone}" />

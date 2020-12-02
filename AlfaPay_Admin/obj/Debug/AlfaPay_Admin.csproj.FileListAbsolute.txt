@@ -55,3 +55,9 @@ C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\WindowPage
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\WindowPage\MainPage.baml
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\App.baml
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\Resources\ResourcesDictionary.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\CustomControl\InputTextBox.g.cs
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\CustomControl\InputTextBox.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\CustomControl\HeadedLabel.g.cs
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\CustomControl\HeadedLabel.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\TestWindow.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\TestWindow.g.cs

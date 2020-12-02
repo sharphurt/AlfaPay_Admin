@@ -11,12 +11,10 @@ namespace AlfaPay_Admin
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class TestWindow
     {
-        public MainWindow()
+        public TestWindow()
         {
-            // TODO: Delete after debugging
-          //  new TestWindow().Show();
             InitializeComponent();
         }
     }

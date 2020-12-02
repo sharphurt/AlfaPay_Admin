@@ -118,12 +118,24 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="CustomControl\InputTextBox.xaml.cs">
+          <DependentUpon>InputTextBox.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="CustomControl\HeadedLabel.xaml.cs">
+          <DependentUpon>HeadedLabel.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="TestWindow.xaml.cs">
+          <DependentUpon>TestWindow.xaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
         <Compile Include="WindowPage\AcceptApplicationPage.xaml.cs">
           <DependentUpon>AcceptApplicationPage.xaml</DependentUpon>
         </Compile>
         <Compile Include="WindowPage\MainPage.xaml.cs">
           <DependentUpon>MainPage.xaml</DependentUpon>
         </Compile>
+        <Page Include="CustomControl\InputTextBox.xaml" />
+        <Page Include="CustomControl\HeadedLabel.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -155,6 +167,10 @@
             <SubType>Code</SubType>
         </Compile>
         <Page Include="Resources\ResourcesDictionary.xaml" />
+        <Page Include="TestWindow.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <SubType>Designer</SubType>
+        </Page>
         <Page Include="WindowPage\AcceptApplicationPage.xaml" />
         <Page Include="WindowPage\MainPage.xaml" />
     </ItemGroup>

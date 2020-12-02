@@ -3,9 +3,11 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:customControl="clr-namespace:AlfaPay_Admin.CustomControl"
       mc:Ignorable="d"
-      Title="AcceptApplicationPage">
-    <Grid>
+      Title="AcceptApplicationPage"
+      MouseDown="AcceptApplicationPage_OnMouseDown">
+    <Grid x:Name="Grid" Margin="10" Focusable="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -14,9 +16,73 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40 px" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="40 px" />
+            <RowDefinition Height="60 px" />
         </Grid.RowDefinitions>
-        
-        
+
+        <Border CornerRadius="4" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Background="#f3f4f5">
+            <DockPanel Margin="2,2,0,2" VerticalAlignment="Center">
+                <WrapPanel DockPanel.Dock="Left" x:Name="SearchPanel" Orientation="Horizontal" Margin="20,0,0,0"
+                           Background="Transparent"
+                           VerticalAlignment="Center">
+                    <Image Source="{DynamicResource SearchIcon}" x:Name="SearchIcon"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                           Stretch="UniformToFill" Width="14" Height="14" Opacity="0.3" />
+                    <WrapPanel Orientation="Vertical" Margin="10,0,0,0">
+                        <TextBox x:Name="SearchTextBox" Style="{DynamicResource SearchTextBoxStyle}" Margin="0,0,0,4"
+                                 Text="Поиск по компаниям"
+                                 VerticalContentAlignment="Center"
+                                 GotFocus="SearchTextBox_OnGotFocus"
+                                 LostFocus="SearchTextBox_OnLostFocus" />
+                        <Line x:Name="LineUnderSearch" Width="250" StrokeThickness="1" Stroke="#B6BCC3" X1="0" Y1="0"
+                              X2="250" Y2="0" />
+                    </WrapPanel>
+                </WrapPanel>
+                <Button DockPanel.Dock="Right" Width="32" Margin="10,0,15,0"
+                        Style="{DynamicResource LogoutButtonStyle}">
+                    <Image Source="{DynamicResource LogOutIcon}" Stretch="UniformToFill" Width="16" Height="16" />
+                </Button>
+                <Label DockPanel.Dock="Right" Style="{DynamicResource PrimaryText}" HorizontalAlignment="Right"
+                       Content="Лукоянов Павел Валерьевич" />
+
+            </DockPanel>
+        </Border>
+
+
+        <WrapPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" Margin="10,5,0,0">
+            <Label Style="{DynamicResource PrimaryHeader}" Content="Укажите данные пользователя" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="Имя" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="Фамилия" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="Отчество" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="Email" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="Телефон" />
+        </WrapPanel>
+
+        <WrapPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" Margin="10,5,0,0">
+            <Label Style="{DynamicResource PrimaryHeader}" Content="Укажите данные компании" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="Название" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="Адрес" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="ИНН" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="Система налогообложения" />
+            <customControl:InputTextBox Margin="0,15,0,0" Header="Регистрационный номер ККТ" />
+        </WrapPanel>
+
+        <WrapPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" Margin="10,5,0,0">
+            <Label Style="{DynamicResource PrimaryHeader}" Content="Информация о клиенте" />
+            <customControl:HeadedLabel Margin="0,15,0,0" Header="Имя" Body="123" />
+            <customControl:HeadedLabel Margin="0,15,0,0" Header="Email" Body="123" />
+            <customControl:HeadedLabel Margin="0,15,0,0" Header="Телефон" Body="123" />
+            <customControl:HeadedLabel Margin="0,15,0,0" Header="ИНН компании" Body="123" />
+        </WrapPanel>
+
+        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Height="40" Margin="10,0,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Style="{DynamicResource ButtonStyle}" FontSize="16" Margin="0,0,5,0"
+                    Content="Отмена" />
+            <Button Grid.Column="1" Style="{DynamicResource ContinueButtonStyle}" Margin="5,0,0,0" Content="Продолжить" />
+
+        </Grid>
     </Grid>
 </Page>
