@@ -11,19 +11,6 @@ namespace AlfaPay_Admin.Model
 {
     public sealed class CompanyModel : IDataErrorInfo, INotifyPropertyChanged
     {
-        private RelayCommand _insertAddressToInputField;
-
-        public RelayCommand InsertAddressToInputField
-        {
-            get
-            {
-                return _insertAddressToInputField ?? (_insertAddressToInputField = new RelayCommand(obj =>
-                {
-                    Address = obj as string;
-                }));
-            }
-        }
-
         private string _name;
 
         public string Name
@@ -109,15 +96,15 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        private ApiError _requestError;
+        private bool _isResponseEmpty;
 
-        public ApiError RequestError
+        public bool IsResponseEmpty
         {
-            get => _requestError;
+            get => _isResponseEmpty;
             set
             {
-                _requestError = value;
-                OnPropertyChanged(nameof(RequestError));
+                _isResponseEmpty = value;
+                OnPropertyChanged(nameof(IsResponseEmpty));
             }
         }
 
@@ -145,21 +132,32 @@ namespace AlfaPay_Admin.Model
             }
         }
 
+        public CompanyModel()
+        {
+            IsResponseEmpty = true;
+            AutocompleteAddresses = new ObservableCollection<string>();
+        }
+
+       
+
         private async void GetAddressAutocomplete(string input)
         {
             ResponseReceived = false;
-            RequestError = null;
             IsLoading = true;
-
+            IsResponseEmpty = false;
+            
             const string token = "e597dac2837d17460c9f3fecb15f3705dce952aa";
             var api = new SuggestClientAsync(token);
             var result = await api.SuggestAddress(input);
-
-
+            
             var observableCollection = new ObservableCollection<string>();
             foreach (var suggestion in result.suggestions)
                 observableCollection.Add(suggestion.value);
             AutocompleteAddresses = observableCollection;
+
+            ResponseReceived = true;
+            IsLoading = false;
+            IsResponseEmpty = AutocompleteAddresses.Count == 0;
         }
 
         public string this[string columnName]

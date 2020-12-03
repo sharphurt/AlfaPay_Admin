@@ -47,6 +47,8 @@ namespace AlfaPay_Admin.Model
             CompanyModel = new CompanyModel();
         }
 
+        
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

@@ -12,7 +12,7 @@ namespace AlfaPay_Admin.Model
         public string Patronymic { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-
+        
         public string this[string columnName]
         {
             get
@@ -20,16 +20,16 @@ namespace AlfaPay_Admin.Model
                 switch (columnName)
                 {
                     case "Name":
-                        if (!Regex.IsMatch(Name, "[А-Яа-яЁё\\-]{2,}"))
-                            return "Имя может содержать только русские буквы и символы дефиса";
+                        if (!Regex.IsMatch(Name, "[А-Яа-яЁё]{2,}"))
+                            return "Введите минимум 2 кириллических символа";
                         break;
                     case "Surname":
                         if (!Regex.IsMatch(Surname, "[А-Яа-яЁё\\-]{2,}"))
-                            return "Фамилия может содержать только русские буквы и символы дефиса";
+                            return "Введите минимум 2 кириллических символа";
                         break;
                     case "Patronymic":
-                        if (!Regex.IsMatch(Surname, "[А-Яа-яЁё\\-]{2,}") && HavePatronymic)
-                            return "Отчество может содержать только русские буквы и символы дефиса";
+                        if (!Regex.IsMatch(Patronymic, "[А-Яа-яЁё]{0,}") && HavePatronymic)
+                            return "Введите минимум 2 кириллических символа";
                         break;
                     case "Email":
                         if (!Regex.IsMatch(Email, "[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+"))

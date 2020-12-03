@@ -38,6 +38,14 @@
           <HintPath>..\packages\Dadata.20.10.0\lib\netstandard2.0\Dadata.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Flurl, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Flurl.3.0.0\lib\net461\Flurl.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Flurl.Http, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Flurl.Http.3.0.0\lib\net461\Flurl.Http.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466">
           <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
           <Private>True</Private>
@@ -127,6 +135,8 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Converter\InvertedBoolConverter.cs" />
+        <Compile Include="Converter\InvertedObjectToBoolConverter.cs" />
         <Compile Include="CustomControl\HeadedTextBlock.xaml.cs">
           <DependentUpon>HeadedTextBlock.xaml</DependentUpon>
         </Compile>
@@ -158,8 +168,6 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="Context\ApplicationContext.cs" />
-        <Compile Include="Context\Deserializer.cs" />
         <Compile Include="Context\RelayCommand.cs" />
         <Compile Include="Converter\BoolToIconConverter.cs" />
         <Compile Include="Converter\BoolToVisibleConverter.cs" />
@@ -246,6 +254,16 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
       <Resource Include="Resources\spin.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+    <ItemGroup>
+      <Resource Include="Resources\spin_small.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+    <ItemGroup>
+      <Resource Include="Resources\dead.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
     </ItemGroup>

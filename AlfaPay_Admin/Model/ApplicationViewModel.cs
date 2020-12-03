@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
+using AlfaPay_Admin.Entity;
+using Flurl.Http;
 using Application = AlfaPay_Admin.Entity.Application;
 
 namespace AlfaPay_Admin.Model
@@ -89,8 +91,6 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        private ApplicationContext db = new ApplicationContext();
-
         public ApplicationViewModel()
         {
             GetApplicationsFromServer(0, 10);
@@ -101,23 +101,26 @@ namespace AlfaPay_Admin.Model
             ResponseReceived = false;
             Error = null;
             IsLoading = true;
-            var result = await db.SendRequest<ObservableCollection<Application>>(
-                "http://catstack.net",
-                $"nfc-api/applications/get?from={from}&count={count}",
-                null);
-            if (result.Error != null)
+            try
             {
-                Error = result.Error;
-                ResponseReceived = true;
-                IsLoading = false;
+                var response = await $"http://localhost:8080/api/applications/get?from={from}&count={count}"
+                    .WithTimeout(30)
+                    .GetJsonAsync<ApiResponse<ObservableCollection<Application>>>();
+                Applications = response.Response;
             }
-            else
+            catch (FlurlHttpTimeoutException ex)
             {
-                Applications = result.Response;
-                Error = null;
-                ResponseReceived = true;
-                IsLoading = false;
+                Error = new ApiError("Проблемы с интернет-соединением. Проверьте подключение и попробуйте снова", 504, "");
             }
+            catch (FlurlHttpException ex)
+            {
+                var response = await ex.GetResponseJsonAsync<ApiResponse<object>>();
+                Error = response is null ? new ApiError(ex.Call.Exception.Message, 0, "") : response.Error;
+            }
+
+
+            ResponseReceived = true;
+            IsLoading = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

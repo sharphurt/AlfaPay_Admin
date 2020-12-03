@@ -64,3 +64,8 @@ C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\CustomCont
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Dadata.dll
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Newtonsoft.Json.dll
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Newtonsoft.Json.xml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Flurl.dll
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Flurl.Http.dll
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Flurl.pdb
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Flurl.xml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\Flurl.Http.pdb
