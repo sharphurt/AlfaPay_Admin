@@ -38,6 +38,10 @@
           <HintPath>..\packages\Dadata.20.10.0\lib\netstandard2.0\Dadata.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="DeviceId, Version=5.2.0.0, Culture=neutral, PublicKeyToken=f755c371b5c59c52">
+          <HintPath>..\packages\DeviceId.5.2.0\lib\net40\DeviceId.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="Flurl, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\Flurl.3.0.0\lib\net461\Flurl.dll</HintPath>
           <Private>True</Private>
@@ -77,8 +81,10 @@
           <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="System.Configuration" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
+        <Reference Include="System.Management" />
         <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
           <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
           <Private>True</Private>
@@ -144,8 +150,11 @@
           <DependentUpon>InputTextBox.xaml</DependentUpon>
         </Compile>
         <Compile Include="CustomControl\PopupNonTopmost.cs" />
+        <Compile Include="Entity\DeviceInfo.cs" />
+        <Compile Include="Entity\JwtContainer.cs" />
         <Compile Include="Model\ApplicationViewModel.cs" />
         <Compile Include="Model\CompanyModel.cs" />
+        <Compile Include="Model\LoginModel.cs" />
         <Compile Include="Model\RegistrationModel.cs" />
         <Compile Include="Model\UserModel.cs" />
         <Compile Include="TestWindow.xaml.cs">
@@ -154,6 +163,9 @@
         </Compile>
         <Compile Include="WindowPage\AcceptApplicationPage.xaml.cs">
           <DependentUpon>AcceptApplicationPage.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="WindowPage\LoginPage.xaml.cs">
+          <DependentUpon>LoginPage.xaml</DependentUpon>
         </Compile>
         <Compile Include="WindowPage\MainPage.xaml.cs">
           <DependentUpon>MainPage.xaml</DependentUpon>
@@ -177,7 +189,6 @@
         <Compile Include="Converter\InvertedObjectToVisibilityConverter.cs" />
         <Compile Include="Converter\ObjectToBoolConverter.cs" />
         <Compile Include="Converter\ObjectToVisibilityConverter.cs" />
-        <Compile Include="Entity\ApiAnswer.cs" />
         <Compile Include="Entity\ApiError.cs" />
         <Compile Include="Entity\ApiResponse.cs" />
         <Compile Include="Entity\Application.cs" />
@@ -192,6 +203,7 @@
           <SubType>Designer</SubType>
         </Page>
         <Page Include="WindowPage\AcceptApplicationPage.xaml" />
+        <Page Include="WindowPage\LoginPage.xaml" />
         <Page Include="WindowPage\MainPage.xaml" />
     </ItemGroup>
     <ItemGroup>
@@ -266,6 +278,19 @@
       <Resource Include="Resources\dead.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
+    </ItemGroup>
+    <ItemGroup>
+      <Resource Include="Resources\apply_window_plate.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+    <ItemGroup>
+      <Resource Include="Resources\successfull_tick.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="Resources\alfa_pattern_white_rgb.png" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Import Project="..\packages\MaterialDesignThemes.4.0.0-ci2273\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0-ci2273\build\MaterialDesignThemes.targets')" />

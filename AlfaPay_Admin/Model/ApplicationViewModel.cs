@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
 using System.Runtime.CompilerServices;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
@@ -103,7 +104,8 @@ namespace AlfaPay_Admin.Model
             IsLoading = true;
             try
             {
-                var response = await $"http://localhost:8080/api/applications/get?from={from}&count={count}"
+                var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
+                var response = await $"{baseUrl}/applications/get?from={from}&count={count}"
                     .WithTimeout(30)
                     .GetJsonAsync<ApiResponse<ObservableCollection<Application>>>();
                 Applications = response.Response;

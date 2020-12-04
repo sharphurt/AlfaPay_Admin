@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using AlfaPay_Admin.Entity;
 using AlfaPay_Admin.Model;
 
 namespace AlfaPay_Admin.Converter

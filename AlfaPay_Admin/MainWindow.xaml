@@ -12,6 +12,6 @@
         Loaded="MainWindow_OnLoaded">
     <Window.Resources />
     <Grid>
-        <Frame x:Name="MainFrame" Source="WindowPage/MainPage.xaml" NavigationUIVisibility="Hidden" />
+        <Frame x:Name="MainFrame" Source="WindowPage/LoginPage.xaml" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

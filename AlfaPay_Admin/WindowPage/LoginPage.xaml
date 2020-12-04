@@ -1,0 +1,55 @@
+﻿<Page x:Class="AlfaPay_Admin.WindowPage.LoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:AlfaPay_Admin.WindowPage"
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
+      mc:Ignorable="d"
+      Title="LoginPage"
+      MinHeight="630"
+      MinWidth="1200">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <WrapPanel Orientation="Vertical" x:Name="MainPanel" Width="340">
+            <Label Style="{DynamicResource LightText}" FontSize="32" Content="Вход" />
+
+            <WrapPanel Orientation="Vertical" Margin="0,35,0,0">
+                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                       Content="Логин" />
+                <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                         x:Name="LoginTextBox"
+                         Template="{DynamicResource TextBoxControlTemplate}"
+                         VerticalContentAlignment="Center">
+                    <Binding Path="Login" UpdateSourceTrigger="PropertyChanged" />
+                </TextBox>
+            </WrapPanel>
+            <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
+                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                       Content="Пароль" />
+                <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                         x:Name="PasswordTextBox"
+                         Template="{DynamicResource TextBoxControlTemplate}"
+                         VerticalContentAlignment="Center">
+                    <Binding Path="Password" UpdateSourceTrigger="PropertyChanged" />
+                </TextBox>
+            </WrapPanel>
+
+            <TextBlock Style="{DynamicResource ErrorMessageStyleTxtBlock}" HorizontalAlignment="Left"
+                       Margin="0,50,0,0"
+                       TextWrapping="Wrap" Background="Aqua" Width="{Binding ElementName=MainPanel, Path=ActualWidth}"
+                       Text="{Binding Error.Message}">
+            </TextBlock>
+
+            <Button Style="{DynamicResource LoginButtonStyle}" Margin="0,20,0,0" Height="50"
+                    x:Name="LoginButton" Command="{Binding LoginCommand}">
+                <Grid HorizontalAlignment="Center">
+                    <Label HorizontalAlignment="Center" Content="Войти"
+                           Foreground="White" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" />
+
+                    <fa:ImageAwesome Source="{DynamicResource SpinSmallIcon}" Width="16" Height="16" Spin="True"
+                                     SpinDuration="0.8" />
+                </Grid>
+            </Button>
+        </WrapPanel>
+    </Grid>
+</Page>

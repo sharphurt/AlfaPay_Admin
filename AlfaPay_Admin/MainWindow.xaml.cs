@@ -10,8 +10,6 @@ namespace AlfaPay_Admin
     {
         public MainWindow()
         {
-            // TODO: Delete after debugging
-            //  new TestWindow().Show();
             NavigationCommands.BrowseBack.InputGestures.Clear();
             NavigationCommands.BrowseForward.InputGestures.Clear();
             InitializeComponent();

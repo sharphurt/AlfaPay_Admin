@@ -10,22 +10,33 @@
       Title="AcceptApplicationPage"
       MinHeight="630"
       MinWidth="1200"
+      CacheMode="BitmapCache"
       MouseDown="AcceptApplicationPage_OnMouseDown">
-    <Grid x:Name="Grid" Margin="10" Focusable="True">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+    <Page.Resources>
+        <Storyboard x:Key="ApplyWindowCloseAnimation" Completed="ApplyWindowCloseAnimation_OnCompleted">
+            <DoubleAnimation Duration="0:0:0.5"
+                             Storyboard.TargetName="ApplyWindow"
+                             Storyboard.TargetProperty="Opacity" From="1" To="0" />
+            <ThicknessAnimation Duration="0:0:0.5"
+                                Storyboard.TargetName="ApplyWindowContentBox"
+                                Storyboard.TargetProperty="Margin"
+                                From="0" To="0,200,0,0"
+                                DecelerationRatio="0.9" />
+        </Storyboard>
+    </Page.Resources>
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ContinueButton">
+            <BeginStoryboard Storyboard="{StaticResource ApplyWindowOpenAnimation}"/>
+        </EventTrigger>
+    </Page.Triggers>
+    <Grid x:Name="Grid" Focusable="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="40 px" />
-            <RowDefinition Height="60 px" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="60 px" />
         </Grid.RowDefinitions>
 
-        <Border CornerRadius="4" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Background="#f3f4f5">
-            <DockPanel Margin="2,2,0,2" VerticalAlignment="Center">
+        <Border CornerRadius="4" Grid.Row="0" Background="#f3f4f5">
+            <DockPanel Margin="0,2,0,2" VerticalAlignment="Center">
                 <WrapPanel DockPanel.Dock="Left" x:Name="SearchPanel" Orientation="Horizontal" Margin="20,0,0,0"
                            Background="Transparent"
                            VerticalAlignment="Center">
@@ -33,12 +44,14 @@
                            RenderOptions.BitmapScalingMode="HighQuality"
                            Stretch="UniformToFill" Width="14" Height="14" Opacity="0.3" />
                     <WrapPanel Orientation="Vertical" Margin="10,0,0,0">
-                        <TextBox x:Name="SearchTextBox" Style="{DynamicResource SearchTextBoxStyle}" Margin="0,0,0,4"
+                        <TextBox x:Name="SearchTextBox" Style="{DynamicResource SearchTextBoxStyle}"
+                                 Margin="0,0,0,4"
                                  Text="Поиск по компаниям"
                                  VerticalContentAlignment="Center"
                                  GotFocus="SearchTextBox_OnGotFocus"
                                  LostFocus="SearchTextBox_OnLostFocus" />
-                        <Line x:Name="LineUnderSearch" Width="250" StrokeThickness="1" Stroke="#B6BCC3" X1="0" Y1="0"
+                        <Line x:Name="LineUnderSearch" Width="250" StrokeThickness="1" Stroke="#B6BCC3" X1="0"
+                              Y1="0"
                               X2="250" Y2="0" />
                     </WrapPanel>
                 </WrapPanel>
@@ -53,251 +66,313 @@
         </Border>
 
 
-        <Label Grid.Column="0" Grid.Row="1" Margin="0,5,0,0" Style="{DynamicResource PrimaryHeader}"
-               Content="Укажите данные пользователя" />
-        <WrapPanel Grid.Column="0" Grid.Row="2" Orientation="Vertical" Margin="10,0,0,0" Focusable="True">
-            <WrapPanel Orientation="Vertical">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13"  Focusable="True"
-                       Content="Имя" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         MinWidth="270"
-                         x:Name="NameTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
-                         Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                         VerticalContentAlignment="Center">
-                    <Binding Path="UserModel.Name" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </WrapPanel>
-
-            <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
-                       Content="Фамилия" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         MinWidth="270"
-                         x:Name="SurnameTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
-                         Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                         VerticalContentAlignment="Center">
-                    <Binding Path="UserModel.Surname" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </WrapPanel>
-
-            <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
-                       Content="Отчество" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         MinWidth="270"
-                         x:Name="PatronymicTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
-                         Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                         VerticalContentAlignment="Center">
-                    <Binding Path="UserModel.Patronymic" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </WrapPanel>
-
-            <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
-                       Content="Email" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         MinWidth="270"
-                         x:Name="EmailTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
-                         Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                         VerticalContentAlignment="Center">
-                    <Binding Path="UserModel.Email" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </WrapPanel>
-
-            <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
-                       Content="Телефон" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         MinWidth="270"
-                         x:Name="PhoneTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
-                         Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                         VerticalContentAlignment="Center">
-                    <Binding Path="UserModel.Phone" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </WrapPanel>
-        </WrapPanel>
-
-        <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource PrimaryHeader}" Margin="0,5,0,0" Content="Укажите данные компании" />
-        <WrapPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical" Margin="10,0,0,0">
-            <WrapPanel Orientation="Vertical">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
-                       Content="Название" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         MinWidth="270"
-                         x:Name="CompanyNameTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
-                         Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                         VerticalContentAlignment="Center">
-                    <Binding Path="CompanyModel.Name" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </WrapPanel>
-
-            <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
-                       Content="Адрес" />
-                <customControl:PopupNonTopmost Placement="Bottom"
-                                               x:Name="PopupNonTopmost"
-                                               Style="{DynamicResource PopupStyle}"
-                                               VerticalAlignment="Center"
-                                               MinWidth="{Binding ElementName=AddressTextBox, Path=ActualWidth}"
-                                               PlacementTarget="{Binding ElementName=AddressTextBox}">
-                    <Grid>
-                        <ListBox
-                            x:Name="AutocompleteListBox"
-                            BorderThickness="0.5"
-                            SelectionChanged="Selector_OnSelected"
-                            Style="{DynamicResource AutocompleteListBoxStyle}"
-                            ItemsSource="{Binding Path=CompanyModel.AutocompleteAddresses, UpdateSourceTrigger=PropertyChanged}">
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="ListBoxItem">
-                                                <ContentPresenter />
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Height="30" Background="White" Style="{DynamicResource ListBoxElement}">
-                                        <Label Content="{Binding}" Margin="5,0,0,0" Style="{DynamicResource PrimaryText}" FontSize="14" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Label
-                                Margin="30"
-                                Visibility="{Binding CompanyModel.IsResponseEmpty, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                                Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                FontFamily="Segoue UI"
-                                FontSize="14"
-                                Style="{DynamicResource FadeInFadeOutEffectControl}"
-                                Content="Нет результатов" />
-                        </WrapPanel>
-                    </Grid>
-                </customControl:PopupNonTopmost>
-                <Grid>
-                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                             MinWidth="270"
-                             Padding="10,0,28,3"
-                             x:Name="AddressTextBox"
-                             TextChanged="AddressTextBox_OnTextChanged"
-                             Template="{DynamicResource TextBoxControlTemplate}"
-                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                             VerticalContentAlignment="Center">
-                        <Binding Path="CompanyModel.Address" UpdateSourceTrigger="PropertyChanged" />
-                    </TextBox>
-                    <fa:ImageAwesome Panel.ZIndex="1" Source="{DynamicResource SpinSmallIcon}" SpinDuration="0.8"
-                                     Spin="true" Height="16" Width="16"
-                                     Visibility="{Binding CompanyModel.IsLoading, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                                     HorizontalAlignment="Right"
-                                     VerticalAlignment="Center"
-                                     Margin="0,0,5,0"
-                                     Style="{DynamicResource FadeInFadeOutEffectImage}" />
-                </Grid>
-
-            </WrapPanel>
-            <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
-                       Content="ИНН" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         MinWidth="270"
-                         x:Name="InnTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
-                         Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                         VerticalContentAlignment="Center">
-                    <Binding Path="CompanyModel.Inn" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </WrapPanel>
-            <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
-                       Content="Система налогообложения" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         MinWidth="270"
-                         x:Name="TaxSystemTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
-                         Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                         VerticalContentAlignment="Center">
-                    <Binding Path="CompanyModel.TaxSystem" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </WrapPanel>
-            <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
-                <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
-                       Content="Регистрационный номер ККТ" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         MinWidth="270"
-                         x:Name="KktTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
-                         Validation.ErrorTemplate="{StaticResource ValidationFailed}"
-                         VerticalContentAlignment="Center">
-                    <Binding Path="CompanyModel.Kkt" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </WrapPanel>
-        </WrapPanel>
-
-        <Label Grid.Column="2" Grid.Row="1" Style="{DynamicResource PrimaryHeader}" Margin="0,5,0,0" Content="Информация о клиенте" />
-        <WrapPanel Grid.Column="2" Grid.Row="2" Orientation="Vertical" Margin="10,0,0,0"
-                   DataContext="{Binding Application}">
-            <customControl:HeadedTextBlock TbHeader="Имя" TbContent="{Binding Name}" />
-            <customControl:HeadedTextBlock TbHeader="Телефон" TbContent="{Binding Phone}" />
-            <customControl:HeadedTextBlock TbHeader="Email" TbContent="{Binding Email}" />
-            <customControl:HeadedTextBlock TbHeader="ИНН компании" TbContent="{Binding Inn}" />
-        </WrapPanel>
-
-        <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Height="40" Margin="10,0,10,10">
+        <Grid Margin="10,0,10,0" Grid.Row="1" Focusable="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Style="{DynamicResource ButtonStyle}" FontSize="16" Margin="0,0,5,0"
-                    Content="Отмена" />
-            <Button Grid.Column="1" Style="{DynamicResource ContinueButtonStyle}" Margin="5,0,0,0"
-                    Content="Продолжить" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60 px" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60 px" />
+            </Grid.RowDefinitions>
 
+            <Label Grid.Column="0" Grid.Row="0" Margin="0,5,0,0" Style="{DynamicResource PrimaryHeader}"
+                   Content="Укажите данные пользователя" />
+            <WrapPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" Margin="10,0,0,0" Focusable="True">
+                <WrapPanel Orientation="Vertical">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="Имя" />
+                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                             MinWidth="270"
+                             x:Name="NameTextBox"
+                             Template="{DynamicResource TextBoxControlTemplate}"
+                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                             VerticalContentAlignment="Center">
+                        <Binding Path="UserModel.Name" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </WrapPanel>
+
+                <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="Фамилия" />
+                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                             MinWidth="270"
+                             x:Name="SurnameTextBox"
+                             Template="{DynamicResource TextBoxControlTemplate}"
+                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                             VerticalContentAlignment="Center">
+                        <Binding Path="UserModel.Surname" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </WrapPanel>
+
+                <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="Отчество" />
+                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                             MinWidth="270"
+                             x:Name="PatronymicTextBox"
+                             Template="{DynamicResource TextBoxControlTemplate}"
+                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                             VerticalContentAlignment="Center">
+                        <Binding Path="UserModel.Patronymic" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </WrapPanel>
+
+                <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="Email" />
+                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                             MinWidth="270"
+                             x:Name="EmailTextBox"
+                             Template="{DynamicResource TextBoxControlTemplate}"
+                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                             VerticalContentAlignment="Center">
+                        <Binding Path="UserModel.Email" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </WrapPanel>
+
+                <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="Телефон" />
+                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                             MinWidth="270"
+                             x:Name="PhoneTextBox"
+                             Template="{DynamicResource TextBoxControlTemplate}"
+                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                             VerticalContentAlignment="Center">
+                        <Binding Path="UserModel.Phone" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </WrapPanel>
+            </WrapPanel>
+
+            <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource PrimaryHeader}" Margin="0,5,0,0"
+                   Content="Укажите данные компании" />
+            <WrapPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical" Margin="10,0,0,0">
+                <WrapPanel Orientation="Vertical">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="Название" />
+                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                             MinWidth="270"
+                             x:Name="CompanyNameTextBox"
+                             Template="{DynamicResource TextBoxControlTemplate}"
+                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                             VerticalContentAlignment="Center">
+                        <Binding Path="CompanyModel.Name" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </WrapPanel>
+
+                <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="Адрес" />
+                    <customControl:PopupNonTopmost Placement="Bottom"
+                                                   x:Name="PopupNonTopmost"
+                                                   Style="{DynamicResource PopupStyle}"
+                                                   VerticalAlignment="Center"
+                                                   MinWidth="{Binding ElementName=AddressTextBox, Path=ActualWidth}"
+                                                   PlacementTarget="{Binding ElementName=AddressTextBox}">
+                        <Grid>
+                            <ListBox
+                                x:Name="AutocompleteListBox"
+                                BorderThickness="0.5"
+                                SelectionChanged="Selector_OnSelected"
+                                Style="{DynamicResource AutocompleteListBoxStyle}"
+                                ItemsSource="{Binding Path=CompanyModel.AutocompleteAddresses, UpdateSourceTrigger=PropertyChanged}">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <ContentPresenter />
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Height="30" Background="White" Style="{DynamicResource ListBoxElement}">
+                                            <Label Content="{Binding}" Margin="5,0,0,0"
+                                                   Style="{DynamicResource PrimaryText}" FontSize="14" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Label
+                                    Margin="30"
+                                    Visibility="{Binding CompanyModel.IsResponseEmpty, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                                    Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    FontFamily="Segoue UI"
+                                    FontSize="14"
+                                    Style="{DynamicResource FadeInFadeOutEffectControl}"
+                                    Content="Нет результатов" />
+                            </WrapPanel>
+                        </Grid>
+                    </customControl:PopupNonTopmost>
+                    <Grid>
+                        <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                                 MinWidth="270"
+                                 Padding="10,0,28,3"
+                                 x:Name="AddressTextBox"
+                                 TextChanged="AddressTextBox_OnTextChanged"
+                                 Template="{DynamicResource TextBoxControlTemplate}"
+                                 Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                                 VerticalContentAlignment="Center">
+                            <Binding Path="CompanyModel.Address" UpdateSourceTrigger="PropertyChanged" />
+                        </TextBox>
+                        <fa:ImageAwesome Panel.ZIndex="1" Source="{DynamicResource SpinSmallIcon}" SpinDuration="0.8"
+                                         Spin="true" Height="16" Width="16"
+                                         Visibility="{Binding CompanyModel.IsLoading, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,5,0"
+                                         Style="{DynamicResource FadeInFadeOutEffectImage}" />
+                    </Grid>
+
+                </WrapPanel>
+                <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="ИНН" />
+                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                             MinWidth="270"
+                             x:Name="InnTextBox"
+                             Template="{DynamicResource TextBoxControlTemplate}"
+                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                             VerticalContentAlignment="Center">
+                        <Binding Path="CompanyModel.Inn" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </WrapPanel>
+                <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="Система налогообложения" />
+                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                             MinWidth="270"
+                             x:Name="TaxSystemTextBox"
+                             Template="{DynamicResource TextBoxControlTemplate}"
+                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                             VerticalContentAlignment="Center">
+                        <Binding Path="CompanyModel.TaxSystem" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </WrapPanel>
+                <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
+                    <Label Style="{DynamicResource SecondaryText}" FontSize="13" Focusable="True"
+                           Content="Регистрационный номер ККТ" />
+                    <TextBox Style="{DynamicResource InputTextBoxStyle}"
+                             MinWidth="270"
+                             x:Name="KktTextBox"
+                             Template="{DynamicResource TextBoxControlTemplate}"
+                             Validation.ErrorTemplate="{StaticResource ValidationFailed}"
+                             VerticalContentAlignment="Center">
+                        <Binding Path="CompanyModel.Kkt" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </WrapPanel>
+            </WrapPanel>
+
+            <Label Grid.Column="2" Grid.Row="0" Style="{DynamicResource PrimaryHeader}" Margin="0,5,0,0"
+                   Content="Информация о клиенте" />
+            <WrapPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" Margin="10,0,0,0"
+                       DataContext="{Binding Application}">
+                <customControl:HeadedTextBlock TbHeader="Имя" TbContent="{Binding Name}" />
+                <customControl:HeadedTextBlock TbHeader="Телефон" TbContent="{Binding Phone}" />
+                <customControl:HeadedTextBlock TbHeader="Email" TbContent="{Binding Email}" />
+                <customControl:HeadedTextBlock TbHeader="ИНН компании" TbContent="{Binding Inn}" />
+            </WrapPanel>
+
+            <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Height="40" Margin="10,0,10,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Style="{DynamicResource ButtonStyle}" FontSize="16" Margin="0,0,5,0"
+                        Content="Отмена" Click="CancelButton_OnClick" />
+                <Button Grid.Column="1" Style="{DynamicResource ContinueButtonStyle}" Margin="5,0,0,0"
+                        x:Name="ContinueButton" Click="ContinueButton_OnClick">
+                    <Grid HorizontalAlignment="Center">
+                        <Label HorizontalAlignment="Center" Content="Продолжить"
+                               Foreground="White" FontFamily="Segoe UI" FontSize="14" />
+                    </Grid>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="ApplyWindow" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch" Visibility="Hidden"
+              Background="#560B1F35" Style="{DynamicResource ApplyWindow}">
+            <Grid x:Name="ApplyWindowContentBox">
+                <Border CornerRadius="4" Background="{DynamicResource ApplyWindowPlateImageBrush}" Width="600" Height="400" HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <Grid>
+                        <WrapPanel Visibility="Hidden" Orientation="Vertical" HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,30"
+                                   Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                            <fa:ImageAwesome Source="{DynamicResource SpinIcon}" SpinDuration="0.8"
+                                             Spin="true" Height="40" Width="40" />
+                            <Label Style="{DynamicResource LightText}" Content="Идет отправка..." Margin="0,7,0,40" />
+                        </WrapPanel>
+                        <WrapPanel Visibility="Hidden" Orientation="Vertical" HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,30"
+                                   Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                            <fa:ImageAwesome Source="{DynamicResource TickIcon}" Height="40" Width="40" />
+                            <Label Style="{DynamicResource LightText}" HorizontalAlignment="Center"
+                                   Content="Успешно"
+                                   Margin="0,7,0,0" />
+                            <Button Content="Назад" Style="{DynamicResource RefreshButtonStyle}"
+                                    Margin="0,10,0,0" Height="30" Width="150" />
+                        </WrapPanel>
+                        <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Margin="0,0,0,30"
+                                   Visibility="Hidden"
+                                   Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                            <fa:ImageAwesome Source="{DynamicResource ErrorIcon}" Height="40" Width="40" />
+                            <Label Style="{DynamicResource LightText}" HorizontalAlignment="Center"
+                                   Content="Произошла ошибка"
+                                   Margin="0,7,0,0" />
+                            <Button Content="Попробовать снова" Style="{DynamicResource RefreshButtonStyle}"
+                                    Margin="0,10,0,0" Height="30" Width="150" />
+                        </WrapPanel>
+                    </Grid>
+                </Border>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

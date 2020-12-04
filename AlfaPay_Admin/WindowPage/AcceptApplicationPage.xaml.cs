@@ -17,12 +17,13 @@ namespace AlfaPay_Admin.WindowPage
 
         public AcceptApplicationPage(RegistrationModel dataContext)
         {
-            _menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
+            _menuDropAlignmentField =
+                typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
             System.Diagnostics.Debug.Assert(_menuDropAlignmentField != null);
 
             EnsureStandardPopupAlignment();
             SystemParameters.StaticPropertyChanged += SystemParameters_StaticPropertyChanged;
-            
+
             InitializeComponent();
             DataContext = dataContext;
         }
@@ -45,11 +46,8 @@ namespace AlfaPay_Admin.WindowPage
             LineUnderSearch.Stroke = new SolidColorBrush(Color.FromRgb(182, 188, 195));
         }
 
-        private void AcceptApplicationPage_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Grid.Focus();
-        }
-        
+        private void AcceptApplicationPage_OnMouseDown(object sender, MouseButtonEventArgs e) => Grid.Focus();
+
         private static void SystemParameters_StaticPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             EnsureStandardPopupAlignment();
@@ -58,9 +56,7 @@ namespace AlfaPay_Admin.WindowPage
         private static void EnsureStandardPopupAlignment()
         {
             if (SystemParameters.MenuDropAlignment && _menuDropAlignmentField != null)
-            {
                 _menuDropAlignmentField.SetValue(null, false);
-            }
         }
 
         private void Selector_OnSelected(object sender, RoutedEventArgs e)
@@ -71,6 +67,29 @@ namespace AlfaPay_Admin.WindowPage
         private void AddressTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             PopupNonTopmost.IsOpen = true;
+        }
+
+        private void ContinueButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ApplyWindow.Visibility = Visibility.Visible;
+            ApplyWindow.Opacity = 0;
+        }
+
+        private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ApplyWindow.IsEnabled = false;
+        }
+
+        private void ApplyWindowCloseAnimation_OnCompleted(object sender, EventArgs e)
+        {
+            ApplyWindow.Visibility = Visibility.Hidden;
+            ApplyWindow.IsEnabled = true;
+        }
+
+        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var navigationService = NavigationService;
+            navigationService?.GoBack();
         }
     }
 }

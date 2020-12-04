@@ -10,9 +10,10 @@
       MinHeight="630"
       MinWidth="1200"
       ShowsNavigationUI="False"
+      KeepAlive="True"
       MouseDown="MainPage_OnMouseDown">
-    <Grid>
-        <Grid Margin="10" Focusable="True" x:Name="Grid">
+    <Grid Margin="10">
+        <Grid Focusable="True" x:Name="Grid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="*" />
@@ -23,7 +24,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Border CornerRadius="4" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#f3f4f5">
-                <DockPanel Margin="2,2,0,2" VerticalAlignment="Center">
+                <DockPanel Margin="5,2,0,2" VerticalAlignment="Center">
                     <WrapPanel DockPanel.Dock="Left" x:Name="SearchPanel" Orientation="Horizontal" Margin="15,0,0,0"
                                Background="Transparent"
                                VerticalAlignment="Center">
@@ -163,7 +164,7 @@
                     </WrapPanel>
                 </Button>
             </Grid>
-            <GroupBox Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0,0,5,5">
+            <GroupBox Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
                 <GroupBox.Header>
                     <Label Style="{DynamicResource PrimaryHeader}" Background="White" Padding="5,0,5,5"
                            Margin="0,5,0,0"

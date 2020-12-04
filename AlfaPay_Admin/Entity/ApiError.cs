@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AlfaPay_Admin.Model
+namespace AlfaPay_Admin.Entity
 {
     public class ApiError
     {

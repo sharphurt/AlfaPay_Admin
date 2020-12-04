@@ -138,8 +138,6 @@ namespace AlfaPay_Admin.Model
             AutocompleteAddresses = new ObservableCollection<string>();
         }
 
-       
-
         private async void GetAddressAutocomplete(string input)
         {
             ResponseReceived = false;
