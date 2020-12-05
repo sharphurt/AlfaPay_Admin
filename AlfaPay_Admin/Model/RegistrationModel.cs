@@ -7,15 +7,15 @@ namespace AlfaPay_Admin.Model
 {
     public sealed class RegistrationModel: INotifyPropertyChanged
     {
-        private UserModel _userModel;
+        private ClientModel _clientModel;
 
-        public UserModel UserModel
+        public ClientModel ClientModel
         {
-            get => _userModel;
+            get => _clientModel;
             set
             {
-                _userModel = value;
-                OnPropertyChanged(nameof(UserModel));
+                _clientModel = value;
+                OnPropertyChanged(nameof(ClientModel));
             }
         }
 
@@ -40,15 +40,13 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        public RegistrationModel(UserModel userModel, CompanyModel companyModel, Application application)
+        public RegistrationModel(ClientModel clientModel, CompanyModel companyModel, Application application)
         {
             Application = application;
-            UserModel = new UserModel();
+            ClientModel = new ClientModel();
             CompanyModel = new CompanyModel();
         }
 
-        
-        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

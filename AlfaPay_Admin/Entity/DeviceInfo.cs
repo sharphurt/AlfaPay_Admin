@@ -13,7 +13,7 @@ namespace AlfaPay_Admin.Entity
         public DeviceInfo(string deviceId)
         {
             DeviceId = deviceId;
-            DeviceType = "DEVICE_TYPE_WINDOWS";
+            DeviceType = "DEVICE_TYPE_IOS";
         }
     }
 }

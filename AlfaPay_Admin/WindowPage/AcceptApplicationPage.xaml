@@ -226,7 +226,7 @@
                             <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Label
                                     Margin="30"
-                                    Visibility="{Binding CompanyModel.IsResponseEmpty, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                                    IsEnabled="{Binding CompanyModel.IsResponseEmpty}"
                                     Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                                     FontFamily="Segoue UI"
                                     FontSize="14"

@@ -9,5 +9,7 @@ namespace AlfaPay_Admin.Entity
         
         [JsonProperty("tokenType")]
         public string TokenType { get; set; }
+
+        public override string ToString() => $"{TokenType} {Token}";
     }
 }

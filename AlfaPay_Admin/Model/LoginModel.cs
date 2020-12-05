@@ -1,18 +1,23 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Text;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Entity;
 using DeviceId;
 using Flurl.Http;
+using Newtonsoft.Json;
+using RestSharp;
+using RestSharp.Serializers.NewtonsoftJson;
+using Application = System.Windows.Application;
 
 namespace AlfaPay_Admin.Model
 {
     public sealed class LoginModel : INotifyPropertyChanged
     {
-        private DeviceInfo DeviceInfo { get; }
-
         private JwtContainer _token;
 
         public JwtContainer Token
@@ -25,15 +30,15 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        private string _email;
+        private string _login;
 
-        public string Email
+        public string Login
         {
-            get => _email;
+            get => _login;
             set
             {
-                _email = value;
-                OnPropertyChanged(nameof(Email));
+                _login = value;
+                OnPropertyChanged(nameof(Login));
             }
         }
 
@@ -84,19 +89,43 @@ namespace AlfaPay_Admin.Model
                 OnPropertyChanged(nameof(Error));
             }
         }
-        
+
+        private bool _isLoggedInSuccessfully;
+
+        public bool IsLoggedInSuccessfully
+        {
+            get => _isLoggedInSuccessfully;
+            set
+            {
+                _isLoggedInSuccessfully = value;
+                OnPropertyChanged(nameof(IsLoggedInSuccessfully));
+            }
+        }
+
         private RelayCommand _loginCommand;
 
-        public RelayCommand RefreshCommand
+        public RelayCommand LoginCommand
         {
             get
             {
-                return _loginCommand ?? (_loginCommand = new RelayCommand(obj =>
-                {
-                    Login(Email, Password);
-                }));
+                return _loginCommand ??
+                       (_loginCommand = new RelayCommand(obj => { LogInUser(); }));
             }
         }
+
+
+        private LoggedUser _loggedInUser;
+
+        public LoggedUser LoggedInUser
+        {
+            get => _loggedInUser;
+            set
+            {
+                _loggedInUser = value;
+                OnPropertyChanged(nameof(_loggedInUser));
+            }
+        }
+
 
         public LoginModel()
         {
@@ -106,23 +135,59 @@ namespace AlfaPay_Admin.Model
                 .AddProcessorId()
                 .AddMotherboardSerialNumber()
                 .ToString();
-            DeviceInfo = new DeviceInfo(deviceId);
+            AuthenticationContext.DeviceInfo = new DeviceInfo(deviceId);
         }
 
-        private async void Login(string _email, string _password)
+        private void LogInUser()
         {
+            SendLoginRequest();
+        }
+
+        private async void SendLoginRequest()
+        {
+            ResponseReceived = false;
+            Error = null;
+            IsLoading = true;
+
             var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
 
+            var client = new RestSharp.RestClient(baseUrl);
+            client.UseNewtonsoftJson();
+            var request = new RestRequest("auth/login");
+            request.AddJsonBody(new
+            {
+                email = Login,
+                password = Password,
+                deviceInfo = AuthenticationContext.DeviceInfo
+            }, "application/json");
+            var response = await client.PostAsync<ApiResponse<JwtContainer>>(request);
+            if (!response.IsSuccessfully)
+                Error = response.Error;
+            else
+            {
+                Token = response.Response;
+                AuthenticationContext.Token = Token;
+                if (Token != null)
+                {
+                    LoadUserInformation();
+                }
+            }
+
+            ResponseReceived = true;
+            IsLoading = false;
+        }
+
+        private async void LoadUserInformation()
+        {
+            var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
             try
             {
-                var result = await $"{baseUrl}/auth/login".PostJsonAsync(new
-                {
-                    email = _email,
-                    password = _password,
-                    deviceInfo = DeviceInfo
-                }).ReceiveJson<ApiResponse<JwtContainer>>();
-
-                Token = result.Response;
+                var result = await $"{baseUrl}/users/me"
+                    .WithHeader("Authorization", AuthenticationContext.Token)
+                    .GetJsonAsync<ApiResponse<LoggedUser>>();
+                LoggedInUser = result.Response;
+                AuthenticationContext.LoggedUser = LoggedInUser;
+                IsLoggedInSuccessfully = true;
             }
             catch (FlurlHttpTimeoutException ex)
             {
@@ -135,6 +200,7 @@ namespace AlfaPay_Admin.Model
                 Error = response is null ? new ApiError(ex.Call.Exception.Message, 0, "") : response.Error;
             }
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

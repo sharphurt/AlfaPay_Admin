@@ -44,11 +44,12 @@
                         </WrapPanel>
                     </WrapPanel>
                     <Button DockPanel.Dock="Right" Width="32" Margin="10,0,15,0"
-                            Style="{DynamicResource LogoutButtonStyle}">
+                            Style="{DynamicResource LogoutButtonStyle}" Command="{Binding LogoutCommand}">
                         <Image Source="{DynamicResource LogOutIcon}" RenderOptions.BitmapScalingMode="HighQuality"
                                Stretch="UniformToFill" Margin="2,0,0,0" Width="14" Height="14" />
                     </Button>
-                    <Label DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{DynamicResource PrimaryText}">Лукоянов Павел Валерьевич</Label>
+                    <Label DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{DynamicResource PrimaryText}"
+                           Content="{Binding Path=LoggedInUser}" />
                 </DockPanel>
             </Border>
             <GroupBox Grid.Column="0" Grid.Row="1" Margin="0,0,5,5">
@@ -60,7 +61,7 @@
                 <Grid>
                     <Image Source="{DynamicResource DeadImage}" Width="150" HorizontalAlignment="Center"
                            VerticalAlignment="Center" Style="{DynamicResource FadeInFadeOutEffectImage}"
-                           Visibility="{Binding Error, Converter={StaticResource ObjectToVisibilityConverter}}" />
+                           IsEnabled="{Binding IsSuccessfully, Converter={StaticResource InvertedBoolConverter}}" />
                     <Label HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Style="{DynamicResource FadeInFadeOutEffectControl}"
@@ -68,13 +69,14 @@
                            FontWeight="Light"
                            FontSize="20"
                            Opacity="0.5"
-                           Visibility="{Binding ElementName=ApplicationsListBox, Path=Items.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"
+                           IsEnabled="{Binding ElementName=ApplicationsListBox, Path=Items.IsEmpty, Converter={StaticResource InvertedBoolConverter}}"
                            Content="Выберите заявку из списка" />
 
                     <WrapPanel IsEnabled="{Binding IsLoading}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                Style="{DynamicResource FadeInFadeOutEffectPanel}">
                         <Label Style="{DynamicResource LightText}" Content="Дождитесь окончания загрузки данных" />
-                        <fa:ImageAwesome Source="{DynamicResource SpinSmallIcon}" Margin="5,0,0,0" Spin="True" SpinDuration="0.8"
+                        <fa:ImageAwesome Source="{DynamicResource SpinSmallIcon}" Margin="5,0,0,0" Spin="True"
+                                         SpinDuration="0.8"
                                          Width="16" Height="16" />
                     </WrapPanel>
                     <Grid Margin="15,0,15,0" ZIndex="1" DataContext="{Binding SelectedApplication}"
@@ -222,7 +224,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <WrapPanel Panel.ZIndex="1"
-                               IsEnabled="{Binding ResponseReceived, Converter={StaticResource InvertedBoolConverter}}"
+                               IsEnabled="{Binding IsLoading}"
                                Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                                Margin="0,0,0,30"
                                Style="{DynamicResource FadeInFadeOutEffectPanel}">
@@ -231,7 +233,7 @@
                         <Label Style="{DynamicResource LightText}" Content="Данные загружаются" Margin="0,7,0,40" />
                     </WrapPanel>
                     <WrapPanel Panel.ZIndex="1"
-                               IsEnabled="{Binding Error, Converter={StaticResource ObjectToBoolConverter}}"
+                               IsEnabled="{Binding IsSuccessfully, Converter={StaticResource InvertedBoolConverter}}"
                                Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                                Margin="0,0,0,30"
                                Style="{DynamicResource FadeInFadeOutEffectPanel}">

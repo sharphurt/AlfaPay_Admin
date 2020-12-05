@@ -2,10 +2,14 @@
 using System.ComponentModel;
 using System.Configuration;
 using System.Runtime.CompilerServices;
+using System.Timers;
+using System.Web.UI.WebControls;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Entity;
 using Flurl.Http;
+using RestSharp;
+using RestSharp.Serializers.NewtonsoftJson;
 using Application = AlfaPay_Admin.Entity.Application;
 
 namespace AlfaPay_Admin.Model
@@ -79,6 +83,19 @@ namespace AlfaPay_Admin.Model
             }
         }
 
+        
+        private bool _isSuccessfully;
+
+        public bool IsSuccessfully
+        {
+            get => _isSuccessfully;
+            set
+            {
+                _isSuccessfully = value;
+                OnPropertyChanged(nameof(IsSuccessfully));
+            }
+        }
+        
         private RelayCommand _refreshCommand;
 
         public RelayCommand RefreshCommand
@@ -92,16 +109,45 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        public ApplicationViewModel()
+        private RelayCommand _logoutCommand;
+
+        public RelayCommand LogoutCommand
         {
-            GetApplicationsFromServer(0, 10);
+            get
+            {
+                return _logoutCommand ?? (_logoutCommand = new RelayCommand(obj =>
+                {
+                    Logout();
+                }));
+            }
+        }
+        
+        private LoggedUser _loggedInUser;
+
+        public LoggedUser LoggedInUser
+        {
+            get => _loggedInUser;
+            set
+            {
+                _loggedInUser = value;
+                OnPropertyChanged(nameof(LoggedInUser));
+            }
         }
 
+
+        public ApplicationViewModel()
+        {
+            IsSuccessfully = true;
+            LoggedInUser = AuthenticationContext.LoggedUser;
+            GetApplicationsFromServer(0, 10);
+        }
+        
         private async void GetApplicationsFromServer(int from, int count)
         {
             ResponseReceived = false;
             Error = null;
             IsLoading = true;
+            IsSuccessfully = true;
             try
             {
                 var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
@@ -112,17 +158,37 @@ namespace AlfaPay_Admin.Model
             }
             catch (FlurlHttpTimeoutException ex)
             {
-                Error = new ApiError("Проблемы с интернет-соединением. Проверьте подключение и попробуйте снова", 504, "");
+                IsSuccessfully = false;
+                Error = new ApiError("Проблемы с интернет-соединением. Проверьте подключение и попробуйте снова", 504,
+                    "");
             }
             catch (FlurlHttpException ex)
             {
                 var response = await ex.GetResponseJsonAsync<ApiResponse<object>>();
+                IsSuccessfully = false;
                 Error = response is null ? new ApiError(ex.Call.Exception.Message, 0, "") : response.Error;
             }
-
-
+            
             ResponseReceived = true;
             IsLoading = false;
+        }
+
+        private async void Logout()
+        {
+            var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
+            var client = new RestSharp.RestClient(baseUrl);
+            client.UseNewtonsoftJson();
+            var request = new RestRequest("auth/logout");
+            request.AddJsonBody(new { deviceInfo = AuthenticationContext.DeviceInfo }, "application/json");
+            request.AddHeader("Authorization", AuthenticationContext.Token.ToString());
+            var response = await client.PostAsync<ApiResponse<string>>(request);
+            if (!response.IsSuccessfully)
+                Error = response.Error;
+            else
+            {
+                LoggedInUser = null;
+                AuthenticationContext.ClearAuthentication();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

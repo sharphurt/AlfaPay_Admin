@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Controls;
 using AlfaPay_Admin.Model;
 
 namespace AlfaPay_Admin.WindowPage
@@ -8,7 +10,19 @@ namespace AlfaPay_Admin.WindowPage
         public LoginPage()
         {
             InitializeComponent();
-            DataContext = new LoginModel();
+            var loginModel = new LoginModel();
+            DataContext = loginModel;
+            loginModel.PropertyChanged += LoginModelOnPropertyChanged;
+        }
+
+        private void LoginModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals("IsLoggedInSuccessfully"))
+            {
+                var mainPage = new MainPage();
+                var navigationService = NavigationService;
+                navigationService?.Navigate(mainPage);
+            }
         }
     }
 }

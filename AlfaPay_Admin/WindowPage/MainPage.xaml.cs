@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Timers;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -9,11 +11,24 @@ using Application = AlfaPay_Admin.Entity.Application;
 namespace AlfaPay_Admin.WindowPage
 {
     public partial class MainPage : Page
-    {
+    {     
+        private readonly ApplicationViewModel _applicationModel = new ApplicationViewModel();
+
         public MainPage()
         {
             InitializeComponent();
-            DataContext = new ApplicationViewModel();
+            _applicationModel.PropertyChanged += ApplicationModelOnPropertyChanged;
+            DataContext = _applicationModel;
+        }
+
+        private void ApplicationModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "LoggedInUser" && _applicationModel.LoggedInUser == null)
+            {
+                var mainPage = new LoginPage();
+                var navigationService = NavigationService;
+                navigationService?.Navigate(mainPage);
+            }
         }
 
         private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)
@@ -71,13 +86,13 @@ namespace AlfaPay_Admin.WindowPage
         {
             var navigationService = NavigationService;
             var selectedApplication = ApplicationsListBox.SelectedItem as Application;
-            var user = new UserModel
+            var user = new ClientModel
             {
                 Name = selectedApplication?.Name,
                 Email = selectedApplication?.Email,
                 Phone = selectedApplication?.Phone,
             };
-            
+
             var registrationModel = new RegistrationModel(user, new CompanyModel(), selectedApplication);
             navigationService?.Navigate(new AcceptApplicationPage(registrationModel));
         }

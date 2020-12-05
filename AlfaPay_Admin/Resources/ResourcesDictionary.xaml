@@ -21,6 +21,7 @@
     <ImageBrush x:Key="ApplyWindowPlateImageBrush" ImageSource="apply_window_plate.png" />
     <BitmapImage x:Key="SuccessfulTick" UriSource="successfull_tick.png" />
     <BitmapImage x:Key="AlfaPattern" UriSource="alfa_pattern_white_rgb.png" />
+    <BitmapImage x:Key="Background" UriSource="background.png" />
 
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converter:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
@@ -32,6 +33,7 @@
     <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
     <converter:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     <converter:InvertedObjectToBoolConverter x:Key="InvertedObjectToBoolConverter" />
+    <converter:ObjectToStringConverter x:Key="ObjectToStringConverter" />
 
 
     <Style x:Key="ButtonStyle" TargetType="Button">
@@ -285,7 +287,7 @@
                         </Trigger>
                         
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="#40F15045" />
+                            <Setter Property="Background" Value="#F9B4AF" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="True">
                             <Trigger.EnterActions>
@@ -442,8 +444,10 @@
 
 
     <Style x:Key="FadeInFadeOutEffectImage" TargetType="Image">
+        <Setter Property="Opacity" Value="0" />
+        <Setter Property="IsEnabled" Value="False" />
         <Style.Triggers>
-            <Trigger Property="Visibility" Value="Visible">
+            <Trigger Property="IsEnabled" Value="True">
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
@@ -467,6 +471,7 @@
     </Style>
 
     <Style x:Key="FadeInFadeOutEffectControl" TargetType="Control">
+        <Setter Property="IsEnabled" Value="True" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="True">
                 <Trigger.EnterActions>
