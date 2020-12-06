@@ -1,24 +1,32 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using AlfaPay_Admin.Model;
 using Application = AlfaPay_Admin.Entity.Application;
 
 namespace AlfaPay_Admin.WindowPage
 {
     public partial class MainPage : Page
-    {     
+    {
         private readonly ApplicationViewModel _applicationModel = new ApplicationViewModel();
-
+        private readonly DispatcherTimer _errorPlateVisibilityTimer = new DispatcherTimer ();
         public MainPage()
         {
             InitializeComponent();
             _applicationModel.PropertyChanged += ApplicationModelOnPropertyChanged;
             DataContext = _applicationModel;
+            _errorPlateVisibilityTimer.Interval = TimeSpan.FromSeconds(5.5);
+            _errorPlateVisibilityTimer.Tick += (o, args) =>
+            {
+                ErrorPlate.Visibility = Visibility.Hidden;
+                _errorPlateVisibilityTimer.Stop();
+            };
         }
 
         private void ApplicationModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -28,6 +36,12 @@ namespace AlfaPay_Admin.WindowPage
                 var mainPage = new LoginPage();
                 var navigationService = NavigationService;
                 navigationService?.Navigate(mainPage);
+            }
+
+            if (e.PropertyName == "ErrorMessage")
+            {
+                ErrorPlate.Visibility = Visibility.Visible;
+                _errorPlateVisibilityTimer.Start();
             }
         }
 
@@ -93,7 +107,7 @@ namespace AlfaPay_Admin.WindowPage
                 Phone = selectedApplication?.Phone,
             };
 
-            var registrationModel = new RegistrationModel(user, new CompanyModel(), selectedApplication);
+            var registrationModel = new RegistrationModel(selectedApplication);
             navigationService?.Navigate(new AcceptApplicationPage(registrationModel));
         }
     }

@@ -9,11 +9,12 @@ namespace AlfaPay_Admin.Entity
         
         [JsonProperty("deviceType")]
         public string DeviceType { get; set; }
+        
 
         public DeviceInfo(string deviceId)
         {
             DeviceId = deviceId;
-            DeviceType = "DEVICE_TYPE_IOS";
+            DeviceType = "DEVICE_TYPE_WINDOWS";
         }
     }
 }

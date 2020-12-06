@@ -13,8 +13,10 @@
         RenderOptions.BitmapScalingMode="HighQuality"
         Background="White"
         x:Name="MainWindowObject"
+        WindowStartupLocation="CenterScreen"
         Width="1200"
         Height="630"
         Loaded="MainWindow_OnLoaded">
+    
     <Frame x:Name="MainFrame" Source="WindowPage/LoginPage.xaml" NavigationUIVisibility="Hidden" />
 </Window>

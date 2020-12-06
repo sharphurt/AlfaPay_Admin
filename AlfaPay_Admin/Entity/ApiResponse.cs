@@ -14,5 +14,7 @@ namespace AlfaPay_Admin.Entity
         }
 
         public bool IsSuccessfully => Response != null;
+
+        public override string ToString() => Error.Message;
     }
 }

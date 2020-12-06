@@ -47,81 +47,20 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        private bool _responseReceived;
-
-        public bool ResponseReceived
-        {
-            get => _responseReceived;
-            set
-            {
-                _responseReceived = value;
-                OnPropertyChanged(nameof(ResponseReceived));
-            }
-        }
-
-        private bool _isLoading;
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        private ApiError _error;
-
-        public ApiError Error
-        {
-            get => _error;
-            set
-            {
-                _error = value;
-                OnPropertyChanged(nameof(Error));
-            }
-        }
-
-        
-        private bool _isSuccessfully;
-
-        public bool IsSuccessfully
-        {
-            get => _isSuccessfully;
-            set
-            {
-                _isSuccessfully = value;
-                OnPropertyChanged(nameof(IsSuccessfully));
-            }
-        }
-        
         private RelayCommand _refreshCommand;
 
         public RelayCommand RefreshCommand
         {
-            get
-            {
-                return _refreshCommand ?? (_refreshCommand = new RelayCommand(obj =>
-                {
-                    GetApplicationsFromServer(0, 10);
-                }));
-            }
+            get { return _refreshCommand ??= new RelayCommand(obj => { GetApplicationsFromServer(0, 10); }); }
         }
 
         private RelayCommand _logoutCommand;
 
         public RelayCommand LogoutCommand
         {
-            get
-            {
-                return _logoutCommand ?? (_logoutCommand = new RelayCommand(obj =>
-                {
-                    Logout();
-                }));
-            }
+            get { return _logoutCommand ??= new RelayCommand(obj => { Logout(); }); }
         }
-        
+
         private LoggedUser _loggedInUser;
 
         public LoggedUser LoggedInUser
@@ -134,61 +73,68 @@ namespace AlfaPay_Admin.Model
             }
         }
 
+        private ApiRequestManager<ObservableCollection<Application>> _getApplicationsRequestManager;
+
+        public ApiRequestManager<ObservableCollection<Application>> GetApplicationsRequestManager
+        {
+            get => _getApplicationsRequestManager;
+            set
+            {
+                _getApplicationsRequestManager = value;
+                OnPropertyChanged(nameof(GetApplicationsRequestManager));
+            }
+        }
+
+        private ApiRequestManager<string> _logoutRequestManager;
+
+        public ApiRequestManager<string> LogoutRequestManager
+        {
+            get => _logoutRequestManager;
+            set
+            {
+                _logoutRequestManager = value;
+                OnPropertyChanged(nameof(LogoutRequestManager));
+            }
+        }
+
+
+        private string _errorMessage;
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
 
         public ApplicationViewModel()
         {
-            IsSuccessfully = true;
             LoggedInUser = AuthenticationContext.LoggedUser;
+            GetApplicationsRequestManager = new ApiRequestManager<ObservableCollection<Application>>();
+            LogoutRequestManager = new ApiRequestManager<string>();
             GetApplicationsFromServer(0, 10);
         }
-        
-        private async void GetApplicationsFromServer(int from, int count)
+
+        private void GetApplicationsFromServer(int from, int count)
         {
-            ResponseReceived = false;
-            Error = null;
-            IsLoading = true;
-            IsSuccessfully = true;
-            try
-            {
-                var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
-                var response = await $"{baseUrl}/applications/get?from={from}&count={count}"
-                    .WithTimeout(30)
-                    .GetJsonAsync<ApiResponse<ObservableCollection<Application>>>();
-                Applications = response.Response;
-            }
-            catch (FlurlHttpTimeoutException ex)
-            {
-                IsSuccessfully = false;
-                Error = new ApiError("Проблемы с интернет-соединением. Проверьте подключение и попробуйте снова", 504,
-                    "");
-            }
-            catch (FlurlHttpException ex)
-            {
-                var response = await ex.GetResponseJsonAsync<ApiResponse<object>>();
-                IsSuccessfully = false;
-                Error = response is null ? new ApiError(ex.Call.Exception.Message, 0, "") : response.Error;
-            }
-            
-            ResponseReceived = true;
-            IsLoading = false;
+            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/get?from={from}&count={count}", null,
+                () => Applications = GetApplicationsRequestManager.Response.Response,
+                () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
         }
 
-        private async void Logout()
+        private void Logout()
         {
-            var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
-            var client = new RestSharp.RestClient(baseUrl);
-            client.UseNewtonsoftJson();
-            var request = new RestRequest("auth/logout");
-            request.AddJsonBody(new { deviceInfo = AuthenticationContext.DeviceInfo }, "application/json");
-            request.AddHeader("Authorization", AuthenticationContext.Token.ToString());
-            var response = await client.PostAsync<ApiResponse<string>>(request);
-            if (!response.IsSuccessfully)
-                Error = response.Error;
-            else
-            {
-                LoggedInUser = null;
-                AuthenticationContext.ClearAuthentication();
-            }
+            LogoutRequestManager.MakeRequest(Method.POST, "auth/logout",
+                new {deviceInfo = AuthenticationContext.DeviceInfo},
+                () =>
+                {
+                    LoggedInUser = null;
+                    AuthenticationContext.ClearAuthentication();
+                },
+                () => ErrorMessage = LogoutRequestManager.Response.ToString());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

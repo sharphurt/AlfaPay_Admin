@@ -43,7 +43,7 @@
                                   X2="250" Y2="0" />
                         </WrapPanel>
                     </WrapPanel>
-                    <Button DockPanel.Dock="Right" Width="32" Margin="10,0,15,0"
+                    <Button DockPanel.Dock="Right" Width="32" Height="32" Margin="10,0,15,0"
                             Style="{DynamicResource LogoutButtonStyle}" Command="{Binding LogoutCommand}">
                         <Image Source="{DynamicResource LogOutIcon}" RenderOptions.BitmapScalingMode="HighQuality"
                                Stretch="UniformToFill" Margin="2,0,0,0" Width="14" Height="14" />
@@ -60,20 +60,21 @@
                 </GroupBox.Header>
                 <Grid>
                     <Image Source="{DynamicResource DeadImage}" Width="150" HorizontalAlignment="Center"
-                           VerticalAlignment="Center" Style="{DynamicResource FadeInFadeOutEffectImage}"
-                           IsEnabled="{Binding IsSuccessfully, Converter={StaticResource InvertedBoolConverter}}" />
+                           VerticalAlignment="Center"
+                           Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}" />
                     <Label HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           Style="{DynamicResource FadeInFadeOutEffectControl}"
                            FontFamily="Segoe UI"
                            FontWeight="Light"
                            FontSize="20"
                            Opacity="0.5"
-                           IsEnabled="{Binding ElementName=ApplicationsListBox, Path=Items.IsEmpty, Converter={StaticResource InvertedBoolConverter}}"
+                           Visibility="{Binding ElementName=ApplicationsListBox, Path=Items.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"
                            Content="Выберите заявку из списка" />
 
-                    <WrapPanel IsEnabled="{Binding IsLoading}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                    <WrapPanel
+                        Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibilityConverter}}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Style="{DynamicResource FadeInFadeOutEffectPanel}">
                         <Label Style="{DynamicResource LightText}" Content="Дождитесь окончания загрузки данных" />
                         <fa:ImageAwesome Source="{DynamicResource SpinSmallIcon}" Margin="5,0,0,0" Spin="True"
                                          SpinDuration="0.8"
@@ -126,7 +127,8 @@
                             </Hyperlink>
                         </TextBlock>
 
-                        <Label Grid.Column="2" Margin="10,0,0,0" Grid.Row="4" Style="{DynamicResource TertiaryText}"
+                        <Label Grid.Column="2" Margin="10,0,0,0" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" Grid.Row="4" Style="{DynamicResource TertiaryText}"
                                Content="{Binding DaysPassed}" />
                     </Grid>
                 </Grid>
@@ -224,16 +226,15 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <WrapPanel Panel.ZIndex="1"
-                               IsEnabled="{Binding IsLoading}"
+                               Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibilityConverter}}"
                                Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Margin="0,0,0,30"
-                               Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                               Margin="0,0,0,30">
                         <fa:ImageAwesome Panel.ZIndex="1" Source="{DynamicResource SpinIcon}" SpinDuration="0.8"
                                          Spin="true" Height="40" Width="40" />
                         <Label Style="{DynamicResource LightText}" Content="Данные загружаются" Margin="0,7,0,40" />
                     </WrapPanel>
                     <WrapPanel Panel.ZIndex="1"
-                               IsEnabled="{Binding IsSuccessfully, Converter={StaticResource InvertedBoolConverter}}"
+                               Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
                                Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                                Margin="0,0,0,30"
                                Style="{DynamicResource FadeInFadeOutEffectPanel}">
@@ -250,13 +251,14 @@
             </GroupBox>
         </Grid>
         <Border CornerRadius="4" BorderThickness="0" Background="#F15045" Height="30" Margin="0,0,0,15"
+                x:Name="ErrorPlate"
                 VerticalAlignment="Bottom"
                 Style="{DynamicResource ErrorPlateStyle}"
-                Visibility="{Binding Error, Converter={StaticResource ObjectToVisibilityConverter}}"
+                Visibility="Hidden"
                 HorizontalAlignment="Center">
             <Label HorizontalContentAlignment="Center" Foreground="White" Style="{DynamicResource PrimaryText}"
                    FontSize="14"
-                   Content="{Binding Error.Message}" Margin="10,0,10,0" />
+                   Content="{Binding ErrorMessage}" Margin="10,0,10,0" />
         </Border>
     </Grid>
 </Page>

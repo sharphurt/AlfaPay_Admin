@@ -26,7 +26,10 @@
     </Page.Resources>
     <Page.Triggers>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ContinueButton">
-            <BeginStoryboard Storyboard="{StaticResource ApplyWindowOpenAnimation}"/>
+            <BeginStoryboard Storyboard="{StaticResource ApplyWindowOpenAnimation}" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="CloseWindowButton">
+            <BeginStoryboard Storyboard="{StaticResource ApplyWindowCloseAnimation}" />
         </EventTrigger>
     </Page.Triggers>
     <Grid x:Name="Grid" Focusable="True">
@@ -90,7 +93,7 @@
                              Template="{DynamicResource TextBoxControlTemplate}"
                              Validation.ErrorTemplate="{StaticResource ValidationFailed}"
                              VerticalContentAlignment="Center">
-                        <Binding Path="UserModel.Name" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="ClientModel.Name" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -107,7 +110,7 @@
                              Template="{DynamicResource TextBoxControlTemplate}"
                              Validation.ErrorTemplate="{StaticResource ValidationFailed}"
                              VerticalContentAlignment="Center">
-                        <Binding Path="UserModel.Surname" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="ClientModel.Surname" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -124,7 +127,7 @@
                              Template="{DynamicResource TextBoxControlTemplate}"
                              Validation.ErrorTemplate="{StaticResource ValidationFailed}"
                              VerticalContentAlignment="Center">
-                        <Binding Path="UserModel.Patronymic" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="ClientModel.Patronymic" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -141,7 +144,7 @@
                              Template="{DynamicResource TextBoxControlTemplate}"
                              Validation.ErrorTemplate="{StaticResource ValidationFailed}"
                              VerticalContentAlignment="Center">
-                        <Binding Path="UserModel.Email" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="ClientModel.Email" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -158,7 +161,7 @@
                              Template="{DynamicResource TextBoxControlTemplate}"
                              Validation.ErrorTemplate="{StaticResource ValidationFailed}"
                              VerticalContentAlignment="Center">
-                        <Binding Path="UserModel.Phone" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="ClientModel.Phone" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -337,21 +340,49 @@
               VerticalAlignment="Stretch" Visibility="Hidden"
               Background="#560B1F35" Style="{DynamicResource ApplyWindow}">
             <Grid x:Name="ApplyWindowContentBox">
-                <Border CornerRadius="4" Background="{DynamicResource ApplyWindowPlateImageBrush}" Width="600" Height="400" HorizontalAlignment="Center"
+                <Border CornerRadius="4" Background="{DynamicResource ApplyWindowPlateImageBrush}" Width="600"
+                        Height="400" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                     <Grid>
-                        <WrapPanel Visibility="Hidden" Orientation="Vertical" HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,0,30"
-                                   Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Top" x:Name="CloseWindowButton"
+                                Width="16"
+                                Height="16" BorderBrush="Transparent"
+                                BorderThickness="0" Background="Transparent" Opacity="0.5"
+                                Click="CloseWindowButton_OnClick">
+                            <Image Source="{DynamicResource RejectIcon}" Width="16" Height="16" />
+                        </Button>
+                        <WrapPanel
+                            Visibility="{Binding Error, Converter={StaticResource InvertedObjectToVisibilityConverter}}"
+                            Orientation="Vertical" HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="0,0,0,30"
+                            Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                            <Label Style="{DynamicResource LightText}"
+                                   Margin="0,7,0,40">
+                                Убедитесь в правильности введенных данных и нажмите кнопку "Зарегистрировать"
+                            </Label>
+                            <Button Style="{DynamicResource ContinueButtonStyle}" Width="250" Height="25"
+                                    Command="{Binding RegisterCommand}">
+                                <Label Style="{DynamicResource PrimaryText}" FontSize="14" Content="Зарегистрировать" />
+                            </Button>
+                        </WrapPanel>
+
+                        <WrapPanel
+                            Visibility="{Binding IsLoading, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                            Orientation="Vertical" HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="0,0,0,30"
+                            Style="{DynamicResource FadeInFadeOutEffectPanel}">
                             <fa:ImageAwesome Source="{DynamicResource SpinIcon}" SpinDuration="0.8"
                                              Spin="true" Height="40" Width="40" />
                             <Label Style="{DynamicResource LightText}" Content="Идет отправка..." Margin="0,7,0,40" />
                         </WrapPanel>
-                        <WrapPanel Visibility="Hidden" Orientation="Vertical" HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,0,30"
-                                   Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                        <WrapPanel
+                            Visibility="{Binding IsSuccessfullyRegistered, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                            Orientation="Vertical" HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="0,0,0,30"
+                            Style="{DynamicResource FadeInFadeOutEffectPanel}">
                             <fa:ImageAwesome Source="{DynamicResource TickIcon}" Height="40" Width="40" />
                             <Label Style="{DynamicResource LightText}" HorizontalAlignment="Center"
                                    Content="Успешно"
@@ -361,11 +392,11 @@
                         </WrapPanel>
                         <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Margin="0,0,0,30"
-                                   Visibility="Hidden"
+                                   Visibility="{Binding Error, Converter={StaticResource ObjectToVisibilityConverter}}"
                                    Style="{DynamicResource FadeInFadeOutEffectPanel}">
                             <fa:ImageAwesome Source="{DynamicResource ErrorIcon}" Height="40" Width="40" />
                             <Label Style="{DynamicResource LightText}" HorizontalAlignment="Center"
-                                   Content="Произошла ошибка"
+                                   Content="{Binding Error, Path=Message}"
                                    Margin="0,7,0,0" />
                             <Button Content="Попробовать снова" Style="{DynamicResource RefreshButtonStyle}"
                                     Margin="0,10,0,0" Height="30" Width="150" />

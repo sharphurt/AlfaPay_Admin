@@ -17,7 +17,7 @@ namespace AlfaPay_Admin.WindowPage
 
         private void LoginModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals("IsLoggedInSuccessfully"))
+            if (e.PropertyName.Equals("LoggedInUser"))
             {
                 var mainPage = new MainPage();
                 var navigationService = NavigationService;

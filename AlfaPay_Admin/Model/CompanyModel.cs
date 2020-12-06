@@ -6,6 +6,7 @@ using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
 using Dadata;
 using Dadata.Model;
+using Newtonsoft.Json;
 
 namespace AlfaPay_Admin.Model
 {
@@ -13,6 +14,7 @@ namespace AlfaPay_Admin.Model
     {
         private string _name;
 
+        [JsonProperty("name")]
         public string Name
         {
             get => _name;
@@ -25,6 +27,7 @@ namespace AlfaPay_Admin.Model
 
         private string _address;
 
+        [JsonProperty("address")]
         public string Address
         {
             get => _address;
@@ -38,6 +41,7 @@ namespace AlfaPay_Admin.Model
 
         private string _inn;
 
+        [JsonProperty("inn")]
         public string Inn
         {
             get => _inn;
@@ -49,7 +53,8 @@ namespace AlfaPay_Admin.Model
         }
 
         private string _taxSystem;
-
+        
+        [JsonProperty("taxSystem")]
         public string TaxSystem
         {
             get => _taxSystem;
@@ -61,7 +66,7 @@ namespace AlfaPay_Admin.Model
         }
 
         private string _kkt;
-
+        [JsonProperty("kkt")]
         public string Kkt
         {
             get => _kkt;

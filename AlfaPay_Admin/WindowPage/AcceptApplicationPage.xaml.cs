@@ -91,5 +91,10 @@ namespace AlfaPay_Admin.WindowPage
             var navigationService = NavigationService;
             navigationService?.GoBack();
         }
+        
+        private void CloseWindowButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ApplyWindow.IsEnabled = false;
+        }
     }
 }

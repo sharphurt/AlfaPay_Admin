@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Entity;
+using AlfaPay_Admin.Enum;
 using DeviceId;
 using Flurl.Http;
 using Newtonsoft.Json;
@@ -54,65 +56,15 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        private bool _responseReceived;
-
-        public bool ResponseReceived
-        {
-            get => _responseReceived;
-            set
-            {
-                _responseReceived = value;
-                OnPropertyChanged(nameof(ResponseReceived));
-            }
-        }
-
-        private bool _isLoading;
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        private ApiError _error;
-
-        public ApiError Error
-        {
-            get => _error;
-            set
-            {
-                _error = value;
-                OnPropertyChanged(nameof(Error));
-            }
-        }
-
-        private bool _isLoggedInSuccessfully;
-
-        public bool IsLoggedInSuccessfully
-        {
-            get => _isLoggedInSuccessfully;
-            set
-            {
-                _isLoggedInSuccessfully = value;
-                OnPropertyChanged(nameof(IsLoggedInSuccessfully));
-            }
-        }
-
         private RelayCommand _loginCommand;
 
         public RelayCommand LoginCommand
         {
             get
             {
-                return _loginCommand ??
-                       (_loginCommand = new RelayCommand(obj => { LogInUser(); }));
+                return _loginCommand ??= new RelayCommand(obj => { SendLoginRequest(); });
             }
         }
-
 
         private LoggedUser _loggedInUser;
 
@@ -122,11 +74,46 @@ namespace AlfaPay_Admin.Model
             set
             {
                 _loggedInUser = value;
-                OnPropertyChanged(nameof(_loggedInUser));
+                OnPropertyChanged(nameof(LoggedInUser));
             }
         }
 
+        private ApiRequestManager<JwtContainer> _loginRequestManager;
 
+        public ApiRequestManager<JwtContainer> LoginRequestManager
+        {
+            get => _loginRequestManager;
+            set
+            {
+                _loginRequestManager = value;
+                OnPropertyChanged(nameof(LoginRequestManager));
+            }
+        }
+
+        private ApiRequestManager<LoggedUser> _userInformationRequestManager;
+
+        public ApiRequestManager<LoggedUser> UserInformationRequestManager
+        {
+            get => _userInformationRequestManager;
+            set
+            {
+                _userInformationRequestManager = value;
+                OnPropertyChanged(nameof(UserInformationRequestManager));
+            }
+        }
+
+        private string _errorMessage;
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
+        
         public LoginModel()
         {
             var deviceId = new DeviceIdBuilder()
@@ -136,71 +123,40 @@ namespace AlfaPay_Admin.Model
                 .AddMotherboardSerialNumber()
                 .ToString();
             AuthenticationContext.DeviceInfo = new DeviceInfo(deviceId);
+            LoginRequestManager = new ApiRequestManager<JwtContainer>();
+            UserInformationRequestManager = new ApiRequestManager<LoggedUser>();
         }
 
-        private void LogInUser()
+        private void OnSuccessfulLogin()
         {
-            SendLoginRequest();
+            AuthenticationContext.Token = LoginRequestManager.Response.Response;
+            Token = LoginRequestManager.Response.Response;
+            GetUserInformationRequest();
         }
 
-        private async void SendLoginRequest()
+        private void OnSuccessfulGettingUserProfile()
         {
-            ResponseReceived = false;
-            Error = null;
-            IsLoading = true;
+            LoggedInUser = UserInformationRequestManager.Response.Response;
+        }
 
-            var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
-
-            var client = new RestSharp.RestClient(baseUrl);
-            client.UseNewtonsoftJson();
-            var request = new RestRequest("auth/login");
-            request.AddJsonBody(new
+        private void SendLoginRequest()
+        {
+            LoginRequestManager.MakeRequest(Method.POST, "auth/login", new
             {
-                email = Login,
-                password = Password,
+                email = "user@catstack.net",
+                password = "password",
                 deviceInfo = AuthenticationContext.DeviceInfo
-            }, "application/json");
-            var response = await client.PostAsync<ApiResponse<JwtContainer>>(request);
-            if (!response.IsSuccessfully)
-                Error = response.Error;
-            else
+            }, OnSuccessfulLogin, () =>
             {
-                Token = response.Response;
-                AuthenticationContext.Token = Token;
-                if (Token != null)
-                {
-                    LoadUserInformation();
-                }
-            }
-
-            ResponseReceived = true;
-            IsLoading = false;
+                ErrorMessage = LoginRequestManager.Response.Error.Message;
+            });
         }
 
-        private async void LoadUserInformation()
+        private void GetUserInformationRequest()
         {
-            var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
-            try
-            {
-                var result = await $"{baseUrl}/users/me"
-                    .WithHeader("Authorization", AuthenticationContext.Token)
-                    .GetJsonAsync<ApiResponse<LoggedUser>>();
-                LoggedInUser = result.Response;
-                AuthenticationContext.LoggedUser = LoggedInUser;
-                IsLoggedInSuccessfully = true;
-            }
-            catch (FlurlHttpTimeoutException ex)
-            {
-                Error = new ApiError("Проблемы с интернет-соединением. Проверьте подключение и попробуйте снова", 504,
-                    "");
-            }
-            catch (FlurlHttpException ex)
-            {
-                var response = await ex.GetResponseJsonAsync<ApiResponse<object>>();
-                Error = response is null ? new ApiError(ex.Call.Exception.Message, 0, "") : response.Error;
-            }
+            UserInformationRequestManager.MakeRequest(Method.GET, "users/me", null, OnSuccessfulGettingUserProfile,
+                () => { ErrorMessage = UserInformationRequestManager.Response.ToString(); });
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

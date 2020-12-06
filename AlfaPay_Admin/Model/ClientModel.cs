@@ -1,18 +1,33 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using System.Web.Security;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace AlfaPay_Admin.Model
 {
     public class ClientModel : IDataErrorInfo
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public bool HavePatronymic { get => true; }
-        public string Patronymic { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
+        [JsonProperty("username")] public string Username => Email.Split('@')[0] + "testttt";
+
+        [JsonProperty("firstName")] public string Name { get; set; }
+
+        [JsonProperty("lastName")] public string Surname { get; set; }
+
+        [JsonIgnore] public bool HavePatronymic => true;
+
+        [JsonProperty("patronymic")] public string Patronymic { get; set; }
+
+        [JsonProperty("email")] public string Email { get; set; }
+
+        [JsonProperty("phone")] public string Phone { get; set; }
+
+        [JsonProperty("password")] public string Password => Membership.GeneratePassword(10, 4);
         
+        [JsonProperty("privilege")]
+        public string Privilege => "CLIENT";
+
         public string this[string columnName]
         {
             get

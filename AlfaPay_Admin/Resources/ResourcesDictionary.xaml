@@ -34,6 +34,12 @@
     <converter:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     <converter:InvertedObjectToBoolConverter x:Key="InvertedObjectToBoolConverter" />
     <converter:ObjectToStringConverter x:Key="ObjectToStringConverter" />
+    <converter:RequestStatusInProgressToVisibilityConverter x:Key="RequestStatusInProgressToVisibilityConverter" />
+    <converter:InvertedRequestStatusInProgressToVisibility x:Key="InvertedRequestStatusInProgressToVisibility" />
+    <converter:InvertedRequestStatusIsSuccessfulToVisibility x:Key="InvertedRequestStatusIsSuccessfulToVisibility" />
+    <converter:RequestStatusIsErrorToVisibility x:Key="RequestStatusIsErrorToVisibility" />
+
+    <SolidColorBrush x:Key="RedUIColorBrush" Color="#F15045" />
 
 
     <Style x:Key="ButtonStyle" TargetType="Button">
@@ -144,7 +150,7 @@
     <Style x:Key="ContinueButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="#2FC26E" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="IsEnabled" Value="False" />
+        <Setter Property="IsEnabled" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}" x:Name="MainControlTemplate">
@@ -248,12 +254,11 @@
     </Style>
 
     <Style x:Key="LoginButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="#F15045" />
+        <Setter Property="Background" Value="{StaticResource RedUIColorBrush}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="IsEnabled" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
+                <ControlTemplate TargetType="{x:Type Button}" x:Name="MainControlTemplate">
                     <Grid>
                         <Border x:Name="border" CornerRadius="4" BorderThickness="0"
                                 BorderBrush="Transparent"
@@ -266,7 +271,7 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ColorAnimation To="#F15045"
+                                        <ColorAnimation To="#2FD681"
                                                         Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                                         Duration="0:0:0.2" />
                                     </Storyboard>
@@ -275,7 +280,7 @@
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ColorAnimation To="#F15045"
+                                        <ColorAnimation To="#2FC26E"
                                                         Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                                         Duration="0:0:0.2" />
                                     </Storyboard>
@@ -283,35 +288,32 @@
                             </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="#BE4238" />
+                            <Setter Property="Background" Value="#279A4F" />
                         </Trigger>
-                        
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="#F9B4AF" />
+                            <Setter Property="Background" Value="#402FC26E" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="True">
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard TargetProperty="(Background).(SolidColorBrush.Color)">
-                                        <ColorAnimation To="#F15045" Duration="0:0:0:0.2" />
+                                        <ColorAnimation To="#2FC26E" Duration="0:0:0:0.2" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="(Background).(SolidColorBrush.Color)">
+                                        <ColorAnimation To="#402FC26E" Duration="0:0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
-                        
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding ElementName=PasswordTextBox, Path=Text.IsEmpty}" Value="False" />
-                                <Condition Binding="{Binding ElementName=LoginTextBox, Path=Text.IsEmpty}" Value="False" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="IsEnabled" Value="True" />
-                        </MultiDataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <Style x:Key="LogoutButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
@@ -502,21 +504,12 @@
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="1" Duration="0:0:3" />
-                            <DoubleAnimation Storyboard.TargetProperty="Opacity" BeginTime="0:0:3" From="1" To="0"
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="1" Duration="0:0:5" />
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" BeginTime="0:0:5" From="1" To="0"
                                              Duration="0:0:0.5" />
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
-                <Trigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation To="0.0"
-                                             Storyboard.TargetProperty="Opacity"
-                                             Duration="0:0:0.2" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.ExitActions>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -587,12 +580,12 @@
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="FontSize" Value="10" />
     </Style>
-    
+
     <Style x:Key="ErrorMessageStyleTxtBlock" TargetType="TextBlock">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="#F15045" />
         <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="11" />
     </Style>
 
     <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
