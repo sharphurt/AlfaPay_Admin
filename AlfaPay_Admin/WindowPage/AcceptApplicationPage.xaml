@@ -1,9 +1,11 @@
-﻿<Page x:Class="AlfaPay_Admin.WindowPage.AcceptApplicationPage"
+﻿<PageFunction x:Class="AlfaPay_Admin.WindowPage.AcceptApplicationPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib" 
       xmlns:customControl="clr-namespace:AlfaPay_Admin.CustomControl"
+      x:TypeArguments="sys:Boolean"
       xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
       mc:Ignorable="d"
@@ -14,10 +16,10 @@
       MouseDown="AcceptApplicationPage_OnMouseDown">
     <Page.Resources>
         <Storyboard x:Key="ApplyWindowCloseAnimation" Completed="ApplyWindowCloseAnimation_OnCompleted">
-            <DoubleAnimation Duration="0:0:0.5"
+            <DoubleAnimation Duration="0:0:0.3"
                              Storyboard.TargetName="ApplyWindow"
                              Storyboard.TargetProperty="Opacity" From="1" To="0" />
-            <ThicknessAnimation Duration="0:0:0.5"
+            <ThicknessAnimation Duration="0:0:0.3"
                                 Storyboard.TargetName="ApplyWindowContentBox"
                                 Storyboard.TargetProperty="Margin"
                                 From="0" To="0,200,0,0"
@@ -203,7 +205,7 @@
                             <ListBox
                                 x:Name="AutocompleteListBox"
                                 BorderThickness="0.5"
-                                SelectionChanged="Selector_OnSelected"
+                                SelectionChanged="AutocompleteListBox_OnSelected"
                                 Style="{DynamicResource AutocompleteListBoxStyle}"
                                 ItemsSource="{Binding Path=CompanyModel.AutocompleteAddresses, UpdateSourceTrigger=PropertyChanged}">
                                 <ListBox.ItemContainerStyle>
@@ -254,8 +256,7 @@
                                          Visibility="{Binding CompanyModel.IsLoading, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
                                          HorizontalAlignment="Right"
                                          VerticalAlignment="Center"
-                                         Margin="0,0,5,0"
-                                         Style="{DynamicResource FadeInFadeOutEffectImage}" />
+                                         Margin="0,0,5,0" />
                     </Grid>
 
                 </WrapPanel>
@@ -346,29 +347,46 @@
                     <Grid>
                         <Button HorizontalAlignment="Right" VerticalAlignment="Top" x:Name="CloseWindowButton"
                                 Width="16"
-                                Height="16" BorderBrush="Transparent"
-                                BorderThickness="0" Background="Transparent" Opacity="0.5"
+                                Height="16"
+                                Margin="0,63,67,0"
+                                BorderBrush="Transparent"
+                                BorderThickness="0" Background="Transparent" Opacity="0.15"
+                                Style="{StaticResource CloseButton}"
+                                Cursor="Hand"
                                 Click="CloseWindowButton_OnClick">
-                            <Image Source="{DynamicResource RejectIcon}" Width="16" Height="16" />
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Border x:Name="border" CornerRadius="4" BorderThickness="0"
+                                                BorderBrush="Transparent"
+                                                Background="{TemplateBinding Background}" SnapsToDevicePixels="True" />
+
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                          Name="content" />
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Image Source="{DynamicResource CloseIcon}" Width="16" Height="16" />
                         </Button>
                         <WrapPanel
-                            Visibility="{Binding Error, Converter={StaticResource InvertedObjectToVisibilityConverter}}"
+                            Visibility="{Binding RegistrationRequestManager.Status, Converter={StaticResource RequestStatusNotStartedToVisibility}}"
                             Orientation="Vertical" HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Margin="0,0,0,30"
                             Style="{DynamicResource FadeInFadeOutEffectPanel}">
-                            <Label Style="{DynamicResource LightText}"
-                                   Margin="0,7,0,40">
+                            <TextBlock FontFamily="Segoe UI" FontSize="14" TextAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       Width="300"
+                                       Margin="0,7,0,40">
                                 Убедитесь в правильности введенных данных и нажмите кнопку "Зарегистрировать"
-                            </Label>
-                            <Button Style="{DynamicResource ContinueButtonStyle}" Width="250" Height="25"
-                                    Command="{Binding RegisterCommand}">
-                                <Label Style="{DynamicResource PrimaryText}" FontSize="14" Content="Зарегистрировать" />
-                            </Button>
+                            </TextBlock>
+                            <Button Style="{DynamicResource ContinueButtonStyle}" Width="250" Height="40"
+                                    Command="{Binding RegisterCommand}" Content="Зарегистрировать"
+                                    FontFamily="Segoe UI" FontSize="14" Foreground="White" />
                         </WrapPanel>
 
                         <WrapPanel
-                            Visibility="{Binding IsLoading, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                            Visibility="{Binding RegistrationRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
                             Orientation="Vertical" HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Margin="0,0,0,30"
@@ -378,7 +396,7 @@
                             <Label Style="{DynamicResource LightText}" Content="Идет отправка..." Margin="0,7,0,40" />
                         </WrapPanel>
                         <WrapPanel
-                            Visibility="{Binding IsSuccessfullyRegistered, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                            Visibility="{Binding RegistrationRequestManager.Status, Converter={StaticResource RequestStatusIsSuccessfulToVisibility}}"
                             Orientation="Vertical" HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Margin="0,0,0,30"
@@ -392,18 +410,28 @@
                         </WrapPanel>
                         <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Margin="0,0,0,30"
-                                   Visibility="{Binding Error, Converter={StaticResource ObjectToVisibilityConverter}}"
+                                   Visibility="{Binding RegistrationRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
                                    Style="{DynamicResource FadeInFadeOutEffectPanel}">
                             <fa:ImageAwesome Source="{DynamicResource ErrorIcon}" Height="40" Width="40" />
                             <Label Style="{DynamicResource LightText}" HorizontalAlignment="Center"
                                    Content="{Binding Error, Path=Message}"
                                    Margin="0,7,0,0" />
                             <Button Content="Попробовать снова" Style="{DynamicResource RefreshButtonStyle}"
-                                    Margin="0,10,0,0" Height="30" Width="150" />
+                                    Margin="0,10,0,0" Height="30" Width="150" Command="{Binding RegisterCommand}" />
                         </WrapPanel>
                     </Grid>
                 </Border>
             </Grid>
+            <Border CornerRadius="4" BorderThickness="0" Background="#F15045" Height="30" Margin="0,0,0,15"
+                    x:Name="ErrorPlate"
+                    VerticalAlignment="Bottom"
+                    Style="{DynamicResource ErrorPlateStyle}"
+                    Visibility="Hidden"
+                    HorizontalAlignment="Center">
+                <Label HorizontalContentAlignment="Center" Foreground="White" Style="{DynamicResource PrimaryText}"
+                       FontSize="14"
+                       Content="{Binding ErrorMessage}" Margin="10,0,10,0" />
+            </Border>
         </Grid>
     </Grid>
-</Page>
+</PageFunction>

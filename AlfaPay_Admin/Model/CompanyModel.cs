@@ -151,13 +151,12 @@ namespace AlfaPay_Admin.Model
             
             const string token = "e597dac2837d17460c9f3fecb15f3705dce952aa";
             var api = new SuggestClientAsync(token);
-            var result = await api.SuggestAddress(input);
+            var result = await api.SuggestAddress(input, 10);
             
-            var observableCollection = new ObservableCollection<string>();
+            AutocompleteAddresses = new ObservableCollection<string>();
             foreach (var suggestion in result.suggestions)
-                observableCollection.Add(suggestion.value);
-            AutocompleteAddresses = observableCollection;
-
+                AutocompleteAddresses.Add(suggestion.value);
+            
             ResponseReceived = true;
             IsLoading = false;
             IsResponseEmpty = AutocompleteAddresses.Count == 0;

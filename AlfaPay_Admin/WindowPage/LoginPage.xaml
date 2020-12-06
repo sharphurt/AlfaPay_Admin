@@ -56,7 +56,7 @@
                            Visibility="{Binding LoginRequestManager.Status, Converter={StaticResource InvertedRequestStatusInProgressToVisibility}}"
                            Foreground="White" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" />
                     <fa:ImageAwesome
-                        Visibility="{Binding LoginRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibilityConverter}}"
+                        Visibility="{Binding LoginRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
                         Source="{DynamicResource SpinSmallIcon}"
                         Width="16" Height="16" Spin="True"
                         SpinDuration="0.8" />

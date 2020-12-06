@@ -208,11 +208,12 @@
         <Compile Include="Context\ApiRequestManager.cs" />
         <Compile Include="Converter\InvertedBoolConverter.cs" />
         <Compile Include="Converter\InvertedObjectToBoolConverter.cs" />
-        <Compile Include="Converter\InvertedRequestStatusInProgressToVisibilityConverter.cs" />
+        <Compile Include="Converter\RequestStatusInProgressToVisibility.cs" />
         <Compile Include="Converter\ObjectToStringConverter.cs" />
-        <Compile Include="Converter\RequestStatusInProgressToVisibilityConverter.cs" />
+        <Compile Include="Converter\InvertedRequestStatusInProgressToVisibilityConverter.cs" />
         <Compile Include="Converter\RequestStatusIsErrorToVisibilityConverter.cs" />
-        <Compile Include="Converter\RequestStatusIsSuccessfulToVisibilityConverter.cs" />
+        <Compile Include="Converter\InvertedRequestStatusIsSuccessfulToVisibilityConverter.cs" />
+        <Compile Include="Converter\RequestStatusNotStartedToVisibilityConverter.cs" />
         <Compile Include="CustomControl\HeadedTextBlock.xaml.cs">
           <DependentUpon>HeadedTextBlock.xaml</DependentUpon>
         </Compile>
@@ -362,6 +363,9 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="Resources\alfa_pattern_white_rgb.png" />
+      <Resource Include="Resources\close.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="Resources\background.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>

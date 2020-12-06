@@ -22,6 +22,7 @@
     <BitmapImage x:Key="SuccessfulTick" UriSource="successfull_tick.png" />
     <BitmapImage x:Key="AlfaPattern" UriSource="alfa_pattern_white_rgb.png" />
     <BitmapImage x:Key="Background" UriSource="background.png" />
+    <BitmapImage x:Key="CloseIcon" UriSource="close.png" />
 
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converter:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
@@ -34,10 +35,11 @@
     <converter:InvertedBoolConverter x:Key="InvertedBoolConverter" />
     <converter:InvertedObjectToBoolConverter x:Key="InvertedObjectToBoolConverter" />
     <converter:ObjectToStringConverter x:Key="ObjectToStringConverter" />
-    <converter:RequestStatusInProgressToVisibilityConverter x:Key="RequestStatusInProgressToVisibilityConverter" />
+    <converter:RequestStatusInProgressToVisibility x:Key="RequestStatusInProgressToVisibility" />
     <converter:InvertedRequestStatusInProgressToVisibility x:Key="InvertedRequestStatusInProgressToVisibility" />
-    <converter:InvertedRequestStatusIsSuccessfulToVisibility x:Key="InvertedRequestStatusIsSuccessfulToVisibility" />
+    <converter:RequestStatusIsSuccessfulToVisibility x:Key="RequestStatusIsSuccessfulToVisibility" />
     <converter:RequestStatusIsErrorToVisibility x:Key="RequestStatusIsErrorToVisibility" />
+    <converter:RequestStatusNotStartedToVisibility x:Key="RequestStatusNotStartedToVisibility" />
 
     <SolidColorBrush x:Key="RedUIColorBrush" Color="#F15045" />
 
@@ -653,13 +655,35 @@
     </Style>
 
     <Storyboard x:Key="ApplyWindowOpenAnimation">
-        <DoubleAnimation Duration="0:0:0.5"
+        <DoubleAnimation Duration="0:0:0.4"
                          Storyboard.TargetName="ApplyWindow"
                          Storyboard.TargetProperty="Opacity" From="0" To="1" />
-        <ThicknessAnimation Duration="0:0:0.5"
+        <ThicknessAnimation Duration="0:0:0.4"
                             Storyboard.TargetName="ApplyWindowContentBox"
                             Storyboard.TargetProperty="Margin"
                             From="0,-200,0,0" To="0"
                             DecelerationRatio="0.9" />
     </Storyboard>
+
+    
+    <Style x:Key="CloseButton" TargetType="Button">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard TargetProperty="Opacity">
+                            <DoubleAnimation To="0.8" Duration="0:0:0.3" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard TargetProperty="Opacity">
+                            <DoubleAnimation To="0.15" Duration="0:0:0.3" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

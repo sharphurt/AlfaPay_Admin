@@ -19,21 +19,9 @@ namespace AlfaPay_Admin
     /// </summary>
     public partial class MainWindow
     {
-        private bool _allowDirectNavigation;
-        private NavigatingCancelEventArgs _navArgs;
-        private Duration _duration = new Duration(TimeSpan.FromSeconds(1));
-        private double _oldHeight = 0;
-
-
         public MainWindow()
         {
-            NavigationCommands.BrowseBack.InputGestures.Clear();
-            NavigationCommands.BrowseForward.InputGestures.Clear();
             InitializeComponent();
-            if (!Application.Current.Properties.Contains("AccessToken"))
-                Application.Current.Properties.Add("AccessToken", "");
-            if (!Application.Current.Properties.Contains("LoggedInUser"))
-                Application.Current.Properties.Add("LoggedInUser", null);
         }
 
         private void MainWindow_OnLoaded(object sender, EventArgs args)

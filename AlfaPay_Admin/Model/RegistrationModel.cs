@@ -11,7 +11,7 @@ using RestClient = RestSharp.RestClient;
 
 namespace AlfaPay_Admin.Model
 {
-    public sealed class RegistrationModel : ApiRequestManager<string>, INotifyPropertyChanged
+    public sealed class RegistrationModel : INotifyPropertyChanged
     {
         private ClientModel _clientModel;
 
@@ -49,25 +49,46 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        /*
-        private ApiResponse _registrationResponse;
+        private ApiRequestManager<string> _registrationRequestManager;
 
-        public ApiResponse RegistrationResponse
+        public ApiRequestManager<string> RegistrationRequestManager
         {
-            get => _registrationResponse;
+            get => _registrationRequestManager;
             set
             {
-                _registrationResponse = value;
-                OnPropertyChanged(nameof(RegistrationResponse));
+                _registrationRequestManager = value;
+                OnPropertyChanged(nameof(RegistrationRequestManager));
             }
         }
-        */
 
+        private string _errorMessage;
 
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
+
+        private bool _isSuccessfully;
+
+        public bool IsSuccessfully
+        {
+            get => _isSuccessfully;
+            set
+            {
+                _isSuccessfully = value;
+                OnPropertyChanged(nameof(IsSuccessfully));
+            }
+        }
+        
         private RelayCommand _registerCommand;
 
         public RelayCommand RegisterCommand =>
-            _registerCommand ?? (_registerCommand = new RelayCommand(obj => { RegisterClientCompany(); }));
+            _registerCommand ??= new RelayCommand(obj => { RegisterClientCompany(); });
 
 
         public RegistrationModel(Application application)
@@ -75,52 +96,36 @@ namespace AlfaPay_Admin.Model
             Application = application;
             ClientModel = new ClientModel();
             CompanyModel = new CompanyModel();
+            RegistrationRequestManager = new ApiRequestManager<string>();
         }
 
         private void RegisterClientCompany()
         {
             var testClient = new ClientModel()
             {
-                Email = "testhui1@test.hui",
+                Email = "te7t222@t66st.hui",
                 Name = "Тест",
                 Surname = "Тестов",
                 Patronymic = "Тестович",
-                Phone = "+79999919949"
+                Phone = "+79922132226"
             };
 
             var testCompany = new CompanyModel()
             {
                 Address = "екатеринбург коминтерна 5",
-                Inn = "1234567890",
-                Name = "CatstackTest",
-                Kkt = "2302404920492222",
+                Inn = "1242261097",
+                Name = "Catstack7",
                 TaxSystem = "ОСН"
             };
 
-            /*
-            MakeRequest(Method.POST, "/auth/register", new
-            {
-                client = testClient,
-                company = testCompany
-            });*/
+            RegistrationRequestManager.MakeRequest(Method.POST, "/auth/register", new
+                {
+                    client = testClient,
+                    company = testCompany,
+                    applicationToRemoveId = Application.Id
+                }, () => { IsSuccessfully = true; },
+                () => { ErrorMessage = RegistrationRequestManager.Response.Error.Message; });
         }
-
-        /*
-        private async Task<ApiResponse<string>> TryRegisterEntity(object entity, string path)
-        {
-            var baseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
-            var client = new RestSharp.RestClient(baseUrl);
-            client.UseNewtonsoftJson();
-
-            var request = new RestRequest(path);
-            request.AddJsonBody(entity, "application/json");
-            request.AddHeader("Authorization", AuthenticationContext.Token.ToString());
-            var response = await client.PostAsync<ApiResponse<string>>(request);
-            if (!response.IsSuccessfully)
-                Error = response.Error;
-
-            return response;
-        }*/
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -7,11 +7,11 @@ using AlfaPay_Admin.Properties;
 
 namespace AlfaPay_Admin.Converter
 {
-    public class InvertedRequestStatusInProgressToVisibility : IValueConverter
+    public class RequestStatusNotStartedToVisibility : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (RequestStatus) value == RequestStatus.InProgress ? Visibility.Hidden : Visibility.Visible;
+            return (RequestStatus) value == RequestStatus.NotStarted ? Visibility.Visible : Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

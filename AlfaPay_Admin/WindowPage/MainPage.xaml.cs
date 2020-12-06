@@ -15,7 +15,8 @@ namespace AlfaPay_Admin.WindowPage
     public partial class MainPage : Page
     {
         private readonly ApplicationViewModel _applicationModel = new ApplicationViewModel();
-        private readonly DispatcherTimer _errorPlateVisibilityTimer = new DispatcherTimer ();
+        private readonly DispatcherTimer _errorPlateVisibilityTimer = new DispatcherTimer();
+
         public MainPage()
         {
             InitializeComponent();
@@ -73,6 +74,8 @@ namespace AlfaPay_Admin.WindowPage
             for (var i = 0; i < ApplicationsListBox.Items.Count; i++)
             {
                 var myListBoxItem = (ListBoxItem) ApplicationsListBox.ItemContainerGenerator.ContainerFromIndex(i);
+                if (myListBoxItem is null)
+                    continue;
                 var myContentPresenter = FindVisualChild<ContentPresenter>(myListBoxItem);
                 var myDataTemplate = myContentPresenter.ContentTemplate;
                 var target = (Line) myDataTemplate.FindName("SelectionLine", myContentPresenter);
@@ -108,7 +111,19 @@ namespace AlfaPay_Admin.WindowPage
             };
 
             var registrationModel = new RegistrationModel(selectedApplication);
-            navigationService?.Navigate(new AcceptApplicationPage(registrationModel));
+            var acceptApplicationPage = new AcceptApplicationPage(registrationModel);
+            acceptApplicationPage.Return += (o, args) =>
+            {
+                if (args != null && args.Result)
+                    RefreshButton.Command.Execute(null);
+            };
+            
+            navigationService?.Navigate(acceptApplicationPage);
         }
+
+        /*private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigated += (o, args) => { RefreshButton.Command.Execute(null); };
+        }*/
     }
 }
