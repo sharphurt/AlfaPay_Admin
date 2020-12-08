@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converter="clr-namespace:AlfaPay_Admin.Converter">
+        <BitmapImage x:Key="SendIcon" UriSource="send.png" />
+    <BitmapImage x:Name="TickIcon" x:Key="TickIcon" UriSource="tick.png" />
+    <BitmapImage x:Key="RejectIcon" UriSource="reject.png" />
+    <BitmapImage x:Key="SearchIcon" UriSource="search.png" />
+    <BitmapImage x:Key="LogOutIcon" UriSource="logout.png" />
+    <BitmapImage x:Key="SpinIcon" UriSource="spin.png" />
+    <BitmapImage x:Key="ErrorIcon" UriSource="error.png" />
+    <BitmapImage x:Key="SpinSmallIcon" UriSource="spin_small.png" />
+    <BitmapImage x:Key="DeadImage" UriSource="dead.png" />
+    <BitmapImage x:Key="ApplyWindowPlate" UriSource="apply_window_plate.png" />
+    <ImageBrush x:Key="ApplyWindowPlateImageBrush" ImageSource="apply_window_plate.png" />
+    <BitmapImage x:Key="SuccessfulTick" UriSource="successfull_tick.png" />
+    <BitmapImage x:Key="AlfaPattern" UriSource="alfa_pattern_white_rgb.png" />
+    <BitmapImage x:Key="Background" UriSource="background.png" />
+    <BitmapImage x:Key="CloseIcon" UriSource="close.png" />
+
+    <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <converter:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+    <converter:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
+    <converter:InvertedObjectToVisibilityConverter x:Key="InvertedObjectToVisibilityConverter" />
+    <converter:DateTimeConverter x:Key="DateTimeConverter" />
+    <converter:ErrorToErrorMessageConverter x:Key="ErrorMessageConverter" />
+    <converter:BoolToIconConverter x:Key="BoolToIconConverter" />
+    <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
+    <converter:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    <converter:InvertedObjectToBoolConverter x:Key="InvertedObjectToBoolConverter" />
+    <converter:ObjectToStringConverter x:Key="ObjectToStringConverter" />
+    <converter:RequestStatusInProgressToVisibility x:Key="RequestStatusInProgressToVisibility" />
+    <converter:InvertedRequestStatusInProgressToVisibility x:Key="InvertedRequestStatusInProgressToVisibility" />
+    <converter:RequestStatusIsSuccessfulToVisibility x:Key="RequestStatusIsSuccessfulToVisibility" />
+    <converter:RequestStatusIsErrorToVisibility x:Key="RequestStatusIsErrorToVisibility" />
+    <converter:RequestStatusNotStartedToVisibility x:Key="RequestStatusNotStartedToVisibility" />
+
+</ResourceDictionary>

@@ -269,7 +269,11 @@
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="Resources\ButtonStyle.xaml" />
+        <Page Include="Resources\AssetResources.xaml" />
+        <Page Include="Resources\InputStyle.xaml" />
         <Page Include="Resources\ResourcesDictionary.xaml" />
+        <Page Include="Resources\TextStyle.xaml" />
         <Page Include="TestWindow.xaml">
           <Generator>MSBuild:Compile</Generator>
           <SubType>Designer</SubType>

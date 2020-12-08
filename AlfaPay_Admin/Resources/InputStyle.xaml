@@ -1,0 +1,111 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <FontFamily x:Key="PasswordFontFamily">pack://application:,,,/Resources/#password</FontFamily>
+
+    <ControlTemplate x:Key="InputFilledTemplate" TargetType="TextBox">
+        <Grid>
+            <Border
+                x:Name="InputBorder"
+                CornerRadius="4"
+                Padding="2"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+                <ScrollViewer x:Name="PART_ContentHost" />
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter TargetName="InputBorder" Property="CornerRadius" Value="4,4,0,0" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="InputUnfilledTemplate" TargetType="TextBox">
+        <StackPanel>
+            <Border
+                x:Name="InputBorder"
+                Padding="2"
+                BorderBrush="Transparent"
+                Background="Transparent"
+                BorderThickness="0">
+                <ScrollViewer x:Name="PART_ContentHost" />
+            </Border>
+            <Line x:Name="Underline" Margin="0,3,0,0" X1="0" X2="{Binding ElementName=InputBorder, Path=ActualWidth}" Y1="0" Y2="0"
+                  Stroke="#6EFFFFFF" StrokeThickness="1" />
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter TargetName="Underline" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="Validation.HasError" Value="False">
+                <Setter TargetName="Underline" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter TargetName="Underline" Property="Stroke" Value="White" />
+                <Setter TargetName="Underline" Property="StrokeThickness" Value="2" />
+            </Trigger>
+            <Trigger Property="IsFocused" Value="False">
+                <Setter TargetName="Underline" Property="Stroke" Value="#6EFFFFFF" />
+                <Setter TargetName="Underline" Property="StrokeThickness" Value="1" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="PasswordUnfilledInputTemplate" TargetType="PasswordBox">
+        <Border Background="Transparent" BorderBrush="Transparent" x:Name="PasswordBorder" BorderThickness="0">
+            <ScrollViewer x:Name="PART_ContentHost" />
+        </Border>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ValidationFailed">
+        <StackPanel Orientation="Vertical">
+            <AdornedElementPlaceholder x:Name="Placeholder" />
+            <Line X1="0" X2="{Binding ElementName=Placeholder, Path=ActualWidth}" Y1="0" Y2="0" Stroke="#F15045"
+                  StrokeThickness="2" Margin="0,-10,0,0" />
+            <Label Style="{DynamicResource ErrorMessageStyle}" Margin="-4,-10,0,0"
+                   Content="{Binding ElementName=Placeholder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" />
+        </StackPanel>
+    </ControlTemplate>
+
+
+    <Style x:Key="InputFilledStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="#f3f4f5" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="Height" Value="40 px" />
+        <Setter Property="Width" Value="340" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Padding" Value="10,0,10,3" />
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationFailed}" />
+        <Setter Property="Template" Value="{StaticResource InputFilledTemplate}" />
+    </Style>
+
+    <Style x:Key="InputUnfilledStyle" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="Height" Value="40 px" />
+        <Setter Property="Width" Value="340" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="CaretBrush" Value="White" />
+        <Setter Property="Padding" Value="0,0,0,3" />
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationFailed}" />
+        <Setter Property="Template" Value="{StaticResource InputUnfilledTemplate}" />
+    </Style>
+
+    <Style x:Key="PasswordInputFilledStyle" TargetType="TextBox" BasedOn="{StaticResource InputFilledStyle}">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="{StaticResource PasswordFontFamily}" />
+    </Style>
+
+    <Style x:Key="PasswordInputUnfilledStyle" TargetType="TextBox" BasedOn="{StaticResource InputUnfilledStyle}">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="{StaticResource PasswordFontFamily}" />
+    </Style>
+
+</ResourceDictionary>

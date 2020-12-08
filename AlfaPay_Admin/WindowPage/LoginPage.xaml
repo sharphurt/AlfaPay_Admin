@@ -3,55 +3,54 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:AlfaPay_Admin.WindowPage"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
-      xmlns:customControl="clr-namespace:AlfaPay_Admin.CustomControl"
       mc:Ignorable="d"
       Title="LoginPage"
+      MouseDown="LoginPage_OnMouseDown"
       MinHeight="630"
       MinWidth="1200">
     <Page.Background>
         <ImageBrush ImageSource="{DynamicResource Background}" Stretch="UniformToFill" />
     </Page.Background>
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid x:Name="MainGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="True">
         <WrapPanel Orientation="Vertical" x:Name="MainPanel" Width="340">
-            <Label Style="{DynamicResource LightText}" FontSize="36" Foreground="White" Content="Вход" />
-
+            <Label Style="{StaticResource LightPrimaryText}" FontSize="36" Foreground="White" Content="Вход" />
             <WrapPanel Orientation="Vertical" Margin="0,35,0,0">
-                <Label Style="{DynamicResource SecondaryText}" Foreground="White" FontSize="13" Focusable="True"
-                       Content="Логин" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         x:Name="LoginTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
+                <Label Style="{StaticResource SecondaryText}" Foreground="White" Content="Логин" />
+                <TextBox Style="{StaticResource InputUnfilledStyle}" x:Name="LoginInput"
                          VerticalContentAlignment="Center">
-                    <Binding Path="Login" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="Login" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
                 </TextBox>
             </WrapPanel>
             <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
-                <Label Style="{DynamicResource SecondaryText}" Foreground="White" FontSize="13" Focusable="True"
-                       Content="Пароль" />
-                <TextBox Style="{DynamicResource InputTextBoxStyle}"
-                         x:Name="PasswordTextBox"
-                         Template="{DynamicResource TextBoxControlTemplate}"
+                <Label Style="{StaticResource SecondaryText}" Foreground="White" Content="Пароль" />
+                <TextBox Style="{StaticResource InputUnfilledStyle}" x:Name="PasswordInput"
                          VerticalContentAlignment="Center">
-                    <Binding Path="Password" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="Password" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
                 </TextBox>
             </WrapPanel>
 
-            <TextBlock Style="{DynamicResource ErrorMessageStyleTxtBlock}"
+            <TextBlock Style="{StaticResource ErrorMessageStyleTxtBlock}"
                        HorizontalAlignment="Left"
-                       Margin="0,10,0,0"
+                       Margin="0,0,0,0"
                        Height="30"
                        Text="{Binding Path=ErrorMessage}"
                        LineHeight="7"
                        TextWrapping="Wrap" Width="{Binding ElementName=MainPanel, Path=ActualWidth}" />
 
-            <Button Style="{DynamicResource MaterialDesign}" Margin="0,35,0,0" Height="50"
-                    x:Name="LoginButton" Command="{Binding LoginCommand}">
+            <Button Style="{StaticResource RedButtonStyle}" Margin="0,35,0,0" Height="50" x:Name="LoginButton"
+                    Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=PasswordTextBox}">
                 <Grid>
                     <Label HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           Style="{DynamicResource FadeInFadeOutEffectControl}"
                            Content="Войти"
                            Visibility="{Binding LoginRequestManager.Status, Converter={StaticResource InvertedRequestStatusInProgressToVisibility}}"
                            Foreground="White" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" />

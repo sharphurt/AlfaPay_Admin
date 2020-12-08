@@ -86,3 +86,7 @@ C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\MaterialDe
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\MaterialDesignColors.pdb
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\MaterialDesignThemes.Wpf.pdb
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\Resources\ButtonStyle.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\Resources\InputStyle.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\Resources\TextStyle.baml
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\Resources\AssetResources.baml

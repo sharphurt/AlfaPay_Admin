@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Windows.Controls;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Entity;
@@ -18,7 +19,7 @@ using Application = System.Windows.Application;
 
 namespace AlfaPay_Admin.Model
 {
-    public sealed class LoginModel : INotifyPropertyChanged
+    public sealed class LoginModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private JwtContainer _token;
 
@@ -62,7 +63,7 @@ namespace AlfaPay_Admin.Model
         {
             get
             {
-                return _loginCommand ??= new RelayCommand(obj => { SendLoginRequest(); });
+                return _loginCommand ??= new RelayCommand(SendLoginRequest);
             }
         }
 
@@ -139,12 +140,12 @@ namespace AlfaPay_Admin.Model
             LoggedInUser = UserInformationRequestManager.Response.Response;
         }
 
-        private void SendLoginRequest()
+        private void SendLoginRequest(object obj)
         {
             LoginRequestManager.MakeRequest(Method.POST, "auth/login", new
             {
-                email = "user@catstack.net",
-                password = "password",
+                email = Login,
+                password = Password,
                 deviceInfo = AuthenticationContext.DeviceInfo
             }, OnSuccessfulLogin, () =>
             {
@@ -165,5 +166,27 @@ namespace AlfaPay_Admin.Model
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case "Login":
+                        if (Login == "")
+                            return "Введите логин";
+                        break;
+                    case "Password":
+                        if (Password == "")
+                            return "Введите пароль";
+                        break;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        public string Error { get; }
     }
 }

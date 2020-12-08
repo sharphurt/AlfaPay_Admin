@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Controls;
+using System.Windows.Input;
 using AlfaPay_Admin.Model;
 
 namespace AlfaPay_Admin.WindowPage
@@ -23,6 +24,11 @@ namespace AlfaPay_Admin.WindowPage
                 var navigationService = NavigationService;
                 navigationService?.Navigate(mainPage);
             }
+        }
+
+        private void LoginPage_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MainGrid.Focus();
         }
     }
 }

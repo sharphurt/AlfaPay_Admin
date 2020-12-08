@@ -5,7 +5,13 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!--
                 <ResourceDictionary Source="Resources/ResourcesDictionary.xaml" />
+                -->
+                <ResourceDictionary Source="Resources/ButtonStyle.xaml" />
+                <ResourceDictionary Source="Resources/InputStyle.xaml" />
+                <ResourceDictionary Source="Resources/TextStyle.xaml" />
+                <ResourceDictionary Source="Resources/AssetResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
