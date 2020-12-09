@@ -30,5 +30,10 @@ namespace AlfaPay_Admin.WindowPage
         {
             MainGrid.Focus();
         }
+
+        private void Input_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            LoginButton.IsEnabled = !string.IsNullOrEmpty(LoginInput.Text) && !string.IsNullOrEmpty(PasswordInput.Text);
+        }
     }
 }

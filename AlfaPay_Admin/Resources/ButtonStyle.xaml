@@ -2,11 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ControlTemplate x:Key="ButtonFilledTemplate" TargetType="Button">
         <Grid>
-            <Border x:Name="ButtonBorder" BorderThickness="0" CornerRadius="6"
-                    Background="{TemplateBinding Background}">
-                <AdornerDecorator HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <ContentPresenter />
-                </AdornerDecorator>
+            <Border BorderThickness="0" CornerRadius="6" Background="{TemplateBinding Background}">
+                <ContentPresenter  />
             </Border>
         </Grid>
     </ControlTemplate>
@@ -28,8 +25,8 @@
             <Color x:Key="MouseOverColor" R="240" G="50" B="38" A="255" />
             <Color x:Key="MousePressedColor" R="158" G="12" B="0" A="255" />
             <Color x:Key="DisabledColor" R="251" G="204" B="201" A="255" />
-            
-            <SolidColorBrush x:Key="PrimaryColorBrush" Color="{StaticResource PrimaryColor}"></SolidColorBrush>
+
+            <SolidColorBrush x:Key="PrimaryColorBrush" Color="{StaticResource PrimaryColor}" />
         </Style.Resources>
         <Style.Setters>
             <Setter Property="Background" Value="{StaticResource PrimaryColorBrush}" />
@@ -81,7 +78,7 @@
             <Trigger Property="IsEnabled" Value="false">
                 <Trigger.EnterActions>
                     <BeginStoryboard>
-                        <Storyboard>
+                        <Storyboard TargetProperty="Background">
                             <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
                                             To="{StaticResource DisabledColor}"
                                             Duration="0:0:0.2" />
@@ -90,7 +87,7 @@
                 </Trigger.EnterActions>
                 <Trigger.ExitActions>
                     <BeginStoryboard>
-                        <Storyboard>
+                        <Storyboard TargetProperty="Background">
                             <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
                                             From="{StaticResource DisabledColor}"
                                             Duration="0:0:0.2" />
@@ -108,8 +105,8 @@
             <Color x:Key="MouseOverColor" R="0" G="194" B="84" A="255" />
             <Color x:Key="MousePressedColor" R="21" G="69" B="41" A="255" />
             <Color x:Key="DisabledColor" R="203" G="240" B="219" A="255" />
-            
-            <SolidColorBrush x:Key="PrimaryColorBrush" Color="{StaticResource PrimaryColor}"></SolidColorBrush>
+
+            <SolidColorBrush x:Key="PrimaryColorBrush" Color="{StaticResource PrimaryColor}" />
         </Style.Resources>
         <Style.Setters>
             <Setter Property="Background" Value="{StaticResource PrimaryColorBrush}" />
@@ -189,9 +186,9 @@
             <Color x:Key="MouseOverBorderColor" B="0" G="0" R="0" A="255" />
             <Color x:Key="MousePressedColor" B="0" G="0" R="255" A="255" />
             <Color x:Key="DisabledColor" B="0" G="0" R="255" A="255" />
-            
-            <SolidColorBrush x:Key="PrimaryBackgroundColorBrush" Color="{StaticResource PrimaryBackgroundColor}"></SolidColorBrush>
-            <SolidColorBrush x:Key="PrimaryBorderColorBrush" Color="{StaticResource PrimaryBorderColor}"></SolidColorBrush>
+
+            <SolidColorBrush x:Key="PrimaryBackgroundColorBrush" Color="{StaticResource PrimaryBackgroundColor}" />
+            <SolidColorBrush x:Key="PrimaryBorderColorBrush" Color="{StaticResource PrimaryBorderColor}" />
 
         </Style.Resources>
         <Style.Setters>

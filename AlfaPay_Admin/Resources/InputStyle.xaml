@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <FontFamily x:Key="PasswordFontFamily">pack://application:,,,/Resources/#password</FontFamily>
+    <FontFamily x:Key="PasswordFontFamily">pack://application:,,,/Resources/Fonts/#password</FontFamily>
 
     <ControlTemplate x:Key="InputFilledTemplate" TargetType="TextBox">
         <Grid>

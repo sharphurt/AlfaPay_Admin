@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converter="clr-namespace:AlfaPay_Admin.Converter">
-        <BitmapImage x:Key="SendIcon" UriSource="send.png" />
+    <BitmapImage x:Key="SendIcon" UriSource="send.png" />
     <BitmapImage x:Name="TickIcon" x:Key="TickIcon" UriSource="tick.png" />
     <BitmapImage x:Key="RejectIcon" UriSource="reject.png" />
     <BitmapImage x:Key="SearchIcon" UriSource="search.png" />
@@ -33,5 +33,6 @@
     <converter:RequestStatusIsSuccessfulToVisibility x:Key="RequestStatusIsSuccessfulToVisibility" />
     <converter:RequestStatusIsErrorToVisibility x:Key="RequestStatusIsErrorToVisibility" />
     <converter:RequestStatusNotStartedToVisibility x:Key="RequestStatusNotStartedToVisibility" />
+    <converter:InvertedRequestStatusInProgressToBool x:Key="InvertedRequestStatusInProgressToBool" />
 
 </ResourceDictionary>
