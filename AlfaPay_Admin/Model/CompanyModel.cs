@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -13,6 +14,7 @@ namespace AlfaPay_Admin.Model
     public sealed class CompanyModel : IDataErrorInfo, INotifyPropertyChanged
     {
         private string _name;
+        private Random _random = new Random();
 
         [JsonProperty("name")]
         public string Name
@@ -141,13 +143,13 @@ namespace AlfaPay_Admin.Model
         {
             IsResponseEmpty = true;
             AutocompleteAddresses = new ObservableCollection<string>();
+            Kkt = _random.Next(10000000, 99999999).ToString() + _random.Next(10000000, 99999999);
         }
 
         private async void GetAddressAutocomplete(string input)
         {
             ResponseReceived = false;
             IsLoading = true;
-            IsResponseEmpty = false;
             
             const string token = "e597dac2837d17460c9f3fecb15f3705dce952aa";
             var api = new SuggestClientAsync(token);
@@ -168,6 +170,10 @@ namespace AlfaPay_Admin.Model
             {
                 switch (columnName)
                 {
+                    case "Name":
+                        if (Name == "")
+                            return "Название не может быть пустым";
+                        break;
                     case "Inn":
                         if (!Regex.IsMatch(Inn, "[\\d]{10}"))
                             return "Введите 10 цифр";
@@ -175,10 +181,6 @@ namespace AlfaPay_Admin.Model
                     case "TaxSystem":
                         if (!Regex.IsMatch(TaxSystem, "ЕНВД|ЕСХН|СРП|УСН|ЕНВД-ЕСХН|УСН-ЕНВД|ОСН"))
                             return "Некорректный тип СНО";
-                        break;
-                    case "Kkt":
-                        if (!Regex.IsMatch(Kkt, "[\\d]{16}"))
-                            return "Введите 16 цифр";
                         break;
                     default:
                         return string.Empty;

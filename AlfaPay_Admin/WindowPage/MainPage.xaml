@@ -19,47 +19,18 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40 px" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Border CornerRadius="4" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#f3f4f5">
-                <DockPanel Margin="5,2,0,2" VerticalAlignment="Center">
-                    <WrapPanel DockPanel.Dock="Left" x:Name="SearchPanel" Orientation="Horizontal" Margin="15,0,0,0"
-                               Background="Transparent"
-                               VerticalAlignment="Center">
-                        <Image Source="{DynamicResource SearchIcon}" x:Name="SearchIcon"
-                               RenderOptions.BitmapScalingMode="HighQuality"
-                               Stretch="UniformToFill" Width="14" Height="14" Opacity="0.3" />
-                        <WrapPanel Orientation="Vertical" Margin="10,0,0,0">
-                            <TextBox x:Name="SearchTextBox" Style="{DynamicResource SearchTextBoxStyle}"
-                                     Margin="0,0,0,4"
-                                     Text="Поиск по компаниям"
-                                     VerticalContentAlignment="Center"
-                                     GotFocus="SearchTextBox_OnGotFocus"
-                                     LostFocus="SearchTextBox_OnLostFocus" />
-                            <Line x:Name="LineUnderSearch" Width="250" StrokeThickness="1" Stroke="#B6BCC3" X1="0"
-                                  Y1="0"
-                                  X2="250" Y2="0" />
-                        </WrapPanel>
-                    </WrapPanel>
-                    <Button DockPanel.Dock="Right" Width="32" Height="32" Margin="10,0,15,0"
-                            Style="{DynamicResource LogoutButtonStyle}" Command="{Binding LogoutCommand}">
-                        <Image Source="{DynamicResource LogOutIcon}" RenderOptions.BitmapScalingMode="HighQuality"
-                               Stretch="UniformToFill" Margin="2,0,0,0" Width="14" Height="14" />
-                    </Button>
-                    <Label DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{DynamicResource PrimaryText}"
-                           Content="{Binding Path=LoggedInUser}" />
-                </DockPanel>
-            </Border>
-            <GroupBox Grid.Column="0" Grid.Row="1" Margin="0,0,5,5">
+            
+            <GroupBox Grid.Column="0" Grid.Row="0" Margin="0,0,5,5">
                 <GroupBox.Header>
-                    <Label Background="White" Style="{DynamicResource PrimaryHeader}" Padding="5,0,5,5"
+                    <Label Background="White" Style="{StaticResource PrimaryHeader}" Padding="5,0,5,5"
                            Margin="0,5,0,0"
                            Content="Информация о клиенте" />
                 </GroupBox.Header>
                 <Grid>
-                    <Image Source="{DynamicResource DeadImage}" Width="150" HorizontalAlignment="Center"
+                    <Image Source="{StaticResource DeadImage}" Width="150" HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}" />
                     <Label HorizontalAlignment="Center"
@@ -73,17 +44,15 @@
 
                     <WrapPanel
                         Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Style="{DynamicResource FadeInFadeOutEffectPanel}">
-                        <Label Style="{DynamicResource LightText}" Content="Дождитесь окончания загрузки данных" />
-                        <fa:ImageAwesome Source="{DynamicResource SpinSmallIcon}" Margin="5,0,0,0" Spin="True"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Style="{StaticResource LightPrimaryText}" Content="Дождитесь окончания загрузки данных" />
+                        <fa:ImageAwesome Source="{StaticResource SpinSmallIcon}" Margin="5,0,0,0" Spin="True"
                                          SpinDuration="0.8"
                                          Width="16" Height="16" />
                     </WrapPanel>
                     <Grid Margin="15,0,15,0" ZIndex="1" DataContext="{Binding SelectedApplication}"
                           Background="White"
-                          Visibility="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToVisibilityConverter}}"
-                          Style="{DynamicResource FadeInFadeOutEffectPanel}">
+                          Visibility="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150 px" />
                             <ColumnDefinition Width="*" />
@@ -97,27 +66,27 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"
-                               Style="{DynamicResource SecondaryHeader}" Content="Имя" />
+                               Style="{StaticResource SecondaryHeader}" Content="Имя" />
                         <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"
-                               Style="{DynamicResource SecondaryHeader}" Content="Email" />
+                               Style="{StaticResource SecondaryHeader}" Content="Email" />
                         <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"
-                               Style="{DynamicResource SecondaryHeader}" Content="Телефон" />
+                               Style="{StaticResource SecondaryHeader}" Content="Телефон" />
                         <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"
-                               Style="{DynamicResource SecondaryHeader}"
+                               Style="{StaticResource SecondaryHeader}"
                                Content="ИНН компании" />
                         <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"
-                               Style="{DynamicResource SecondaryHeader}" Content="Дата подачи" />
+                               Style="{StaticResource SecondaryHeader}" Content="Дата подачи" />
 
                         <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"
-                               Style="{DynamicResource PrimaryText}" Content="{Binding Name}" />
+                               Style="{StaticResource PrimaryText}" Content="{Binding Name}" />
                         <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"
-                               Style="{DynamicResource PrimaryText}" Content="{Binding Email}" />
+                               Style="{StaticResource PrimaryText}" Content="{Binding Email}" />
                         <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"
-                               Style="{DynamicResource PrimaryText}" Content="{Binding Phone}" />
+                               Style="{StaticResource PrimaryText}" Content="{Binding Phone}" />
                         <Label Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right"
-                               Style="{DynamicResource PrimaryText}" Content="{Binding Inn}" />
+                               Style="{StaticResource PrimaryText}" Content="{Binding Inn}" />
                         <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right"
-                               Style="{DynamicResource PrimaryText}"
+                               Style="{StaticResource PrimaryText}"
                                Content="{Binding CreatedAt, Converter={StaticResource DateTimeConverter}}" />
 
                         <TextBlock Grid.Column="2" Margin="10,0,0,0" Grid.Row="3" HorizontalAlignment="Left"
@@ -127,14 +96,14 @@
                             </Hyperlink>
                         </TextBlock>
 
-                        <Label Grid.Column="2" Margin="10,0,0,0" HorizontalAlignment="Left"
-                               VerticalAlignment="Center" Grid.Row="4" Style="{DynamicResource TertiaryText}"
+                        <Label Grid.Column="2" Margin="10,0,0,0" HorizontalAlignment="Left" Grid.Row="4"
+                               Style="{StaticResource TertiaryText}"
                                Content="{Binding DaysPassed}" />
                     </Grid>
                 </Grid>
             </GroupBox>
 
-            <Grid Grid.Column="0" Row="2"
+            <Grid Grid.Column="0" Row="1"
                   IsEnabled="{Binding ElementName=ApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToBoolConverter}}"
                   VerticalAlignment="Top" Margin="0,3,6,0">
                 <Grid.ColumnDefinitions>
@@ -143,7 +112,8 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Style="{StaticResource ButtonStyle}" Height="40 px" Margin="0,0,7,0">
+                <Button Grid.Column="0" Style="{StaticResource OutlinedWhiteButtonStyle}" Height="40 px"
+                        Margin="0,0,7,0">
                     <WrapPanel Orientation="Horizontal">
                         <Image Source="{StaticResource SendIcon}" RenderOptions.BitmapScalingMode="HighQuality"
                                Width="16"
@@ -151,7 +121,8 @@
                         <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3" Content="Связаться с клиентом" />
                     </WrapPanel>
                 </Button>
-                <Button x:Name="AcceptButton" Grid.Column="1" Style="{StaticResource ButtonStyle}" Height="40 px"
+                <Button x:Name="AcceptButton" Grid.Column="1" Style="{StaticResource OutlinedWhiteButtonStyle}"
+                        Height="40 px"
                         Margin="7,0,7,0" Click="AcceptButton_OnClick">
                     <WrapPanel Orientation="Horizontal">
                         <Image Source="{StaticResource TickIcon}" RenderOptions.BitmapScalingMode="HighQuality"
@@ -160,7 +131,8 @@
                         <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Одобрить заявку</Label>
                     </WrapPanel>
                 </Button>
-                <Button Grid.Column="2" Style="{StaticResource ButtonStyle}" Height="40 px" Margin="7,0,0,0">
+                <Button Grid.Column="2" Style="{StaticResource OutlinedWhiteButtonStyle}" Height="40 px"
+                        Margin="7,0,0,0" Command="{Binding RejectCommand}">
                     <WrapPanel Orientation="Horizontal">
                         <Image Source="{StaticResource RejectIcon}" RenderOptions.BitmapScalingMode="HighQuality"
                                Width="14" Height="14" Margin="10,0,10,0" />
@@ -168,9 +140,9 @@
                     </WrapPanel>
                 </Button>
             </Grid>
-            <GroupBox Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
+            <GroupBox Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
                 <GroupBox.Header>
-                    <Label Style="{DynamicResource PrimaryHeader}" Background="White" Padding="5,0,5,5"
+                    <Label Style="{StaticResource PrimaryHeader}" Background="White" Padding="5,0,5,5"
                            Margin="0,5,0,0"
                            Content="Заявки на рассмотение" />
                 </GroupBox.Header>
@@ -197,7 +169,7 @@
 
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="50 px" Style="{DynamicResource ListBoxElement}">
+                                <Grid Height="50 px" Style="{StaticResource ListBoxElement}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="5 px" />
                                         <ColumnDefinition Width="*" />
@@ -211,14 +183,13 @@
                                     <Line x:Name="SelectionLine" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" X1="0"
                                           X2="0"
                                           Y1="0" Y2="60" Stroke="#F15045" StrokeThickness="5"
-                                          Visibility="Collapsed"
-                                          Style="{DynamicResource FadeInFadeOutEffectShape}" />
-                                    <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource SecondaryHeader}"
+                                          Visibility="Collapsed" />
+                                    <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource SecondaryHeader}"
                                            Content="{Binding Path=Name}" Height="30" />
-                                    <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource SecondaryText}"
+                                    <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource SecondaryText}"
                                            Content="{Binding Path=Phone}" />
                                     <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                                           Style="{DynamicResource TertiaryText}"
+                                           Style="{StaticResource TertiaryText}"
                                            Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
                                            VerticalAlignment="Bottom" />
                                 </Grid>
@@ -229,22 +200,20 @@
                                Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
                                Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
                                Margin="0,0,0,30">
-                        <fa:ImageAwesome Panel.ZIndex="1" Source="{DynamicResource SpinIcon}" SpinDuration="0.8"
+                        <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource SpinIcon}" SpinDuration="0.8"
                                          Spin="true" Height="40" Width="40" />
-                        <Label Style="{DynamicResource LightText}" Content="Данные загружаются" Margin="0,7,0,40" />
+                        <Label Style="{StaticResource LightPrimaryText}" Content="Данные загружаются" Margin="0,7,0,40" />
                     </WrapPanel>
                     <WrapPanel Panel.ZIndex="1"
                                Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
                                Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Margin="0,0,0,30"
-                               Style="{DynamicResource FadeInFadeOutEffectPanel}">
-                        <fa:ImageAwesome Panel.ZIndex="1" Source="{DynamicResource ErrorIcon}"
-                                         Height="40" Width="40" />
-                        <Label Style="{DynamicResource LightText}" HorizontalAlignment="Center"
+                               Margin="0,0,0,30">
+                        <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource ErrorIcon}" Height="40" Width="40" />
+                        <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
                                Content="Произошла ошибка"
                                Margin="0,7,0,0" />
                         <Button x:Name="RefreshButton" Content="Попробовать снова"
-                                Style="{DynamicResource RefreshButtonStyle}" Margin="0,10,0,0"
+                                Style="{StaticResource OutlinedWhiteButtonStyle}" Margin="0,10,0,0"
                                 Height="30" Width="150" Command="{Binding RefreshCommand}" />
                     </WrapPanel>
                 </Grid>
@@ -253,10 +222,10 @@
         <Border CornerRadius="4" BorderThickness="0" Background="#F15045" Height="30" Margin="0,0,0,15"
                 x:Name="ErrorPlate"
                 VerticalAlignment="Bottom"
-                Style="{DynamicResource ErrorPlateStyle}"
+                Style="{StaticResource ErrorPlateStyle}"
                 Visibility="Hidden"
                 HorizontalAlignment="Center">
-            <Label HorizontalContentAlignment="Center" Foreground="White" Style="{DynamicResource PrimaryText}"
+            <Label HorizontalContentAlignment="Center" Foreground="White" Style="{StaticResource PrimaryText}"
                    FontSize="14"
                    Content="{Binding ErrorMessage}" Margin="10,0,10,0" />
         </Border>

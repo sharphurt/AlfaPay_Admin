@@ -58,6 +58,10 @@
           <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Markdig, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Markdig.0.18.0\lib\net40\Markdig.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="MaterialDesignColors, Version=2.0.0.2273, Culture=neutral, PublicKeyToken=df2a72020bd7962a">
           <HintPath>..\packages\MaterialDesignColors.2.0.0-ci2273\lib\net452\MaterialDesignColors.dll</HintPath>
           <Private>True</Private>
@@ -74,8 +78,16 @@
           <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=3.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+          <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.3.1.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=3.1.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
           <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.3.1.5\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Primitives, Version=3.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+          <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="mscorlib" />
@@ -106,9 +118,11 @@
           <Private>True</Private>
         </Reference>
         <Reference Include="System.ComponentModel.Composition" />
+        <Reference Include="System.ComponentModel.DataAnnotations" />
         <Reference Include="System.Configuration" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
+        <Reference Include="System.IdentityModel" />
         <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
           <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
           <Private>True</Private>
@@ -164,6 +178,11 @@
           <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="System.ServiceModel" />
+        <Reference Include="System.ServiceModel.Primitives, Version=4.7.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\packages\System.ServiceModel.Primitives.4.7.0\lib\net461\System.ServiceModel.Primitives.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
           <HintPath>..\packages\System.Text.Encodings.Web.5.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
           <Private>True</Private>
@@ -198,6 +217,26 @@
           <HintPath>..\packages\XamlFlair.WPF.1.2.3\lib\net472\XamlFlair.WPF.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Xceed.Wpf.AvalonDock, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Xceed.Wpf.Toolkit, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4">
+          <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
         <ApplicationDefinition Include="App.xaml">
@@ -222,6 +261,9 @@
           <DependentUpon>InputTextBox.xaml</DependentUpon>
         </Compile>
         <Compile Include="CustomControl\PopupNonTopmost.cs" />
+        <Compile Include="CustomControl\TransparentTextLabel.xaml.cs">
+          <DependentUpon>TransparentTextLabel.xaml</DependentUpon>
+        </Compile>
         <Compile Include="Entity\DeviceInfo.cs" />
         <Compile Include="Entity\JwtContainer.cs" />
         <Compile Include="Model\ApplicationViewModel.cs" />
@@ -230,6 +272,7 @@
         <Compile Include="Model\LoginModel.cs" />
         <Compile Include="Model\RegistrationModel.cs" />
         <Compile Include="Model\ClientModel.cs" />
+        <Compile Include="Model\ServiceModel.cs" />
         <Compile Include="TestWindow.xaml.cs">
           <DependentUpon>TestWindow.xaml</DependentUpon>
           <SubType>Code</SubType>
@@ -245,6 +288,7 @@
         </Compile>
         <Page Include="CustomControl\HeadedTextBlock.xaml" />
         <Page Include="CustomControl\InputTextBox.xaml" />
+        <Page Include="CustomControl\TransparentTextLabel.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -368,6 +412,9 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="Resources\alfa_pattern_white_rgb.png" />
+      <Resource Include="Resources\spin_small_white.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="Resources\Fonts\password.ttf">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>

@@ -17,6 +17,39 @@
         Width="1200"
         Height="630"
         Loaded="MainWindow_OnLoaded">
-    
-    <Frame x:Name="MainFrame" Source="WindowPage/LoginPage.xaml" NavigationUIVisibility="Hidden" />
+    <StackPanel>
+        <Border x:Name="SearchPanel" CornerRadius="4" Background="#f3f4f5" Visibility="Collapsed">
+            <DockPanel Margin="5,2,0,2" VerticalAlignment="Center">
+                <WrapPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="15,0,0,0"
+                           Background="Transparent"
+                           VerticalAlignment="Center">
+                    <Image Source="{StaticResource SearchIcon}" x:Name="SearchIcon"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                           Stretch="UniformToFill" Width="14" Height="14" Opacity="0.3" />
+                    <WrapPanel Orientation="Vertical" Margin="10,0,0,0">
+                        <TextBox x:Name="SearchTextBox" Style="{StaticResource SearchTextBoxStyle}"
+                                 Margin="0,0,0,4"
+                                 Text="Поиск по компаниям"
+                                 VerticalContentAlignment="Center"
+                                 GotFocus="SearchTextBox_OnGotFocus"
+                                 LostFocus="SearchTextBox_OnLostFocus" />
+                        <Line x:Name="LineUnderSearch"
+                              Width="{Binding ElementName=SearchTextBox, Path=ActualWidth}" StrokeThickness="1"
+                              Stroke="#B6BCC3" X1="0"
+                              Y1="0"
+                              X2="250" Y2="0" />
+                    </WrapPanel>
+                </WrapPanel>
+                <Button DockPanel.Dock="Right" Width="32" Height="32" Margin="10,0,15,0"
+                        Style="{StaticResource WhiteRoundedButtonStyle}" Command="{Binding LogoutCommand}">
+                    <Image Source="{StaticResource LogOutIcon}" RenderOptions.BitmapScalingMode="HighQuality"
+                           Stretch="UniformToFill" Margin="2,0,0,0" Width="14" Height="14" />
+                </Button>
+                <Label DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource PrimaryText}"
+                       Content="{Binding LoggedInUser}" />
+            </DockPanel>
+        </Border>
+        <Frame x:Name="MainFrame" Source="WindowPage/LoginPage.xaml" Navigated="MainFrame_OnNavigated"
+                NavigationUIVisibility="Hidden" />
+    </StackPanel>
 </Window>

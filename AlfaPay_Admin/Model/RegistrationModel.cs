@@ -90,7 +90,17 @@ namespace AlfaPay_Admin.Model
         public RelayCommand RegisterCommand =>
             _registerCommand ??= new RelayCommand(obj => { RegisterClientCompany(); });
 
+        private RelayCommand _openApplyWindowCommand;
 
+        public RelayCommand OpenApplyWindowCommand =>
+            _openApplyWindowCommand ??= new RelayCommand(obj => { OpenApplyWindow(); });
+
+        private void OpenApplyWindow()
+        {
+            RegistrationRequestManager.Reset();
+        }
+        
+        
         public RegistrationModel(Application application)
         {
             Application = application;
@@ -117,11 +127,12 @@ namespace AlfaPay_Admin.Model
                 Name = "Catstack7",
                 TaxSystem = "ОСН"
             };
+            
 
             RegistrationRequestManager.MakeRequest(Method.POST, "/auth/register", new
                 {
-                    client = testClient,
-                    company = testCompany,
+                    client = ClientModel,
+                    company = CompanyModel,
                     applicationToRemoveId = Application.Id
                 }, () => { IsSuccessfully = true; },
                 () => { ErrorMessage = RegistrationRequestManager.Response.Error.Message; });

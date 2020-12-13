@@ -20,6 +20,7 @@
     </Style>
 
     <Style x:Key="SecondaryText" TargetType="Label" BasedOn="{StaticResource PrimaryText}">
+        <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Foreground" Value="#0B1F35" />
         <Setter Property="FontSize" Value="12" />
     </Style>
@@ -28,27 +29,29 @@
         <Setter Property="Foreground" Value="#b6bcc3" />
         <Setter Property="FontSize" Value="12" />
     </Style>
-    
+
     <Style x:Key="LightPrimaryText" TargetType="Label" BasedOn="{StaticResource PrimaryText}">
         <Setter Property="FontWeight" Value="Light" />
     </Style>
-    
+
     <Style x:Key="LightSecondaryText" TargetType="Label" BasedOn="{StaticResource SecondaryText}">
         <Setter Property="FontWeight" Value="Light" />
     </Style>
-    
+
     <Style x:Key="LightTertiaryText" TargetType="Label" BasedOn="{StaticResource TertiaryText}">
         <Setter Property="FontWeight" Value="Light" />
     </Style>
-    
+
     <Style x:Key="ErrorMessageStyle" TargetType="Label" BasedOn="{StaticResource TertiaryText}">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="#F15045" />
     </Style>
 
     <Style x:Key="ErrorMessageStyleTxtBlock" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="#F15045" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="FontFamily" Value="Segoe UI" />
     </Style>
 </ResourceDictionary>

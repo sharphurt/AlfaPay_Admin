@@ -9,7 +9,7 @@ namespace AlfaPay_Admin.Model
         
         [JsonProperty("lastName")]
         public string Surname { get; set; }
-
+        
         public override string ToString() => $"{FirstName} {Surname}";
     }
 }

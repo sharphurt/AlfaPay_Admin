@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
+      xmlns:customControl="clr-namespace:AlfaPay_Admin.CustomControl"
       mc:Ignorable="d"
       Title="LoginPage"
       MouseDown="LoginPage_OnMouseDown"
@@ -17,7 +18,8 @@
             <Label Style="{StaticResource LightPrimaryText}" FontSize="36" Foreground="White" Content="Вход" />
             <WrapPanel Orientation="Vertical" Margin="0,35,0,0">
                 <Label Style="{StaticResource SecondaryText}" Foreground="White" Content="Логин" />
-                <TextBox Style="{StaticResource InputUnfilledStyle}" x:Name="LoginInput"
+                <TextBox Style="{StaticResource InputUnfilledWhiteStyle}" x:Name="LoginInput"
+                         TextChanged="Input_OnTextChanged"
                          VerticalContentAlignment="Center">
                     <Binding Path="Login" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -29,6 +31,7 @@
             <WrapPanel Orientation="Vertical" Margin="0,25,0,0">
                 <Label Style="{StaticResource SecondaryText}" Foreground="White" Content="Пароль" />
                 <TextBox Style="{StaticResource PasswordInputUnfilledStyle}" x:Name="PasswordInput"
+                         TextChanged="Input_OnTextChanged"
                          VerticalContentAlignment="Center">
                     <Binding Path="Password" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -38,30 +41,36 @@
                 </TextBox>
             </WrapPanel>
 
-            <TextBlock Style="{StaticResource ErrorMessageStyleTxtBlock}"
-                       HorizontalAlignment="Left"
-                       Margin="0,0,0,0"
+            <TextBlock x:Name="ErrorTextBlock"
+                       Style="{StaticResource ErrorMessageStyleTxtBlock}"
+                       Margin="1,5,0,0"
                        Height="30"
-                       Text="{Binding Path=ErrorMessage}"
+                       Text="{Binding Path=ErrorMessage, Mode=TwoWay}"
                        LineHeight="7"
-                       TextWrapping="Wrap" Width="{Binding ElementName=MainPanel, Path=ActualWidth}" />
+                       Width="{Binding ElementName=MainPanel, Path=ActualWidth}" />
+
 
             <Button Margin="0,35,0,0" Height="50" x:Name="LoginButton"
-                    Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=PasswordTextBox}">
-                <Grid>
-                    <Label HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Content="Войти"
-                           Visibility="{Binding LoginRequestManager.Status, Converter={StaticResource InvertedRequestStatusInProgressToVisibility}}"
-                           Foreground="White" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" />
-                    <fa:ImageAwesome
-                        Visibility="{Binding LoginRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
-                        Source="{DynamicResource SpinSmallIcon}"
-                        Width="16" Height="16" Spin="True"
-                        SpinDuration="0.8" />
-                </Grid>
+                    Visibility="{Binding LoginRequestManager.Status, Converter={StaticResource InvertedRequestStatusInProgressToVisibility}}"
+                    Command="{Binding LoginCommand}">
+                <Button.OpacityMask>
+                    <VisualBrush Opacity="1">
+                        <VisualBrush.Visual>
+                            <customControl:HollowTextBlock Background="Black"
+                                                           FontFamily="Segoe UI"
+                                                           FontSize="16"
+                                                           FontWeight="Bold"
+                                                           TextAlignment="Center"
+                                                           VerticalTextAlignment="Center"
+                                                           Width="{Binding ElementName=LoginButton, Path=ActualWidth}"
+                                                           Height="{Binding ElementName=LoginButton, Path=ActualHeight}"
+                                                           Text="ВОЙТИ" />
+
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Button.OpacityMask>
                 <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource RedButtonStyle}">
+                    <Style TargetType="Button" BasedOn="{StaticResource TransparentWhiteButton}">
                         <Setter Property="IsEnabled" Value="False" />
                         <Style.Triggers>
                             <MultiDataTrigger>
@@ -85,6 +94,13 @@
                     </Style>
                 </Button.Style>
             </Button>
+
+            <fa:ImageAwesome
+                Visibility="{Binding LoginRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
+                Source="{StaticResource SpinSmallWhiteIcon}"
+                Width="20" Height="20" Spin="True" Margin="0,-50,0,0"
+                SpinDuration="0.8" />
+
         </WrapPanel>
     </Grid>
 </Page>

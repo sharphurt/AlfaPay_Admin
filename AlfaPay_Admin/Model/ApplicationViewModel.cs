@@ -54,23 +54,11 @@ namespace AlfaPay_Admin.Model
             get { return _refreshCommand ??= new RelayCommand(obj => { GetApplicationsFromServer(0, 10); }); }
         }
 
-        private RelayCommand _logoutCommand;
+        private RelayCommand _rejectCommand;
 
-        public RelayCommand LogoutCommand
+        public RelayCommand RejectCommand
         {
-            get { return _logoutCommand ??= new RelayCommand(obj => { Logout(); }); }
-        }
-
-        private LoggedUser _loggedInUser;
-
-        public LoggedUser LoggedInUser
-        {
-            get => _loggedInUser;
-            set
-            {
-                _loggedInUser = value;
-                OnPropertyChanged(nameof(LoggedInUser));
-            }
+            get { return _rejectCommand ??= new RelayCommand(obj => { RejectApplication(SelectedApplication.Id); }); }
         }
 
         private ApiRequestManager<ObservableCollection<Application>> _getApplicationsRequestManager;
@@ -85,18 +73,17 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        private ApiRequestManager<string> _logoutRequestManager;
+        private ApiRequestManager<string> _rejectApplicationRequestManager;
 
-        public ApiRequestManager<string> LogoutRequestManager
+        public ApiRequestManager<string> RejectApplicationRequestManager
         {
-            get => _logoutRequestManager;
+            get => _rejectApplicationRequestManager;
             set
             {
-                _logoutRequestManager = value;
-                OnPropertyChanged(nameof(LogoutRequestManager));
+                _rejectApplicationRequestManager = value;
+                OnPropertyChanged(nameof(RejectApplicationRequestManager));
             }
         }
-
 
         private string _errorMessage;
 
@@ -112,9 +99,8 @@ namespace AlfaPay_Admin.Model
 
         public ApplicationViewModel()
         {
-            LoggedInUser = AuthenticationContext.LoggedUser;
             GetApplicationsRequestManager = new ApiRequestManager<ObservableCollection<Application>>();
-            LogoutRequestManager = new ApiRequestManager<string>();
+            RejectApplicationRequestManager = new ApiRequestManager<string>();
             GetApplicationsFromServer(0, 10);
         }
 
@@ -125,16 +111,11 @@ namespace AlfaPay_Admin.Model
                 () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
         }
 
-        private void Logout()
+        private void RejectApplication(long id)
         {
-            LogoutRequestManager.MakeRequest(Method.POST, "auth/logout",
-                new {deviceInfo = AuthenticationContext.DeviceInfo},
-                () =>
-                {
-                    LoggedInUser = null;
-                    AuthenticationContext.ClearAuthentication();
-                },
-                () => ErrorMessage = LogoutRequestManager.Response.ToString());
+            RejectApplicationRequestManager.MakeRequest(Method.POST, $"applications/reject?id={id}", null,
+                () => GetApplicationsFromServer(0, 10),
+                () => ErrorMessage = RejectApplicationRequestManager.Response.ToString());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

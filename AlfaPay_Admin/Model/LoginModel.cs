@@ -114,7 +114,7 @@ namespace AlfaPay_Admin.Model
                 OnPropertyChanged(nameof(ErrorMessage));
             }
         }
-        
+
         public LoginModel()
         {
             var deviceId = new DeviceIdBuilder()
@@ -137,7 +137,8 @@ namespace AlfaPay_Admin.Model
 
         private void OnSuccessfulGettingUserProfile()
         {
-            LoggedInUser = UserInformationRequestManager.Response.Response;
+            AuthenticationContext.LoggedUser = UserInformationRequestManager.Response.Response;
+            LoggedInUser = AuthenticationContext.LoggedUser;
         }
 
         private void SendLoginRequest(object obj)

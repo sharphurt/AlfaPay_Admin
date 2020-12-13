@@ -9,6 +9,7 @@
     <BitmapImage x:Key="SpinIcon" UriSource="spin.png" />
     <BitmapImage x:Key="ErrorIcon" UriSource="error.png" />
     <BitmapImage x:Key="SpinSmallIcon" UriSource="spin_small.png" />
+    <BitmapImage x:Key="SpinSmallWhiteIcon" UriSource="spin_small_white.png" />
     <BitmapImage x:Key="DeadImage" UriSource="dead.png" />
     <BitmapImage x:Key="ApplyWindowPlate" UriSource="apply_window_plate.png" />
     <ImageBrush x:Key="ApplyWindowPlateImageBrush" ImageSource="apply_window_plate.png" />
@@ -35,4 +36,95 @@
     <converter:RequestStatusNotStartedToVisibility x:Key="RequestStatusNotStartedToVisibility" />
     <converter:InvertedRequestStatusInProgressToBool x:Key="InvertedRequestStatusInProgressToBool" />
 
+    <Style x:Key="ListBoxElement" TargetType="Grid">
+        <Setter Property="Background" Value="Transparent" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation To="#f3f4f5"
+                                            Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                            Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation To="Transparent"
+                                            Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                            Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Storyboard x:Key="ApplyWindowOpenAnimation">
+        <DoubleAnimation Duration="0:0:0.4"
+                         Storyboard.TargetName="ApplyWindow"
+                         Storyboard.TargetProperty="Opacity" From="0" To="1" />
+        <ThicknessAnimation Duration="0:0:0.4"
+                            Storyboard.TargetName="ApplyWindowContentBox"
+                            Storyboard.TargetProperty="Margin"
+                            From="0,-200,0,0" To="0"
+                            DecelerationRatio="0.9" />
+    </Storyboard>
+
+
+    <Style x:Key="CloseButton" TargetType="Button">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard TargetProperty="Opacity">
+                            <DoubleAnimation To="0.8" Duration="0:0:0.3" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard TargetProperty="Opacity">
+                            <DoubleAnimation To="0.15" Duration="0:0:0.3" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ErrorPlateStyle" TargetType="Decorator">
+        <Style.Triggers>
+            <Trigger Property="Visibility" Value="Visible">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="1" Duration="0:0:5" />
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" BeginTime="0:0:5" From="1" To="0"
+                                             Duration="0:0:0.5" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="PopupStyle" TargetType="Popup">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ElementName=AddressTextBox, Path=IsFocused}"
+                         Value="True">
+                <Setter Property="IsOpen" Value="True" />
+                <Setter Property="StaysOpen" Value="True" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding ElementName=AddressTextBox, Path=IsFocused}"
+                         Value="False">
+                <Setter Property="StaysOpen" Value="False" />
+                <Setter Property="IsOpen" Value="False" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

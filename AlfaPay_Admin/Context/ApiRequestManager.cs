@@ -79,6 +79,11 @@ namespace AlfaPay_Admin.Context
             }
         }
 
+        public void Reset()
+        {
+            Status = RequestStatus.NotStarted;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

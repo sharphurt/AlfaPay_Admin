@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,7 +19,7 @@ namespace AlfaPay_Admin.WindowPage
 
         private void LoginModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals("LoggedInUser"))
+            if (e.PropertyName.Equals("LoggedInUser") )
             {
                 var mainPage = new MainPage();
                 var navigationService = NavigationService;
@@ -33,7 +34,7 @@ namespace AlfaPay_Admin.WindowPage
 
         private void Input_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            LoginButton.IsEnabled = !string.IsNullOrEmpty(LoginInput.Text) && !string.IsNullOrEmpty(PasswordInput.Text);
+            ErrorTextBlock.Text = "";
         }
     }
 }
