@@ -145,8 +145,8 @@ namespace AlfaPay_Admin.Model
         {
             LoginRequestManager.MakeRequest(Method.POST, "auth/login", new
             {
-                email = Login,
-                password = Password,
+                email = "user@catstack.net",
+                password = "password",
                 deviceInfo = AuthenticationContext.DeviceInfo
             }, OnSuccessfulLogin, () =>
             {

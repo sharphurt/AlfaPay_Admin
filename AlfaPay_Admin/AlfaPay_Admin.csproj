@@ -245,6 +245,7 @@
         </ApplicationDefinition>
         <Compile Include="Context\AuthenticationContext.cs" />
         <Compile Include="Context\ApiRequestManager.cs" />
+        <Compile Include="Converter\DouleSubtractConverter.cs" />
         <Compile Include="Converter\InvertedBoolConverter.cs" />
         <Compile Include="Converter\InvertedObjectToBoolConverter.cs" />
         <Compile Include="Converter\InvertedRequestStatusInProgressToBoolConverter.cs" />

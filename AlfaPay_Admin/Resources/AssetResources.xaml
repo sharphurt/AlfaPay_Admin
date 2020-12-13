@@ -35,6 +35,7 @@
     <converter:RequestStatusIsErrorToVisibility x:Key="RequestStatusIsErrorToVisibility" />
     <converter:RequestStatusNotStartedToVisibility x:Key="RequestStatusNotStartedToVisibility" />
     <converter:InvertedRequestStatusInProgressToBool x:Key="InvertedRequestStatusInProgressToBool" />
+    <converter:DoubleSubtractConverter x:Key="DoubleSubtractConverter" />
 
     <Style x:Key="ListBoxElement" TargetType="Grid">
         <Setter Property="Background" Value="Transparent" />
@@ -111,7 +112,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
     <Style x:Key="PopupStyle" TargetType="Popup">
         <Style.Triggers>
             <DataTrigger Binding="{Binding ElementName=AddressTextBox, Path=IsFocused}"
@@ -126,5 +127,104 @@
                 <Setter Property="IsOpen" Value="False" />
             </DataTrigger>
         </Style.Triggers>
+    </Style>
+
+    <ControlTemplate x:Key="TabItemTemplate" TargetType="TabItem">
+        <Border Margin="2" Name="TabBorder" BorderBrush="Transparent" Background="Transparent"
+                BorderThickness="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid>
+                <Grid x:Name="MouseOverDetector" />
+                <StackPanel Name="Panel" Margin="5">
+                    <ContentPresenter x:Name="ContentSite"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"
+                                      ContentSource="Header" Margin="5" />
+                    <Rectangle x:Name="Line" Fill="Red" Height="2" Margin="5,0,5,0" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="Line" Property="Visibility" Value="Visible" />
+                <Setter Property="FontWeight" Value="Bold" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="False">
+                <Setter TargetName="Line" Property="Visibility" Value="Collapsed" />
+                <Setter Property="FontWeight" Value="Normal" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True" SourceName="TabBorder">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="TabBorder"
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            To="#f3f4f5" Duration="0:0:0.2" />
+                            <ThicknessAnimation Storyboard.TargetName="Line" Storyboard.TargetProperty="Margin"
+                                                To="0,0,0,0" Duration="0:0:0.2" DecelerationRatio="0.7" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetName="TabBorder"
+                                            Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            From="#f3f4f5" Duration="0:0:0.2" />
+                            <ThicknessAnimation Storyboard.TargetName="Line" Storyboard.TargetProperty="Margin"
+                                                From="0,0,0,0" Duration="0:0:0.2" DecelerationRatio="0.7" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="TabItemStyle" TargetType="TabItem">
+        <Style.Resources>
+            <Color x:Key="PrimaryColor" B="0" G="0" R="0" A="0" />
+            <Color x:Key="MouseOverColor" B="0" G="255" R="0" A="255" />
+            <Color x:Key="MousePressedColor" B="11" G="31" R="53" A="76" />
+            <Color x:Key="DisabledColor" R="236" G="237" B="239" A="255" />
+
+            <SolidColorBrush x:Key="PrimaryColorBrush" Color="{StaticResource PrimaryColor}" />
+        </Style.Resources>
+        <Setter Property="Background" Value="{StaticResource PrimaryColorBrush}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Template" Value="{StaticResource TabItemTemplate}" />
+    </Style>
+
+    <Style x:Key="ItemContainerStyle" TargetType="ListBoxItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Grid>
+                        <Line x:Name="SelectionLine"
+                              X1="0"
+                              X2="0"
+                              Y1="0" Y2="60" Stroke="#F15045" StrokeThickness="5" Opacity="0" />
+                        <ContentPresenter Margin="5,0,0,0" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetName="SelectionLine" TargetProperty="Opacity">
+                                        <DoubleAnimation To="1.0" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard TargetName="SelectionLine" TargetProperty="Opacity">
+                                        <DoubleAnimation To="0.0" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

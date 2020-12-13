@@ -43,41 +43,11 @@ namespace AlfaPay_Admin.WindowPage
         {
             Grid.Focus();
         }
-
-        private void ApplicationsListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            for (var i = 0; i < ApplicationsListBox.Items.Count; i++)
-            {
-                var myListBoxItem = (ListBoxItem) ApplicationsListBox.ItemContainerGenerator.ContainerFromIndex(i);
-                if (myListBoxItem is null)
-                    continue;
-                var myContentPresenter = FindVisualChild<ContentPresenter>(myListBoxItem);
-                var myDataTemplate = myContentPresenter.ContentTemplate;
-                var target = (Line) myDataTemplate.FindName("SelectionLine", myContentPresenter);
-                target.Visibility = myListBoxItem.IsSelected ? Visibility.Visible : Visibility.Hidden;
-            }
-        }
-
-        private TChildItem FindVisualChild<TChildItem>(DependencyObject obj) where TChildItem : DependencyObject
-        {
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
-            {
-                var child = VisualTreeHelper.GetChild(obj, i);
-                if (child is TChildItem item)
-                    return item;
-
-                var childOfChild = FindVisualChild<TChildItem>(child);
-                if (childOfChild != null)
-                    return childOfChild;
-            }
-
-            return null;
-        }
-
+        
         private void AcceptButton_OnClick(object sender, RoutedEventArgs e)
         {
             var navigationService = NavigationService;
-            var selectedApplication = ApplicationsListBox.SelectedItem as Application;
+            var selectedApplication = NewApplicationsListBox.SelectedItem as Application;
             var user = new ClientModel
             {
                 Name = selectedApplication?.Name,
