@@ -120,7 +120,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Style="{StaticResource OutlinedWhiteButtonStyle}" Height="40 px"
-                        Margin="0,0,7,0">
+                        Margin="0,0,7,0" Command="{Binding SendCommand}">
                     <WrapPanel Orientation="Horizontal">
                         <Image Source="{StaticResource SendIcon}" RenderOptions.BitmapScalingMode="HighQuality"
                                Width="16"

@@ -45,6 +45,7 @@
                        Style="{StaticResource ErrorMessageStyleTxtBlock}"
                        Margin="1,5,0,0"
                        Height="30"
+                       TextWrapping="Wrap"
                        Text="{Binding Path=ErrorMessage, Mode=TwoWay}"
                        LineHeight="7"
                        Width="{Binding ElementName=MainPanel, Path=ActualWidth}" />

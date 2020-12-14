@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -73,6 +74,12 @@ namespace AlfaPay_Admin.WindowPage
                 ApplicationInfo.DataContext = NewApplicationsListBox.SelectedItem;
             else if (RejectedApplicationsTab.IsSelected)
                 ApplicationInfo.DataContext = RejectedApplicationsListBox.SelectedItem;
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var url = "mailto:someone@somewhere.com?subject=Команда AlfaPay";
+            Process.Start(url);
         }
     }
 }

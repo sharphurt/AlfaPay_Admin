@@ -17,26 +17,26 @@ namespace AlfaPay_Admin.Entity
         [JsonPropertyName("inn")] public long Inn { get; set; }
 
         [JsonPropertyName("createdAt")] public DateTime CreatedAt { get; set; }
-        
+
         public string DaysPassed
         {
             get
             {
                 var daysPassed = (DateTime.Now - CreatedAt).Days;
-                return $"{daysPassed} {PluralizeRubles(daysPassed)} назад";
+                return daysPassed switch
+                {
+                    0 => "сегодня",
+                    1 => "вчера",
+                    2 => "позавчера",
+                    _ => $"{daysPassed} {PluralizeDays(daysPassed)} назад"
+                };
             }
         }
 
-        private string PluralizeRubles(int count)
+        private string PluralizeDays(int count)
         {
-            var firstRightDigit = count % 10;
-            var secondRightDigits = count % 100 / 10;
-            if (firstRightDigit == 1 && secondRightDigits != 1)
-                return "день";
-            if (firstRightDigit >= 2
-                && firstRightDigit <= 4
-                && secondRightDigits != 1)
-                return "дня";
+            if (count % 10 == 1 && count % 100 / 10 != 1) return "день";
+            if (count % 10 >= 2 && count % 10 <= 4 && count % 100 / 10 != 1) return "дня";
             return "дней";
         }
 
@@ -44,6 +44,5 @@ namespace AlfaPay_Admin.Entity
         {
             return $"{Name} \t {Phone}";
         }
-        
     }
 }

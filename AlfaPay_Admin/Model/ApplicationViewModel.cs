@@ -73,6 +73,13 @@ namespace AlfaPay_Admin.Model
         {
             get { return _rejectCommand ??= new RelayCommand(obj => { RejectApplication(SelectedApplication.Id); }); }
         }
+        
+        private RelayCommand _sendMessageCommand;
+
+        public RelayCommand SendMessageCommand
+        {
+            get { return _sendMessageCommand ??= new RelayCommand(obj => { SendEmail(); }); }
+        }
 
         private ApiRequestManager<ObservableCollection<Application>> _getApplicationsRequestManager;
 
@@ -143,6 +150,11 @@ namespace AlfaPay_Admin.Model
                 () => ErrorMessage = RejectApplicationRequestManager.Response.ToString());
         }
 
+        public void SendEmail()
+        {
+            
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

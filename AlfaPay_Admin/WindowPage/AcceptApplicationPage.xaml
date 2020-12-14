@@ -30,7 +30,7 @@
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ContinueButton">
             <BeginStoryboard Storyboard="{StaticResource ApplyWindowOpenAnimation}" />
         </EventTrigger>
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="CloseWindowButton">
+        <EventTrigger RoutedEvent="TextBox.TextChanged" SourceName="TriggerTextBox">
             <BeginStoryboard Storyboard="{StaticResource ApplyWindowCloseAnimation}" />
         </EventTrigger>
     </Page.Triggers>
@@ -46,6 +46,8 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="60 px" />
             </Grid.RowDefinitions>
+
+            <TextBox x:Name="TriggerTextBox" Visibility="Collapsed" />
 
             <Label Grid.Column="0" Grid.Row="0" Margin="0,5,0,0" Style="{StaticResource PrimaryHeader}"
                    Content="Укажите данные пользователя" />
@@ -251,7 +253,8 @@
                         Margin="0,0,5,0"
                         Content="Отмена" Click="CancelButton_OnClick" />
                 <Button Grid.Column="1" Margin="5,0,0,0"
-                        x:Name="ContinueButton" Click="ContinueButton_OnClick" Command="{Binding OpenApplyWindowCommand}" HorizontalContentAlignment="Center"
+                        x:Name="ContinueButton" Click="ContinueButton_OnClick"
+                        Command="{Binding OpenApplyWindowCommand}" HorizontalContentAlignment="Center"
                         Content="Продолжить" Foreground="White" FontFamily="Segoe UI" FontSize="14">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource GreenButtonStyle}">
@@ -313,8 +316,11 @@
             </Grid>
         </Grid>
 
-        <Grid x:Name="ApplyWindow" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch" Visibility="Hidden" Background="#560B1F35">
+        <Grid x:Name="ApplyWindow" HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch" Visibility="Hidden" Background="Transparent">
+            <Grid.Triggers>
+
+            </Grid.Triggers>
             <Grid x:Name="ApplyWindowContentBox">
                 <Border CornerRadius="4" Background="{StaticResource ApplyWindowPlateImageBrush}" Width="600"
                         Height="400" HorizontalAlignment="Center"
@@ -360,11 +366,11 @@
                             Visibility="{Binding RegistrationRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
                             Orientation="Vertical" HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Margin="0,0,0,30">
+                            Margin="0,20,0,30">
                             <fa:ImageAwesome Source="{StaticResource SpinIcon}" SpinDuration="0.8"
                                              Spin="true" Height="40" Width="40" />
                             <Label Style="{StaticResource LightPrimaryText}" Content="Идет отправка..."
-                                   Margin="0,7,0,40" />
+                                   Margin="0,15,0,40" />
                         </WrapPanel>
                         <WrapPanel
                             Visibility="{Binding RegistrationRequestManager.Status, Converter={StaticResource RequestStatusIsSuccessfulToVisibility}}"

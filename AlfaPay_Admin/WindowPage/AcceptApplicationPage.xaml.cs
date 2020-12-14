@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
+using System.Reactive;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,19 +17,35 @@ namespace AlfaPay_Admin.WindowPage
 {
     public partial class AcceptApplicationPage : PageFunction<bool>
     {
-        private readonly DispatcherTimer _errorPlateVisibilityTimer = new DispatcherTimer ();
+        private readonly DispatcherTimer _errorPlateVisibilityTimer = new DispatcherTimer();
+        private readonly DispatcherTimer _returnDelayTimer1 = new DispatcherTimer();
+        private readonly DispatcherTimer _returnDelayTimer2 = new DispatcherTimer();
 
         public AcceptApplicationPage(RegistrationModel dataContext)
         {
             InitializeComponent();
             DataContext = dataContext;
-            
+
             dataContext.PropertyChanged += RegistrationModel_OnPropertyChanged;
             _errorPlateVisibilityTimer.Interval = TimeSpan.FromSeconds(5.5);
             _errorPlateVisibilityTimer.Tick += (o, args) =>
             {
                 ErrorPlate.Visibility = Visibility.Hidden;
                 _errorPlateVisibilityTimer.Stop();
+            };
+
+            _returnDelayTimer1.Interval = TimeSpan.FromSeconds(1.5);
+            _returnDelayTimer1.Tick += (sender, args) =>
+            {
+                TriggerTextBox.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                _returnDelayTimer2.Interval = TimeSpan.FromSeconds(0.3);
+                _returnDelayTimer2.Tick += (o, eventArgs) =>
+                {
+                    OnReturn(new ReturnEventArgs<bool>(true));
+                    _returnDelayTimer2.Stop();
+                };
+                _returnDelayTimer2.Start();
+                _returnDelayTimer1.Stop();
             };
         }
 
@@ -40,11 +58,11 @@ namespace AlfaPay_Admin.WindowPage
             }
 
             if (e.PropertyName == "IsSuccessfully")
-                OnReturn(new ReturnEventArgs<bool>(true));
+                _returnDelayTimer1.Start();
         }
 
         private void AcceptApplicationPage_OnMouseDown(object sender, MouseButtonEventArgs e) => Grid.Focus();
-        
+
         private void AutocompleteListBox_OnSelected(object sender, RoutedEventArgs e)
         {
             AddressTextBox.Text = AutocompleteListBox.SelectedItem as string ?? AddressTextBox.Text;
@@ -77,7 +95,7 @@ namespace AlfaPay_Admin.WindowPage
 
         private void CloseWindowButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplyWindow.IsEnabled = false;
+            TriggerTextBox.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);
         }
     }
 }
