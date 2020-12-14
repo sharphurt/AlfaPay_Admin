@@ -50,9 +50,10 @@
                                          SpinDuration="0.8"
                                          Width="16" Height="16" />
                     </WrapPanel>
-                    <Grid Margin="15,0,15,0" ZIndex="1" DataContext="{Binding SelectedApplication}"
+                    <Grid x:Name="ApplicationInfo" Margin="15,0,15,0" ZIndex="1"
+                          DataContext="{Binding SelectedApplication}"
                           Background="White"
-                          Visibility="{Binding ElementName=NewApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToVisibilityConverter}}">
+                          Visibility="{Binding ElementName=ApplicationInfo, Path=DataContext, Converter={StaticResource ObjectToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150 px" />
                             <ColumnDefinition Width="*" />
@@ -103,9 +104,15 @@
                 </Grid>
             </GroupBox>
 
-            <Grid Grid.Column="0" Row="1"
-                  IsEnabled="{Binding ElementName=NewApplicationsListBox, Path=SelectedItem, Converter={StaticResource ObjectToBoolConverter}}"
-                  VerticalAlignment="Top" Margin="0,3,6,0">
+            <Grid Grid.Column="0" Row="1" VerticalAlignment="Top" Margin="0,3,6,0">
+                <Grid.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiBoolConverter}">
+                        <Binding ElementName="NewApplicationsListBox" Path="SelectedItem"
+                                 Converter="{StaticResource ObjectToBoolConverter}" />
+                        <Binding ElementName="ApplicationsTabControl" Path="SelectedValue"
+                                 Converter="{StaticResource CompareConverter}" ConverterParameter="Новые" />
+                    </MultiBinding>
+                </Grid.IsEnabled>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -140,8 +147,9 @@
                     </WrapPanel>
                 </Button>
             </Grid>
-            <TabControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" BorderThickness="0">
-                <TabItem BorderThickness="0" Style="{StaticResource TabItemStyle}" >
+            <TabControl x:Name="ApplicationsTabControl" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                        BorderThickness="0" SelectionChanged="ApplicationsTabControl_OnSelectionChanged">
+                <TabItem x:Name="NewApplicationsTab" BorderThickness="0" Style="{StaticResource TabItemStyle}">
                     <TabItem.Header>Новые</TabItem.Header>
                     <Grid>
                         <ListBox x:Name="NewApplicationsListBox"
@@ -149,10 +157,10 @@
                                  VerticalContentAlignment="Stretch"
                                  BorderThickness="0"
                                  HorizontalAlignment="Stretch"
-                                 ItemsSource="{Binding Applications, UpdateSourceTrigger=PropertyChanged}"
+                                 ItemsSource="{Binding NewApplications, UpdateSourceTrigger=PropertyChanged}"
                                  ScrollViewer.CanContentScroll="False"
                                  ItemContainerStyle="{StaticResource ItemContainerStyle}"
-                                 SelectedItem="{Binding SelectedApplication}">
+                                 SelectedItem="{Binding SelectedApplication, Mode=TwoWay}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Height="60 px" Style="{StaticResource ListBoxElement}">
@@ -202,17 +210,17 @@
                         </WrapPanel>
                     </Grid>
                 </TabItem>
-                <TabItem BorderThickness="0" Style="{StaticResource TabItemStyle}">
+                <TabItem x:Name="RejectedApplicationsTab" BorderThickness="0" Style="{StaticResource TabItemStyle}">
                     <TabItem.Header>Отклоненные</TabItem.Header>
                     <Grid>
                         <ListBox x:Name="RejectedApplicationsListBox"
                                  HorizontalContentAlignment="Stretch"
                                  VerticalContentAlignment="Stretch"
                                  BorderThickness="0"
-                                 ItemsSource="{Binding Applications, UpdateSourceTrigger=PropertyChanged}"
+                                 ItemsSource="{Binding RejectedApplications, UpdateSourceTrigger=PropertyChanged}"
                                  ScrollViewer.CanContentScroll="False"
                                  ItemContainerStyle="{StaticResource ItemContainerStyle}"
-                                 SelectedItem="{Binding SelectedApplication}">
+                                 SelectedItem="{Binding SelectedApplication, Mode=TwoWay}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Height="60 px" Style="{StaticResource ListBoxElement}">
@@ -225,7 +233,7 @@
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="*" />
                                         </Grid.RowDefinitions>
-                                        
+
                                         <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource SecondaryHeader}"
                                                Content="{Binding Path=Name}" Height="30" />
                                         <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource SecondaryText}"
@@ -264,6 +272,9 @@
                 </TabItem>
             </TabControl>
         </Grid>
+        
+  
+
         <Border CornerRadius="4" BorderThickness="0" Background="#F15045" Height="30" Margin="0,0,0,15"
                 x:Name="ErrorPlate"
                 VerticalAlignment="Bottom"

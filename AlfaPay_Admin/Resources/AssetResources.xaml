@@ -36,6 +36,8 @@
     <converter:RequestStatusNotStartedToVisibility x:Key="RequestStatusNotStartedToVisibility" />
     <converter:InvertedRequestStatusInProgressToBool x:Key="InvertedRequestStatusInProgressToBool" />
     <converter:DoubleSubtractConverter x:Key="DoubleSubtractConverter" />
+    <converter:CompareConverter x:Key="CompareConverter" />
+    <converter:MultiBoolConverter x:Key="MultiBoolConverter" />
 
     <Style x:Key="ListBoxElement" TargetType="Grid">
         <Setter Property="Background" Value="Transparent" />
@@ -133,7 +135,6 @@
         <Border Margin="2" Name="TabBorder" BorderBrush="Transparent" Background="Transparent"
                 BorderThickness="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid>
-                <Grid x:Name="MouseOverDetector" />
                 <StackPanel Name="Panel" Margin="5">
                     <ContentPresenter x:Name="ContentSite"
                                       VerticalAlignment="Center"

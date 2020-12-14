@@ -245,10 +245,12 @@
         </ApplicationDefinition>
         <Compile Include="Context\AuthenticationContext.cs" />
         <Compile Include="Context\ApiRequestManager.cs" />
+        <Compile Include="Converter\CompareConverter.cs" />
         <Compile Include="Converter\DouleSubtractConverter.cs" />
         <Compile Include="Converter\InvertedBoolConverter.cs" />
         <Compile Include="Converter\InvertedObjectToBoolConverter.cs" />
         <Compile Include="Converter\InvertedRequestStatusInProgressToBoolConverter.cs" />
+        <Compile Include="Converter\MultiBoolConverter.cs" />
         <Compile Include="Converter\RequestStatusInProgressToVisibility.cs" />
         <Compile Include="Converter\ObjectToStringConverter.cs" />
         <Compile Include="Converter\InvertedRequestStatusInProgressToVisibilityConverter.cs" />

@@ -16,16 +16,29 @@ namespace AlfaPay_Admin.Model
 {
     public sealed class ApplicationViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Application> _applications;
         private Application _selectedApplication;
 
-        public ObservableCollection<Application> Applications
+        private ObservableCollection<Application> _newApplications;
+        
+        public ObservableCollection<Application> NewApplications
         {
-            get => _applications;
+            get => _newApplications;
             private set
             {
-                _applications = value;
-                OnPropertyChanged(nameof(Applications));
+                _newApplications = value;
+                OnPropertyChanged(nameof(NewApplications));
+            }
+        }
+        
+        private ObservableCollection<Application> _rejectedApplications;
+        
+        public ObservableCollection<Application> RejectedApplications
+        {
+            get => _rejectedApplications;
+            private set
+            {
+                _rejectedApplications = value;
+                OnPropertyChanged(nameof(RejectedApplications));
             }
         }
 
@@ -51,7 +64,7 @@ namespace AlfaPay_Admin.Model
 
         public RelayCommand RefreshCommand
         {
-            get { return _refreshCommand ??= new RelayCommand(obj => { GetApplicationsFromServer(0, 10); }); }
+            get { return _refreshCommand ??= new RelayCommand(obj => { GetNewApplicationsFromServer(0, 10); }); }
         }
 
         private RelayCommand _rejectCommand;
@@ -101,20 +114,32 @@ namespace AlfaPay_Admin.Model
         {
             GetApplicationsRequestManager = new ApiRequestManager<ObservableCollection<Application>>();
             RejectApplicationRequestManager = new ApiRequestManager<string>();
-            GetApplicationsFromServer(0, 10);
+            GetNewApplicationsFromServer(0, 10);
+            GetRejectedApplicationsFromServer(0, 10);
         }
 
-        private void GetApplicationsFromServer(int from, int count)
+        private void GetNewApplicationsFromServer(int from, int count)
         {
-            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/get?from={from}&count={count}", null,
-                () => Applications = GetApplicationsRequestManager.Response.Response,
+            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/new/get?from={from}&count={count}", null,
+                () => NewApplications = GetApplicationsRequestManager.Response.Response,
+                () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
+        }
+        
+        private void GetRejectedApplicationsFromServer(int from, int count)
+        {
+            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/rejected/get?from={from}&count={count}", null,
+                () => RejectedApplications = GetApplicationsRequestManager.Response.Response,
                 () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
         }
 
         private void RejectApplication(long id)
         {
             RejectApplicationRequestManager.MakeRequest(Method.POST, $"applications/reject?id={id}", null,
-                () => GetApplicationsFromServer(0, 10),
+                () =>
+                {
+                    GetNewApplicationsFromServer(0, 10);
+                    GetRejectedApplicationsFromServer(0, 10);
+                },
                 () => ErrorMessage = RejectApplicationRequestManager.Response.ToString());
         }
 

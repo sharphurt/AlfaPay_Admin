@@ -43,7 +43,7 @@ namespace AlfaPay_Admin.WindowPage
         {
             Grid.Focus();
         }
-        
+
         private void AcceptButton_OnClick(object sender, RoutedEventArgs e)
         {
             var navigationService = NavigationService;
@@ -62,8 +62,17 @@ namespace AlfaPay_Admin.WindowPage
                 if (args != null && args.Result)
                     RefreshButton.Command.Execute(null);
             };
-            
+
             navigationService?.Navigate(acceptApplicationPage);
+        }
+
+        private void ApplicationsTabControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var d = ApplicationsTabControl;
+            if (NewApplicationsTab.IsSelected)
+                ApplicationInfo.DataContext = NewApplicationsListBox.SelectedItem;
+            else if (RejectedApplicationsTab.IsSelected)
+                ApplicationInfo.DataContext = RejectedApplicationsListBox.SelectedItem;
         }
     }
 }
