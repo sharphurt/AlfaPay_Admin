@@ -6,19 +6,23 @@
         xmlns:customControl="clr-namespace:AlfaPay_Admin.CustomControl"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:alfaPayAdmin="clr-namespace:AlfaPay_Admin"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="AlfaPay Admin"
         Icon="Resources/alfabank_logo.png"
         SizeToContent="WidthAndHeight"
         RenderOptions.BitmapScalingMode="HighQuality"
-        Background="White"
+        Background="#f3f4f5"
         x:Name="MainWindowObject"
         WindowStartupLocation="CenterScreen"
         Width="1200"
         Height="630"
         Loaded="MainWindow_OnLoaded">
     <StackPanel>
-        <Border x:Name="SearchPanel" CornerRadius="4" Background="#f3f4f5" Visibility="Collapsed">
+        <Border Margin="10" x:Name="SearchPanel" CornerRadius="4" Background="White" Visibility="Collapsed">
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.1" BlurRadius="25" ShadowDepth="0" Color="#0B1F35" />
+            </Border.Effect>
             <DockPanel Margin="5,2,0,2" VerticalAlignment="Center">
                 <WrapPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="15,0,0,0"
                            Background="Transparent"
@@ -42,14 +46,21 @@
                 </WrapPanel>
                 <Button DockPanel.Dock="Right" Width="32" Height="32" Margin="10,0,15,0"
                         Style="{StaticResource WhiteRoundedButtonStyle}" Command="{Binding LogoutCommand}">
-                    <Image Source="{StaticResource LogOutIcon}" RenderOptions.BitmapScalingMode="HighQuality"
-                           Stretch="UniformToFill" Margin="2,0,0,0" Width="14" Height="14" />
+                    <Grid>
+                        <Image Source="{StaticResource LogOutIcon}" RenderOptions.BitmapScalingMode="HighQuality"
+                               Stretch="UniformToFill" Margin="2,0,0,0" Width="14" Height="14"
+                               Visibility="{Binding LogoutRequestManager.Status, Converter={StaticResource InvertedRequestStatusInProgressToVisibility}}" />
+                        <fa:ImageAwesome Source="{StaticResource SpinSmallIcon}" Spin="True"
+                                         SpinDuration="0.8"
+                                         Visibility="{Binding LogoutRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
+                                         Width="16" Height="16" />
+                    </Grid>
                 </Button>
-                <Label DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource PrimaryText}"
-                       Content="{Binding LoggedInUser}" />
+                <Label DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource SecondaryText}"
+                       Content="{Binding LoggedInUser}" FontSize="14" />
             </DockPanel>
         </Border>
         <Frame x:Name="MainFrame" Source="WindowPage/LoginPage.xaml" Navigated="MainFrame_OnNavigated"
-                NavigationUIVisibility="Hidden" />
+               NavigationUIVisibility="Hidden" />
     </StackPanel>
 </Window>

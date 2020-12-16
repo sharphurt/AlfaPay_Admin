@@ -12,7 +12,7 @@
       ShowsNavigationUI="False"
       KeepAlive="True"
       MouseDown="MainPage_OnMouseDown">
-    <Grid Margin="10">
+    <Grid Background="#f3f4f5">
         <Grid Focusable="True" x:Name="Grid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />
@@ -23,12 +23,11 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <GroupBox Grid.Column="0" Grid.Row="0" Margin="0,0,5,5">
-                <GroupBox.Header>
-                    <Label Background="White" Style="{StaticResource PrimaryHeader}" Padding="5,0,5,5"
-                           Margin="0,5,0,0"
-                           Content="Информация о клиенте" />
-                </GroupBox.Header>
+            <Border Margin="10,0,0,0" Grid.Column="0" Grid.Row="0" CornerRadius="5" Background="White">
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.1" BlurRadius="25" ShadowDepth="0" Color="#0B1F35"
+                                      RenderingBias="Performance" />
+                </Border.Effect>
                 <Grid>
                     <Image Source="{StaticResource DeadImage}" Width="150" HorizontalAlignment="Center"
                            VerticalAlignment="Center"
@@ -45,235 +44,344 @@
                     <WrapPanel
                         Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label Style="{StaticResource LightPrimaryText}" Content="Дождитесь окончания загрузки данных" />
+                        <Label Style="{StaticResource LightPrimaryText}"
+                               Content="Дождитесь окончания загрузки данных" />
                         <fa:ImageAwesome Source="{StaticResource SpinSmallIcon}" Margin="5,0,0,0" Spin="True"
                                          SpinDuration="0.8"
                                          Width="16" Height="16" />
                     </WrapPanel>
-                    <Grid x:Name="ApplicationInfo" Margin="15,0,15,0" ZIndex="1"
-                          DataContext="{Binding SelectedApplication}"
-                          Background="White"
-                          Visibility="{Binding ElementName=ApplicationInfo, Path=DataContext, Converter={StaticResource ObjectToVisibilityConverter}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150 px" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"
-                               Style="{StaticResource SecondaryHeader}" Content="Имя" />
-                        <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"
-                               Style="{StaticResource SecondaryHeader}" Content="Email" />
-                        <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"
-                               Style="{StaticResource SecondaryHeader}" Content="Телефон" />
-                        <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"
-                               Style="{StaticResource SecondaryHeader}"
-                               Content="ИНН компании" />
-                        <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"
-                               Style="{StaticResource SecondaryHeader}" Content="Дата подачи" />
+                    <GroupBox BorderThickness="0" BorderBrush="Transparent"
+                              Visibility="{Binding ElementName=ApplicationInfo, Path=DataContext, Converter={StaticResource ObjectToVisibilityConverter}}">
+                        <GroupBox.Header>
+                            <Label Background="White" Style="{StaticResource PrimaryHeader}" Padding="5,0,5,5"
+                                   Margin="0,5,0,0"
+                                   Content="Информация о клиенте" />
+                        </GroupBox.Header>
 
-                        <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"
-                               Style="{StaticResource PrimaryText}" Content="{Binding Name}" />
-                        <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"
-                               Style="{StaticResource PrimaryText}" Content="{Binding Email}" />
-                        <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"
-                               Style="{StaticResource PrimaryText}" Content="{Binding Phone}" />
-                        <Label Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right"
-                               Style="{StaticResource PrimaryText}" Content="{Binding Inn}" />
-                        <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right"
-                               Style="{StaticResource PrimaryText}"
-                               Content="{Binding CreatedAt, Converter={StaticResource DateTimeConverter}}" />
+                        <Grid x:Name="ApplicationInfo" Margin="15,0,15,0" ZIndex="1"
+                              DataContext="{Binding SelectedApplication}"
+                              Background="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150 px" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"
+                                   Style="{StaticResource SecondaryHeader}" Content="Имя" />
+                            <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"
+                                   Style="{StaticResource SecondaryHeader}" Content="Email" />
+                            <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"
+                                   Style="{StaticResource SecondaryHeader}" Content="Телефон" />
+                            <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"
+                                   Style="{StaticResource SecondaryHeader}"
+                                   Content="ИНН компании" />
+                            <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"
+                                   Style="{StaticResource SecondaryHeader}" Content="Дата подачи" />
 
-                        <TextBlock Grid.Column="2" Margin="10,0,0,0" Grid.Row="3" HorizontalAlignment="Left"
-                                   VerticalAlignment="Center">
-                            <Hyperlink NavigateUri="">
-                                Подробнее о компании
-                            </Hyperlink>
-                        </TextBlock>
+                            <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"
+                                   Style="{StaticResource PrimaryText}" Content="{Binding Name}" />
+                            <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"
+                                   Style="{StaticResource PrimaryText}" Content="{Binding Email}" />
+                            <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"
+                                   Style="{StaticResource PrimaryText}" Content="{Binding Phone}" />
+                            <Label Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right"
+                                   Style="{StaticResource PrimaryText}" Content="{Binding Inn}" />
+                            <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right"
+                                   Style="{StaticResource PrimaryText}"
+                                   Content="{Binding CreatedAt, Converter={StaticResource DateTimeConverter}}" />
 
-                        <Label Grid.Column="2" Margin="10,0,0,0" HorizontalAlignment="Left" Grid.Row="4"
-                               Style="{StaticResource TertiaryText}"
-                               Content="{Binding DaysPassed}" />
-                    </Grid>
+                            <TextBlock Grid.Column="2" Margin="10,0,0,0" Grid.Row="3" HorizontalAlignment="Left"
+                                       VerticalAlignment="Center">
+                                <Hyperlink>
+                                    Подробнее о компании
+                                </Hyperlink>
+                            </TextBlock>
+
+                            <Label Grid.Column="2" Margin="10,0,0,0" HorizontalAlignment="Left" Grid.Row="4"
+                                   Style="{StaticResource TertiaryText}"
+                                   Content="{Binding DaysPassed}" />
+                        </Grid>
+                    </GroupBox>
                 </Grid>
-            </GroupBox>
 
-            <Grid Grid.Column="0" Row="1" VerticalAlignment="Top" Margin="0,3,6,0">
-                <Grid.IsEnabled>
-                    <MultiBinding Converter="{StaticResource MultiBoolConverter}">
-                        <Binding ElementName="NewApplicationsListBox" Path="SelectedItem"
-                                 Converter="{StaticResource ObjectToBoolConverter}" />
-                        <Binding ElementName="ApplicationsTabControl" Path="SelectedValue"
-                                 Converter="{StaticResource CompareConverter}" ConverterParameter="Новые" />
-                    </MultiBinding>
-                </Grid.IsEnabled>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            </Border>
 
-                <Button Grid.Column="0" Style="{StaticResource OutlinedWhiteButtonStyle}" Height="40 px"
-                        Margin="0,0,7,0" Command="{Binding SendCommand}">
-                    <WrapPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource SendIcon}" RenderOptions.BitmapScalingMode="HighQuality"
-                               Width="16"
-                               Height="16" Margin="10,0,10,0" />
-                        <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3" Content="Связаться с клиентом" />
-                    </WrapPanel>
-                </Button>
-                <Button x:Name="AcceptButton" Grid.Column="1" Style="{StaticResource OutlinedWhiteButtonStyle}"
-                        Height="40 px"
-                        Margin="7,0,7,0" Click="AcceptButton_OnClick">
-                    <WrapPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource TickIcon}" RenderOptions.BitmapScalingMode="HighQuality"
-                               Width="16"
-                               Height="16" Margin="10,0,10,0" />
-                        <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Одобрить заявку</Label>
-                    </WrapPanel>
-                </Button>
-                <Button Grid.Column="2" Style="{StaticResource OutlinedWhiteButtonStyle}" Height="40 px"
-                        Margin="7,0,0,0" Command="{Binding RejectCommand}">
-                    <WrapPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource RejectIcon}" RenderOptions.BitmapScalingMode="HighQuality"
-                               Width="14" Height="14" Margin="10,0,10,0" />
-                        <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Отклонить заявку</Label>
-                    </WrapPanel>
-                </Button>
-            </Grid>
-            <TabControl x:Name="ApplicationsTabControl" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                        BorderThickness="0" SelectionChanged="ApplicationsTabControl_OnSelectionChanged">
-                <TabItem x:Name="NewApplicationsTab" BorderThickness="0" Style="{StaticResource TabItemStyle}">
-                    <TabItem.Header>Новые</TabItem.Header>
-                    <Grid>
-                        <ListBox x:Name="NewApplicationsListBox"
-                                 HorizontalContentAlignment="Stretch"
-                                 VerticalContentAlignment="Stretch"
-                                 BorderThickness="0"
-                                 HorizontalAlignment="Stretch"
-                                 ItemsSource="{Binding NewApplications, UpdateSourceTrigger=PropertyChanged}"
-                                 ScrollViewer.CanContentScroll="False"
-                                 ItemContainerStyle="{StaticResource ItemContainerStyle}"
-                                 SelectedItem="{Binding SelectedApplication, Mode=TwoWay}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Height="60 px" Style="{StaticResource ListBoxElement}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="5 px" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
+            <Border Margin="10,10,0,10" Height="60" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1"
+                    CornerRadius="5" Background="White">
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.1" BlurRadius="25" ShadowDepth="0" Color="#0B1F35"
+                                      RenderingBias="Performance" />
+                </Border.Effect>
+                <Grid VerticalAlignment="Center" Margin="10,0,10,0">
+                    <Grid.IsEnabled>
+                        <MultiBinding Converter="{StaticResource MultiBoolConverter}">
+                            <Binding ElementName="NewApplicationsListBox" Path="SelectedItem"
+                                     Converter="{StaticResource ObjectToBoolConverter}" />
+                            <Binding ElementName="ApplicationsTabControl" Path="SelectedValue"
+                                     Converter="{StaticResource CompareConverter}" ConverterParameter="Новые" />
+                        </MultiBinding>
+                    </Grid.IsEnabled>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource SecondaryHeader}"
-                                               Content="{Binding Path=Name}" Height="30" />
-                                        <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource SecondaryText}"
-                                               Content="{Binding Path=Phone}" />
-                                        <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                                               Style="{StaticResource TertiaryText}"
-                                               Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
-                                               VerticalAlignment="Bottom" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <WrapPanel Panel.ZIndex="1"
-                                   Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
-                                   Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Margin="0,0,0,30">
-                            <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource SpinIcon}" SpinDuration="0.8"
-                                             Spin="true" Height="40" Width="40" />
-                            <Label Style="{StaticResource LightPrimaryText}" Content="Данные загружаются"
-                                   Margin="0,7,0,40" />
+                    <Button Grid.Column="0" Style="{StaticResource OutlinedWhiteButtonStyle}" Height="40 px"
+                            Margin="0,0,5,0" Command="{Binding SendCommand}">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource SendIcon}" RenderOptions.BitmapScalingMode="HighQuality"
+                                   Width="16"
+                                   Height="16" Margin="10,0,10,0" />
+                            <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3" Content="Связаться с клиентом" />
                         </WrapPanel>
-                        <WrapPanel Panel.ZIndex="1"
-                                   Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
-                                   Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Margin="0,0,0,30">
-                            <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource ErrorIcon}" Height="40"
-                                             Width="40" />
-                            <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
-                                   Content="Произошла ошибка"
-                                   Margin="0,7,0,0" />
-                            <Button x:Name="RefreshButton" Content="Попробовать снова"
-                                    Style="{StaticResource OutlinedWhiteButtonStyle}" Margin="0,10,0,0"
-                                    Height="30" Width="150" Command="{Binding RefreshCommand}" />
+                    </Button>
+                    <Button x:Name="AcceptButton" Grid.Column="1" Style="{StaticResource OutlinedWhiteButtonStyle}"
+                            Height="40 px"
+                            Margin="5,0,5,0" Click="AcceptButton_OnClick">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource TickIcon}" RenderOptions.BitmapScalingMode="HighQuality"
+                                   Width="16"
+                                   Height="16" Margin="10,0,10,0" />
+                            <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Одобрить заявку</Label>
                         </WrapPanel>
-                    </Grid>
-                </TabItem>
-                <TabItem x:Name="RejectedApplicationsTab" BorderThickness="0" Style="{StaticResource TabItemStyle}">
-                    <TabItem.Header>Отклоненные</TabItem.Header>
-                    <Grid>
-                        <ListBox x:Name="RejectedApplicationsListBox"
-                                 HorizontalContentAlignment="Stretch"
-                                 VerticalContentAlignment="Stretch"
-                                 BorderThickness="0"
-                                 ItemsSource="{Binding RejectedApplications, UpdateSourceTrigger=PropertyChanged}"
-                                 ScrollViewer.CanContentScroll="False"
-                                 ItemContainerStyle="{StaticResource ItemContainerStyle}"
-                                 SelectedItem="{Binding SelectedApplication, Mode=TwoWay}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Height="60 px" Style="{StaticResource ListBoxElement}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="5 px" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
+                    </Button>
+                    <Button Grid.Column="2" Style="{StaticResource OutlinedWhiteButtonStyle}" Height="40 px"
+                            Margin="5,0,0,0" Command="{Binding RejectCommand}">
+                        <WrapPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource RejectIcon}" RenderOptions.BitmapScalingMode="HighQuality"
+                                   Width="14" Height="14" Margin="10,0,10,0" />
+                            <Label FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,3">Отклонить заявку</Label>
+                        </WrapPanel>
+                    </Button>
+                </Grid>
+            </Border>
 
-                                        <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource SecondaryHeader}"
-                                               Content="{Binding Path=Name}" Height="30" />
-                                        <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource SecondaryText}"
-                                               Content="{Binding Path=Phone}" />
-                                        <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                                               Style="{StaticResource TertiaryText}"
-                                               Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
-                                               VerticalAlignment="Bottom" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <WrapPanel Panel.ZIndex="1"
-                                   Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
-                                   Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Margin="0,0,0,30">
-                            <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource SpinIcon}" SpinDuration="0.8"
-                                             Spin="true" Height="40" Width="40" />
-                            <Label Style="{StaticResource LightPrimaryText}" Content="Данные загружаются"
-                                   Margin="0,7,0,40" />
-                        </WrapPanel>
-                        <WrapPanel Panel.ZIndex="1"
-                                   Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
-                                   Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Margin="0,0,0,30">
-                            <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource ErrorIcon}" Height="40"
-                                             Width="40" />
-                            <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
-                                   Content="Произошла ошибка"
-                                   Margin="0,7,0,0" />
-                            <Button Content="Попробовать снова"
-                                    Style="{StaticResource OutlinedWhiteButtonStyle}" Margin="0,10,0,0"
-                                    Height="30" Width="150" Command="{Binding RefreshCommand}" />
-                        </WrapPanel>
-                    </Grid>
-                </TabItem>
-            </TabControl>
+            <Border x:Name="b" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" MinHeight="100" Margin="10,0,10,10" CornerRadius="5"
+                    Background="White" Grid.IsSharedSizeScope="True">
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.1" BlurRadius="25" ShadowDepth="0" Color="#0B1F35"
+                                      RenderingBias="Performance" />
+                </Border.Effect>
+                <TabControl x:Name="ApplicationsTabControl" VerticalAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            BorderThickness="0" SelectionChanged="ApplicationsTabControl_OnSelectionChanged">
+                    <TabItem x:Name="NewApplicationsTab" BorderThickness="0" Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>Новые</TabItem.Header>
+                        <Grid>
+                            <ListBox x:Name="NewApplicationsListBox"
+                                     HorizontalContentAlignment="Stretch"
+                                     VerticalContentAlignment="Stretch"
+                                     BorderThickness="0"
+                                     Margin="-1,0,-1,0"
+                                     HorizontalAlignment="Stretch"
+                                     ItemsSource="{Binding NewApplications, UpdateSourceTrigger=PropertyChanged}"
+                                     ScrollViewer.CanContentScroll="False"
+                                     ItemContainerStyle="{StaticResource ItemContainerStyle}"
+                                     SelectedItem="{Binding SelectedApplication, Mode=TwoWay}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Height="60 px" Style="{StaticResource ListBoxElement}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5 px" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Column="1" Grid.Row="0"
+                                                   Style="{StaticResource SecondaryHeader}"
+                                                   Content="{Binding Path=Name}" Height="30" />
+                                            <Label Grid.Column="1" Grid.Row="1"
+                                                   Style="{StaticResource SecondaryText}"
+                                                   Content="{Binding Path=Phone}" />
+                                            <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                                   Style="{StaticResource TertiaryText}"
+                                                   Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
+                                                   VerticalAlignment="Bottom" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <WrapPanel Panel.ZIndex="1"
+                                       Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
+                                       Orientation="Vertical" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,0,30">
+                                <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource SpinIcon}"
+                                                 SpinDuration="0.8"
+                                                 Spin="true" Height="40" Width="40" />
+                                <Label Style="{StaticResource LightPrimaryText}" Content="Данные загружаются"
+                                       Margin="0,7,0,40" />
+                            </WrapPanel>
+                            <WrapPanel Panel.ZIndex="1"
+                                       Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
+                                       Orientation="Vertical" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,0,30">
+                                <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource ErrorIcon}" Height="40"
+                                                 Width="40" />
+                                <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
+                                       Content="Произошла ошибка"
+                                       Margin="0,7,0,0" />
+                                <Button x:Name="RefreshButton" Content="Попробовать снова"
+                                        Style="{StaticResource OutlinedWhiteButtonStyle}" Margin="0,10,0,0"
+                                        Height="30" Width="150" Command="{Binding RefreshCommand}" />
+                            </WrapPanel>
+                        </Grid>
+                    </TabItem>
+                    <TabItem x:Name="RejectedApplicationsTab" BorderThickness="0"
+                             Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>Отклоненные</TabItem.Header>
+                        <Grid>
+                            <ListBox x:Name="RejectedApplicationsListBox"
+                                     HorizontalContentAlignment="Stretch"
+                                     VerticalContentAlignment="Stretch"
+                                     BorderThickness="0"
+                                     Margin="-1,0,-1,0"
+
+                                     ItemsSource="{Binding RejectedApplications, UpdateSourceTrigger=PropertyChanged}"
+                                     ScrollViewer.CanContentScroll="False"
+                                     ItemContainerStyle="{StaticResource ItemContainerStyle}"
+                                     SelectedItem="{Binding SelectedApplication, Mode=TwoWay}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Height="60 px" Style="{StaticResource ListBoxElement}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5 px" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Column="1" Grid.Row="0"
+                                                   Style="{StaticResource SecondaryHeader}"
+                                                   Content="{Binding Path=Name}" Height="30" />
+                                            <Label Grid.Column="1" Grid.Row="1"
+                                                   Style="{StaticResource SecondaryText}"
+                                                   Content="{Binding Path=Phone}" />
+                                            <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                                   Style="{StaticResource TertiaryText}"
+                                                   Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
+                                                   VerticalAlignment="Bottom" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <WrapPanel Panel.ZIndex="1"
+                                       Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
+                                       Orientation="Vertical" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,0,30">
+                                <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource SpinIcon}"
+                                                 SpinDuration="0.8"
+                                                 Spin="true" Height="40" Width="40" />
+                                <Label Style="{StaticResource LightPrimaryText}" Content="Данные загружаются"
+                                       Margin="0,7,0,40" />
+                            </WrapPanel>
+                            <WrapPanel Panel.ZIndex="1"
+                                       Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
+                                       Orientation="Vertical" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,0,30">
+                                <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource ErrorIcon}" Height="40"
+                                                 Width="40" />
+                                <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
+                                       Content="Произошла ошибка"
+                                       Margin="0,7,0,0" />
+                                <Button Content="Попробовать снова"
+                                        Style="{StaticResource OutlinedWhiteButtonStyle}" Margin="0,10,0,0"
+                                        Height="30" Width="150" Command="{Binding RefreshCommand}" />
+                            </WrapPanel>
+                        </Grid>
+                    </TabItem>
+                    <TabItem x:Name="UsersTab" BorderThickness="0"
+                             Style="{StaticResource TabItemStyle}">
+                        <TabItem.Header>Пользователи</TabItem.Header>
+                        <StackPanel>
+                            <customControl:HintedInput Margin="15,0,15,0"
+                                                       HorizontalAlignment="Stretch"
+                                                       Hint="Введите имя" />
+                            <ListBox x:Name="UsersListBox"
+                                     HorizontalContentAlignment="Stretch"
+                                     VerticalContentAlignment="Stretch"
+                                     BorderThickness="0"
+                                     Margin="-1,0,-1,0"
+
+                                     ItemsSource="{Binding RejectedApplications, UpdateSourceTrigger=PropertyChanged}"
+                                     ScrollViewer.CanContentScroll="False"
+                                     ItemContainerStyle="{StaticResource ItemContainerStyle}"
+                                     SelectedItem="{Binding SelectedApplication, Mode=TwoWay}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Height="60 px" Style="{StaticResource ListBoxElement}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5 px" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Column="1" Grid.Row="0"
+                                                   Style="{StaticResource SecondaryHeader}"
+                                                   Content="{Binding Path=Name}" Height="30" />
+                                            <Label Grid.Column="1" Grid.Row="1"
+                                                   Style="{StaticResource SecondaryText}"
+                                                   Content="{Binding Path=Phone}" />
+                                            <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                                   Style="{StaticResource TertiaryText}"
+                                                   Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
+                                                   VerticalAlignment="Bottom" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <WrapPanel Panel.ZIndex="1"
+                                       Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
+                                       Orientation="Vertical" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,0,30">
+                                <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource SpinIcon}"
+                                                 SpinDuration="0.8"
+                                                 Spin="true" Height="40" Width="40" />
+                                <Label Style="{StaticResource LightPrimaryText}" Content="Данные загружаются"
+                                       Margin="0,7,0,40" />
+                            </WrapPanel>
+                            <WrapPanel Panel.ZIndex="1"
+                                       Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
+                                       Orientation="Vertical" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,0,30">
+                                <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource ErrorIcon}" Height="40"
+                                                 Width="40" />
+                                <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
+                                       Content="Произошла ошибка"
+                                       Margin="0,7,0,0" />
+                                <Button Content="Попробовать снова"
+                                        Style="{StaticResource OutlinedWhiteButtonStyle}" Margin="0,10,0,0"
+                                        Height="30" Width="150" Command="{Binding RefreshCommand}" />
+                            </WrapPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </Border>
         </Grid>
-        
-  
 
         <Border CornerRadius="4" BorderThickness="0" Background="#F15045" Height="30" Margin="0,0,0,15"
                 x:Name="ErrorPlate"

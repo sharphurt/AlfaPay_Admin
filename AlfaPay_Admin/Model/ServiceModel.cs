@@ -48,8 +48,7 @@ namespace AlfaPay_Admin.Model
         private void Logout()
         {
             LogoutRequestManager.MakeRequest(Method.POST, "auth/logout",
-                new {deviceInfo = AuthenticationContext.DeviceInfo}, OnLogoutSuccessfully, null);
-            /*() => ErrorMessage = LogoutRequestManager.Response.ToString());*/
+                new {deviceInfo = AuthenticationContext.DeviceInfo}, OnLogoutSuccessfully, OnLogoutSuccessfully);
         }
 
         private void OnLogoutSuccessfully()
@@ -57,7 +56,6 @@ namespace AlfaPay_Admin.Model
             AuthenticationContext.ClearAuthentication();   
             LoggedInUser = null;
         }
-        
         
         public event PropertyChangedEventHandler PropertyChanged;
 

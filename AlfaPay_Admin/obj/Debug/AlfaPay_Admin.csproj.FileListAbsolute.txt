@@ -117,3 +117,5 @@ C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\ro\Xceed.W
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\CustomControl\HintedInput.g.cs
+C:\Users\sharphurt\AlfaPayAdmin\AlfaPay_Admin\AlfaPay_Admin\obj\Debug\CustomControl\HintedInput.baml

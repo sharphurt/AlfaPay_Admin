@@ -260,6 +260,9 @@
         <Compile Include="CustomControl\HeadedTextBlock.xaml.cs">
           <DependentUpon>HeadedTextBlock.xaml</DependentUpon>
         </Compile>
+        <Compile Include="CustomControl\HintedInput.xaml.cs">
+          <DependentUpon>HintedInput.xaml</DependentUpon>
+        </Compile>
         <Compile Include="CustomControl\InputTextBox.xaml.cs">
           <DependentUpon>InputTextBox.xaml</DependentUpon>
         </Compile>
@@ -290,6 +293,7 @@
           <DependentUpon>MainPage.xaml</DependentUpon>
         </Compile>
         <Page Include="CustomControl\HeadedTextBlock.xaml" />
+        <Page Include="CustomControl\HintedInput.xaml" />
         <Page Include="CustomControl\InputTextBox.xaml" />
         <Page Include="CustomControl\TransparentTextLabel.xaml" />
         <Page Include="MainWindow.xaml">
