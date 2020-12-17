@@ -272,6 +272,7 @@
         </Compile>
         <Compile Include="Entity\DeviceInfo.cs" />
         <Compile Include="Entity\JwtContainer.cs" />
+        <Compile Include="Entity\User.cs" />
         <Compile Include="Model\ApplicationViewModel.cs" />
         <Compile Include="Model\CompanyModel.cs" />
         <Compile Include="Model\LoggedUser.cs" />

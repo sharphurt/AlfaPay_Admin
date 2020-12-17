@@ -17,9 +17,10 @@
         WindowStartupLocation="CenterScreen"
         Width="1200"
         Height="630"
+        SizeChanged="MainWindow_OnSizeChanged"
         Loaded="MainWindow_OnLoaded">
-    <StackPanel>
-        <Border Margin="10" x:Name="SearchPanel" CornerRadius="4" Background="White" Visibility="Collapsed">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Top" Margin="10" x:Name="SearchPanel" CornerRadius="4" Background="White" Visibility="Collapsed">
             <Border.Effect>
                 <DropShadowEffect Opacity="0.1" BlurRadius="25" ShadowDepth="0" Color="#0B1F35" />
             </Border.Effect>
@@ -60,7 +61,7 @@
                        Content="{Binding LoggedInUser}" FontSize="14" />
             </DockPanel>
         </Border>
-        <Frame x:Name="MainFrame" Source="WindowPage/LoginPage.xaml" Navigated="MainFrame_OnNavigated"
+        <Frame DockPanel.Dock="Top" x:Name="MainFrame" Source="WindowPage/LoginPage.xaml" Navigated="MainFrame_OnNavigated"
                NavigationUIVisibility="Hidden" />
-    </StackPanel>
+    </DockPanel>
 </Window>

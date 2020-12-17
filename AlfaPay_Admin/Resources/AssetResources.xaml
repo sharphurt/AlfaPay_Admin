@@ -228,4 +228,29 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <DataTemplate x:Key="ApplicationItem">
+        <Grid Height="60 px" Style="{StaticResource ListBoxElement}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5 px" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="1" Grid.Row="0"
+                   Style="{StaticResource SecondaryHeader}"
+                   Content="{Binding Path=Name}" Height="30" />
+            <Label Grid.Column="1" Grid.Row="1"
+                   Style="{StaticResource SecondaryText}"
+                   Content="{Binding Path=Phone}" />
+            <Label Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                   Style="{StaticResource TertiaryText}"
+                   Content="{Binding Path=CreatedAt}" HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom" />
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

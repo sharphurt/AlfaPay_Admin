@@ -33,7 +33,7 @@ namespace AlfaPay_Admin.CustomControl
         
         private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            if (SearchTextBox.Text == Name)
+            if (SearchTextBox.Text == Hint)
                 SearchTextBox.Text = "";
             SearchTextBox.Foreground = new SolidColorBrush(Color.FromRgb(11, 31, 53));
         }

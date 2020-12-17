@@ -71,5 +71,11 @@ namespace AlfaPay_Admin
                 ? Visibility.Collapsed
                 : Visibility.Visible;
         }
+
+        private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ((Page) MainFrame.Content).Width = MainFrame.ActualWidth;
+            ((Page) MainFrame.Content).Height = MainFrame.ActualHeight;
+        }
     }
 }

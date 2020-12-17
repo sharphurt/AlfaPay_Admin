@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Web.UI.WebControls;
@@ -16,10 +17,8 @@ namespace AlfaPay_Admin.Model
 {
     public sealed class ApplicationViewModel : INotifyPropertyChanged
     {
-        private Application _selectedApplication;
-
         private ObservableCollection<Application> _newApplications;
-        
+
         public ObservableCollection<Application> NewApplications
         {
             get => _newApplications;
@@ -29,9 +28,9 @@ namespace AlfaPay_Admin.Model
                 OnPropertyChanged(nameof(NewApplications));
             }
         }
-        
+
         private ObservableCollection<Application> _rejectedApplications;
-        
+
         public ObservableCollection<Application> RejectedApplications
         {
             get => _rejectedApplications;
@@ -39,6 +38,18 @@ namespace AlfaPay_Admin.Model
             {
                 _rejectedApplications = value;
                 OnPropertyChanged(nameof(RejectedApplications));
+            }
+        }
+
+        private ObservableCollection<User> _users;
+
+        public ObservableCollection<User> Users
+        {
+            get => _users;
+            private set
+            {
+                _users = value;
+                OnPropertyChanged(nameof(Users));
             }
         }
 
@@ -50,6 +61,8 @@ namespace AlfaPay_Admin.Model
             set => _selectedIndex = value;
         }
 
+        private Application _selectedApplication;
+
         public Application SelectedApplication
         {
             get => _selectedApplication;
@@ -59,6 +72,7 @@ namespace AlfaPay_Admin.Model
                 OnPropertyChanged(nameof(SelectedApplication));
             }
         }
+
 
         private RelayCommand _refreshCommand;
 
@@ -73,7 +87,7 @@ namespace AlfaPay_Admin.Model
         {
             get { return _rejectCommand ??= new RelayCommand(obj => { RejectApplication(SelectedApplication.Id); }); }
         }
-        
+
         private RelayCommand _sendMessageCommand;
 
         public RelayCommand SendMessageCommand
@@ -105,6 +119,19 @@ namespace AlfaPay_Admin.Model
             }
         }
 
+
+        private ApiRequestManager<ObservableCollection<User>> _usersRequestManager;
+
+        public ApiRequestManager<ObservableCollection<User>> UsersRequestManager
+        {
+            get => _usersRequestManager;
+            set
+            {
+                _usersRequestManager = value;
+                OnPropertyChanged(nameof(UsersRequestManager));
+            }
+        }
+
         private string _errorMessage;
 
         public string ErrorMessage
@@ -121,23 +148,43 @@ namespace AlfaPay_Admin.Model
         {
             GetApplicationsRequestManager = new ApiRequestManager<ObservableCollection<Application>>();
             RejectApplicationRequestManager = new ApiRequestManager<string>();
-            GetNewApplicationsFromServer(0, 10);
-            GetRejectedApplicationsFromServer(0, 10);
+            UsersRequestManager = new ApiRequestManager<ObservableCollection<User>>();
+            GetNewApplicationsFromServer(0, 100);
+            GetRejectedApplicationsFromServer(0, 100);
+            GetUsersFromServer(0, 100);
         }
 
         private void GetNewApplicationsFromServer(int from, int count)
         {
-            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/new/get?from={from}&count={count}", null,
+            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/new/get?from={from}&count={count}",
+                null,
                 () => NewApplications = GetApplicationsRequestManager.Response.Response,
                 () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
         }
-        
+
         private void GetRejectedApplicationsFromServer(int from, int count)
         {
-            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/rejected/get?from={from}&count={count}", null,
+            GetApplicationsRequestManager.MakeRequest(Method.GET,
+                $"applications/rejected/get?from={from}&count={count}", null,
                 () => RejectedApplications = GetApplicationsRequestManager.Response.Response,
                 () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
         }
+
+        private void GetUsersFromServer(int from, int count)
+        {
+            UsersRequestManager.MakeRequest(Method.GET, $"users/get?from={from}&count={count}", null,
+                () =>
+                {
+                    Users = new ObservableCollection<User>();
+                    foreach (var user in UsersRequestManager.Response.Response)
+                    {
+                        Users.Add(user);
+                        Users.Add(user);
+                    }
+                },
+                () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
+        }
+
 
         private void RejectApplication(long id)
         {
@@ -152,9 +199,8 @@ namespace AlfaPay_Admin.Model
 
         public void SendEmail()
         {
-            
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
