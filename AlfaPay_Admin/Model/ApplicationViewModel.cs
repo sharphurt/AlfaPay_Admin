@@ -17,27 +17,15 @@ namespace AlfaPay_Admin.Model
 {
     public sealed class ApplicationViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Application> _newApplications;
+        private ObservableCollection<Application> _applications;
 
-        public ObservableCollection<Application> NewApplications
+        public ObservableCollection<Application> Applications
         {
-            get => _newApplications;
+            get => _applications;
             private set
             {
-                _newApplications = value;
-                OnPropertyChanged(nameof(NewApplications));
-            }
-        }
-
-        private ObservableCollection<Application> _rejectedApplications;
-
-        public ObservableCollection<Application> RejectedApplications
-        {
-            get => _rejectedApplications;
-            private set
-            {
-                _rejectedApplications = value;
-                OnPropertyChanged(nameof(RejectedApplications));
+                _applications = value;
+                OnPropertyChanged(nameof(Applications));
             }
         }
 
@@ -50,6 +38,18 @@ namespace AlfaPay_Admin.Model
             {
                 _users = value;
                 OnPropertyChanged(nameof(Users));
+            }
+        }
+
+        private string _usersSearch;
+
+        public string UsersSearch
+        {
+            get => _usersSearch;
+            set
+            {
+                _usersSearch = value;
+                OnPropertyChanged(nameof(UsersSearch));
             }
         }
 
@@ -73,12 +73,25 @@ namespace AlfaPay_Admin.Model
             }
         }
 
+        
+        private User _selectedUser;
+
+        public User SelectedUser
+        {
+            get => _selectedUser;
+            set
+            {
+                _selectedUser = value;
+                OnPropertyChanged(nameof(SelectedUser));
+            }
+        }
+
 
         private RelayCommand _refreshCommand;
 
         public RelayCommand RefreshCommand
         {
-            get { return _refreshCommand ??= new RelayCommand(obj => { GetNewApplicationsFromServer(0, 10); }); }
+            get { return _refreshCommand ??= new RelayCommand(obj => { GetApplicationsFromServer(0, 10); }); }
         }
 
         private RelayCommand _rejectCommand;
@@ -149,39 +162,22 @@ namespace AlfaPay_Admin.Model
             GetApplicationsRequestManager = new ApiRequestManager<ObservableCollection<Application>>();
             RejectApplicationRequestManager = new ApiRequestManager<string>();
             UsersRequestManager = new ApiRequestManager<ObservableCollection<User>>();
-            GetNewApplicationsFromServer(0, 100);
-            GetRejectedApplicationsFromServer(0, 100);
+            GetApplicationsFromServer(0, 100);
             GetUsersFromServer(0, 100);
         }
 
-        private void GetNewApplicationsFromServer(int from, int count)
+        private void GetApplicationsFromServer(int from, int count)
         {
-            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/new/get?from={from}&count={count}",
+            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/get?from={from}&count={count}",
                 null,
-                () => NewApplications = GetApplicationsRequestManager.Response.Response,
-                () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
-        }
-
-        private void GetRejectedApplicationsFromServer(int from, int count)
-        {
-            GetApplicationsRequestManager.MakeRequest(Method.GET,
-                $"applications/rejected/get?from={from}&count={count}", null,
-                () => RejectedApplications = GetApplicationsRequestManager.Response.Response,
+                () => Applications = GetApplicationsRequestManager.Response.Response,
                 () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
         }
 
         private void GetUsersFromServer(int from, int count)
         {
             UsersRequestManager.MakeRequest(Method.GET, $"users/get?from={from}&count={count}", null,
-                () =>
-                {
-                    Users = new ObservableCollection<User>();
-                    foreach (var user in UsersRequestManager.Response.Response)
-                    {
-                        Users.Add(user);
-                        Users.Add(user);
-                    }
-                },
+                () => Users = UsersRequestManager.Response.Response,
                 () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
         }
 
@@ -191,8 +187,7 @@ namespace AlfaPay_Admin.Model
             RejectApplicationRequestManager.MakeRequest(Method.POST, $"applications/reject?id={id}", null,
                 () =>
                 {
-                    GetNewApplicationsFromServer(0, 10);
-                    GetRejectedApplicationsFromServer(0, 10);
+                    GetApplicationsFromServer(0, 10);
                 },
                 () => ErrorMessage = RejectApplicationRequestManager.Response.ToString());
         }

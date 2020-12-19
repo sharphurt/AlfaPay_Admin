@@ -21,9 +21,9 @@
         Loaded="MainWindow_OnLoaded">
     <DockPanel LastChildFill="True">
         <Border DockPanel.Dock="Top" Margin="10" x:Name="SearchPanel" CornerRadius="4" Background="White" Visibility="Collapsed">
-            <Border.Effect>
+            <!--<Border.Effect>
                 <DropShadowEffect Opacity="0.1" BlurRadius="25" ShadowDepth="0" Color="#0B1F35" />
-            </Border.Effect>
+            </Border.Effect>-->
             <DockPanel Margin="5,2,0,2" VerticalAlignment="Center">
                 <WrapPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="15,0,0,0"
                            Background="Transparent"

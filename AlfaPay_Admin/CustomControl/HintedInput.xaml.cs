@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using static System.String;
 
 namespace AlfaPay_Admin.CustomControl
 {
@@ -13,6 +14,12 @@ namespace AlfaPay_Admin.CustomControl
             set => SetValue(HintProperty, value);
         }
 
+        public string SearchString
+        {
+            get => (string) GetValue(SearchStringProperty);
+            set => SetValue(SearchStringProperty, value);
+        }
+
         public string Icon
         {
             get => (string) GetValue(IconProperty);
@@ -21,29 +28,34 @@ namespace AlfaPay_Admin.CustomControl
 
         public static readonly DependencyProperty HintProperty =
             DependencyProperty.Register("Hint", typeof(string), typeof(InputTextBox));
-        
+
         public static readonly DependencyProperty IconProperty =
             DependencyProperty.Register("Icon", typeof(string), typeof(InputTextBox));
 
-        
+        public static readonly DependencyProperty SearchStringProperty =
+            DependencyProperty.Register("SearchString", typeof(string), typeof(InputTextBox));
+
+
         public HintedInput()
         {
             InitializeComponent();
         }
-        
+
         private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
             if (SearchTextBox.Text == Hint)
-                SearchTextBox.Text = "";
+                SearchTextBox.Text = Empty;
             SearchTextBox.Foreground = new SolidColorBrush(Color.FromRgb(11, 31, 53));
         }
 
         private void SearchTextBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            if (IsNullOrWhiteSpace(SearchTextBox.Text))
                 SearchTextBox.Text = Hint;
             SearchTextBox.Foreground = new SolidColorBrush(Color.FromRgb(182, 188, 195));
         }
 
+        private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e) =>
+            SearchString = SearchTextBox.Text == Hint ? null : SearchTextBox.Text;
     }
 }

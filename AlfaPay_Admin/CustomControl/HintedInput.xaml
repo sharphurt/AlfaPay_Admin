@@ -10,12 +10,13 @@
         <TextBox x:Name="SearchTextBox" Style="{StaticResource InputFilledStyle}"
                  FontSize="14"
                  Height="35"
-                 Padding="5,1,15,0"
-                 Text="{Binding ElementName=HintedInputWindow, Path=Hint, Mode=OneTime}"
+                 Padding="5,1,25,0"
+                 Text="{Binding SearchString, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                  VerticalContentAlignment="Center"
+                 TextChanged="SearchTextBox_OnTextChanged"
                  GotFocus="SearchTextBox_OnGotFocus"
                  LostFocus="SearchTextBox_OnLostFocus" />
-        <Image Source="{StaticResource SearchIcon}" Width="14" Height="14" Margin="0,0,5,0" HorizontalAlignment="Right"/>
+        <Image Source="{StaticResource SearchIcon}" Width="14" Height="14" Margin="0,0,10,0" HorizontalAlignment="Right"/>
         
     </Grid>
 </UserControl>

@@ -48,7 +48,7 @@ namespace AlfaPay_Admin.WindowPage
         private void AcceptButton_OnClick(object sender, RoutedEventArgs e)
         {
             var navigationService = NavigationService;
-            var selectedApplication = NewApplicationsListBox.SelectedItem as Application;
+            var selectedApplication = ApplicationsListBox.SelectedItem as Application;
             var user = new ClientModel
             {
                 Name = selectedApplication?.Name,
@@ -65,15 +65,6 @@ namespace AlfaPay_Admin.WindowPage
             };
 
             navigationService?.Navigate(acceptApplicationPage);
-        }
-
-        private void ApplicationsTabControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var d = ApplicationsTabControl;
-            if (NewApplicationsTab.IsSelected)
-                ApplicationInfo.DataContext = NewApplicationsListBox.SelectedItem;
-            else if (RejectedApplicationsTab.IsSelected)
-                ApplicationInfo.DataContext = RejectedApplicationsListBox.SelectedItem;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

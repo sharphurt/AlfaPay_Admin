@@ -14,9 +14,11 @@ namespace AlfaPay_Admin.Entity
 
         [JsonPropertyName("email")] public string Email { get; set; }
 
-        [JsonPropertyName("inn")] public long Inn { get; set; }
+        [JsonPropertyName("inn")] public string Inn { get; set; }
 
-        [JsonPropertyName("createdAt")] public DateTime CreatedAt { get; set; }
+        [JsonPropertyName("createdAt")] public DateTime CreatedAt { get; set; }     
+        
+        [JsonPropertyName("status")] public string Status { get; set; }
 
         public string DaysPassed
         {
@@ -38,11 +40,6 @@ namespace AlfaPay_Admin.Entity
             if (count % 10 == 1 && count % 100 / 10 != 1) return "день";
             if (count % 10 >= 2 && count % 10 <= 4 && count % 100 / 10 != 1) return "дня";
             return "дней";
-        }
-
-        public override string ToString()
-        {
-            return $"{Name} \t {Phone}";
         }
     }
 }
