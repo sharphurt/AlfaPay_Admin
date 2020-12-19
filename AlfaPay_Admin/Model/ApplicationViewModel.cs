@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Web.UI.WebControls;
+using System.Windows.Data;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Entity;
@@ -25,7 +26,20 @@ namespace AlfaPay_Admin.Model
             private set
             {
                 _applications = value;
+                ApplicationsView = CollectionViewSource.GetDefaultView(Applications);
                 OnPropertyChanged(nameof(Applications));
+            }
+        }
+
+        private ICollectionView _applicationsView;
+
+        public ICollectionView ApplicationsView
+        {
+            get => _applicationsView;
+            set
+            {
+                _applicationsView = value;
+                OnPropertyChanged(nameof(ApplicationsView));
             }
         }
 
@@ -37,7 +51,33 @@ namespace AlfaPay_Admin.Model
             private set
             {
                 _users = value;
+                UsersView = CollectionViewSource.GetDefaultView(Users);
                 OnPropertyChanged(nameof(Users));
+            }
+        }
+
+        private ICollectionView _usersView;
+
+        public ICollectionView UsersView
+        {
+            get => _usersView;
+            set
+            {
+                _usersView = value;
+                OnPropertyChanged(nameof(UsersView));
+            }
+        }
+
+        private string _applicationsSearch;
+
+        public string ApplicationsSearch
+        {
+            get => _applicationsSearch;
+            set
+            {
+                _applicationsSearch = value;
+                FilterApplications(_applicationsSearch);
+                OnPropertyChanged(nameof(ApplicationsSearch));
             }
         }
 
@@ -49,18 +89,11 @@ namespace AlfaPay_Admin.Model
             set
             {
                 _usersSearch = value;
+                FilterUsers(_usersSearch);
                 OnPropertyChanged(nameof(UsersSearch));
             }
         }
-
-        private int _selectedIndex;
-
-        public int SelectedIndex
-        {
-            get => _selectedIndex;
-            set => _selectedIndex = value;
-        }
-
+        
         private Application _selectedApplication;
 
         public Application SelectedApplication
@@ -73,7 +106,7 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        
+
         private User _selectedUser;
 
         public User SelectedUser
@@ -181,15 +214,23 @@ namespace AlfaPay_Admin.Model
                 () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
         }
 
-
         private void RejectApplication(long id)
         {
             RejectApplicationRequestManager.MakeRequest(Method.POST, $"applications/reject?id={id}", null,
-                () =>
-                {
-                    GetApplicationsFromServer(0, 10);
-                },
+                () => { GetApplicationsFromServer(0, 10); },
                 () => ErrorMessage = RejectApplicationRequestManager.Response.ToString());
+        }
+
+        private void FilterApplications(string searchString)
+        {
+            ApplicationsView.Filter =
+                o => o is Application application && application.MatchToSearchString(searchString);
+        }
+
+        private void FilterUsers(string searchString)
+        {
+            UsersView.Filter =
+                o => o is User user && user.MatchToSearchString(searchString);
         }
 
         public void SendEmail()

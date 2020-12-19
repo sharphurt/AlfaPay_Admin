@@ -13,8 +13,6 @@ namespace AlfaPay_Admin.Converter
         {
             switch ((string) value)
             {
-                case "ACTIVE":
-                    return (BitmapImage) Application.Current.FindResource("TickIcon");
                 case "LOCKED":
                     return (BitmapImage) Application.Current.FindResource("LockIcon");
                 case "DELETED":

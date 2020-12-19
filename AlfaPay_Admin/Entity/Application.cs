@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace AlfaPay_Admin.Entity
@@ -40,6 +41,17 @@ namespace AlfaPay_Admin.Entity
             if (count % 10 == 1 && count % 100 / 10 != 1) return "день";
             if (count % 10 >= 2 && count % 10 <= 4 && count % 100 / 10 != 1) return "дня";
             return "дней";
+        }
+
+        public bool MatchToSearchString(string searchString) => searchString.Split(' ').Any(Match);
+
+        private bool Match(string search)
+        {
+            return Email.ToLower().Contains(search)
+                   || Inn.ToLower().Contains(search)
+                   || Name.ToLower().Contains(search)
+                   || Phone.ToLower().Contains(search)
+                   || Status.ToLower().Contains(search);
         }
     }
 }

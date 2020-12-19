@@ -21,7 +21,9 @@
     <BitmapImage x:Key="LockIcon" UriSource="lock.png" />
     <BitmapImage x:Key="AdminIcon" UriSource="admin.png" />
     <BitmapImage x:Key="AdminPlate" UriSource="adminPlate.png" />
+    <BitmapImage x:Key="AdminPlateGray" UriSource="adminPlateGray.png" />
     <BitmapImage x:Key="ClientPlate" UriSource="clientPlate.png" />
+    <BitmapImage x:Key="ClientPlateGray" UriSource="clientPlateGray.png" />
     <BitmapImage x:Key="FilterIcon" UriSource="filter.png" />
     <BitmapImage x:Key="NewPlate" UriSource="newPlate.png" />
     <BitmapImage x:Key="AcceptedPlate" UriSource="acceptedPlate.png" />
@@ -263,7 +265,7 @@
             <Label Grid.Column="0" Grid.Row="1"
                    Style="{StaticResource SecondaryText}"
                    Content="{Binding Path=Phone}" />
-            <Image Grid.Column="1" Grid.Row="0" Height="14" HorizontalAlignment="Right"
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" Height="18" HorizontalAlignment="Right"
                    Margin="0,6,10,0"
                    Stretch="Uniform"
                    Source="{Binding Status, Converter={StaticResource ApplicationStatusToIconConverter}}" />
@@ -281,26 +283,31 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Label Style="{StaticResource SecondaryHeader}"
-                   FontSize="14" Grid.Column="0" Grid.Row="0"
-                   Content="{Binding FirstName}" />
+            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+                <Label Style="{StaticResource SecondaryHeader}"
+                       FontSize="14"
+                       Foreground="{Binding UserStatus, Converter={StaticResource UserStatusToColorConverter}}"
+                       Content="{Binding FullName}" />
+                <Image Height="14" HorizontalAlignment="Right"
+                       Margin="0,5,5,0"
+                       VerticalAlignment="Center"
+                       Stretch="Uniform"
+                       Source="{Binding UserStatus, Converter={StaticResource UserStatusToIconConverter}}" />
+            </StackPanel>
             <Label Grid.Column="0" Grid.Row="1"
+                   Foreground="{Binding UserStatus, Converter={StaticResource UserStatusToColorConverter}}"
                    Style="{StaticResource SecondaryText}"
                    Content="{Binding Email}" />
-            <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                        Margin="0,5,5,0"
-                        Orientation="Vertical" VerticalAlignment="Center">
-                <Image Height="14" HorizontalAlignment="Right"
-                       Margin="0,0,5,0"
-                       Stretch="Uniform"
-                       Source="{Binding UserPrivilege, Converter={StaticResource UserPrivilegeToIconConverter}}" />
-                <Label Style="{StaticResource PrimaryText}"
-                       FontSize="14"
-                       FontWeight="Medium"
-                       HorizontalAlignment="Right"
-                       Foreground="{Binding UserStatus, Converter={StaticResource UserStatusToColorConverter}}"
-                       Content="{Binding UserStatus, Converter={StaticResource UserStatusToReadableConverter}}" />
-            </StackPanel>
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Height="18" HorizontalAlignment="Right"
+                   Margin="0,5,10,0"
+                   Stretch="Uniform">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource UserPrivilegeToIconConverter}">
+                        <Binding Path="UserPrivilege" />
+                        <Binding Path="UserStatus" />
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

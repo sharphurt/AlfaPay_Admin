@@ -15,10 +15,10 @@ namespace AlfaPay_Admin.Converter
             switch ((string) value)
             {
                 case "ACTIVE":
-                    return new SolidColorBrush(Color.FromRgb(47, 194, 110));
+                    return new SolidColorBrush(Colors.Black);
                 case "LOCKED":
                 case "DELETED":     
-                    return new SolidColorBrush(Color.FromRgb(243, 101, 91));
+                    return new SolidColorBrush(Color.FromRgb(183, 189, 195));
             }
 
             return null;

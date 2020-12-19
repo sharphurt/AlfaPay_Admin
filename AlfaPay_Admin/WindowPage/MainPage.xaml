@@ -84,16 +84,16 @@
                             <DropShadowEffect Opacity="0.1" BlurRadius="25" ShadowDepth="0" Color="#0B1F35"
                                               RenderingBias="Performance" />
                         </Border.Effect>-->
+                        <Border.Visibility>
+                            <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
+                                <Binding ElementName="ApplicationInfo" Path="DataContext"
+                                         Converter="{StaticResource ObjectToBoolConverter}" />
+                                <Binding ElementName="TabControl" Path="SelectedValue"
+                                         Converter="{StaticResource CompareConverter}"
+                                         ConverterParameter="Заявки" />
+                            </MultiBinding>
+                        </Border.Visibility>
                         <Grid VerticalAlignment="Center" Margin="10,0,10,0">
-                            <Grid.Visibility>
-                                <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
-                                    <Binding ElementName="ApplicationInfo" Path="DataContext"
-                                             Converter="{StaticResource ObjectToBoolConverter}" />
-                                    <Binding ElementName="TabControl" Path="SelectedValue"
-                                             Converter="{StaticResource CompareConverter}"
-                                             ConverterParameter="Заявки" />
-                                </MultiBinding>
-                            </Grid.Visibility>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -160,6 +160,7 @@
                                         </Button>
                                         <customControl:HintedInput Margin="15,0,15,10"
                                                                    DockPanel.Dock="Top"
+                                                                   DataContext="{Binding ApplicationsSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                    HorizontalAlignment="Stretch"
                                                                    Hint="Введите имя" />
 
@@ -173,7 +174,7 @@
                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                                              ScrollViewer.CanContentScroll="False"
                                              SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
-                                             ItemsSource="{Binding Applications, UpdateSourceTrigger=PropertyChanged}"
+                                             ItemsSource="{Binding ApplicationsView, UpdateSourceTrigger=PropertyChanged}"
                                              ItemTemplate="{StaticResource ApplicationItem}"
                                              ItemContainerStyle="{StaticResource ItemContainerStyle}" />
                                 </DockPanel>
@@ -192,6 +193,7 @@
                                         </Button>
                                         <customControl:HintedInput Margin="15,0,15,10"
                                                                    DockPanel.Dock="Top"
+                                                                   DataContext="{Binding UsersSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                    HorizontalAlignment="Stretch"
                                                                    Hint="Введите имя" />
 
@@ -205,10 +207,9 @@
                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                                              ScrollViewer.CanContentScroll="False"
                                              SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-                                             ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}"
+                                             ItemsSource="{Binding UsersView, UpdateSourceTrigger=PropertyChanged}"
                                              ItemTemplate="{StaticResource UserTemplate}"
-                                             ItemContainerStyle="{StaticResource ItemContainerStyle}">
-                                    </ListBox>
+                                             ItemContainerStyle="{StaticResource ItemContainerStyle}" />
                                 </DockPanel>
                             </TabItem>
                         </TabControl>

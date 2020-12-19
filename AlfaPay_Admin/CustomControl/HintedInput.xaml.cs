@@ -1,7 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using AlfaPay_Admin.Annotations;
 using static System.String;
 
 namespace AlfaPay_Admin.CustomControl
@@ -39,6 +44,7 @@ namespace AlfaPay_Admin.CustomControl
         public HintedInput()
         {
             InitializeComponent();
+            HintedInputWindow.DataContext = SearchString;
         }
 
         private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)
@@ -51,11 +57,18 @@ namespace AlfaPay_Admin.CustomControl
         private void SearchTextBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
             if (IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
                 SearchTextBox.Text = Hint;
+                SearchString = "";
+            }
+
             SearchTextBox.Foreground = new SolidColorBrush(Color.FromRgb(182, 188, 195));
         }
 
-        private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e) =>
-            SearchString = SearchTextBox.Text == Hint ? null : SearchTextBox.Text;
+        private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            SearchString = SearchTextBox.Text == Hint ? "" : SearchTextBox.Text;
+            HintedInputWindow.DataContext = SearchString.ToLower();
+        }
     }
 }

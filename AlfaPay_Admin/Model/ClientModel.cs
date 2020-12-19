@@ -17,7 +17,17 @@ namespace AlfaPay_Admin.Model
 
         [JsonIgnore] public bool HavePatronymic => true;
 
-        [JsonProperty("patronymic")] public string Patronymic { get; set; }
+        private string _patronymic;
+
+        [JsonProperty("patronymic")]
+        public string Patronymic
+        {
+            get
+            {
+                return string.IsNullOrEmpty(_patronymic) ? "" : _patronymic;
+            }
+            set => _patronymic = value;
+        }
 
         [JsonProperty("email")] public string Email { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
@@ -31,5 +32,16 @@ namespace AlfaPay_Admin.Entity
         public string FullName => !string.IsNullOrEmpty(Patronymic)
             ? $"{LastName} {FirstName} {Patronymic}"
             : $"{LastName} {FirstName}";
+
+        public bool MatchToSearchString(string searchString) => searchString.Split(' ').Any(Match);
+
+        private bool Match(string search)
+        {
+            return FirstName.ToLower().Contains(search)
+                            || LastName.ToLower().Contains(search)
+                            || Patronymic.ToLower().Contains(search)
+                            || Phone.ToLower().Contains(search)
+                            || Email.ToLower().Contains(search);
+        }
     }
 }
