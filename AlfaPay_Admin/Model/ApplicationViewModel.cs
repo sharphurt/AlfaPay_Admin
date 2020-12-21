@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Web.UI.WebControls;
+using System.Windows.Controls;
 using System.Windows.Data;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
@@ -43,8 +44,20 @@ namespace AlfaPay_Admin.Model
                 OnPropertyChanged(nameof(ApplicationsView));
             }
         }
-        
-        
+
+        private ComboBoxItem _applicationsSortMethod;
+
+        public ComboBoxItem ApplicationsSortMethod
+        {
+            get => _applicationsSortMethod;
+            set
+            {
+                _applicationsSortMethod = value;
+                SortApplications(_applicationsSortMethod.Content.ToString());
+                OnPropertyChanged(nameof(ApplicationsSortMethod));
+            }
+        }
+
         private ObservableCollection<User> _users;
 
         public ObservableCollection<User> Users
@@ -209,7 +222,7 @@ namespace AlfaPay_Admin.Model
             RejectApplicationRequestManager = new ApiRequestManager<string>();
             UsersRequestManager = new ApiRequestManager<ObservableCollection<User>>();
             ApplicationFilter = new ApplicationFilter(true, false, false);
-            ApplicationFilter.PropertyChanged += (sender, args) => FilterApplications(ApplicationsSearch);
+            ApplicationFilter.PropertyChanged += (sender, args) => FilterApplications(ApplicationsSearch); 
             GetApplicationsFromServer(0, 100);
             GetUsersFromServer(0, 100);
         }
@@ -217,7 +230,8 @@ namespace AlfaPay_Admin.Model
         private void ApplicationsOnSuccessfulLoading()
         {
             Applications = GetApplicationsRequestManager.Response.Response;
-            FilterApplications(ApplicationsSearch);
+            FilterApplications(ApplicationsSearch); 
+            SortApplications(ApplicationsSortMethod.Content.ToString());
         }
 
         private void GetApplicationsFromServer(int from, int count)
@@ -254,6 +268,31 @@ namespace AlfaPay_Admin.Model
         {
             UsersView.Filter =
                 o => o is User user && user.MatchToSearchString(searchString);
+        }
+
+        private void SortApplications(string sortMethod)
+        {
+            ApplicationsView.SortDescriptions.Clear();
+            switch (sortMethod)
+            {
+                case "По имени":
+                    ApplicationsView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+                    break;
+                case "По email":
+                    ApplicationsView.SortDescriptions.Add(new SortDescription("Email", ListSortDirection.Ascending));
+                    break;
+                case "По ИНН":
+                    ApplicationsView.SortDescriptions.Add(new SortDescription("Inn", ListSortDirection.Ascending));
+                    break;
+                case "По статусу":
+                    ApplicationsView.SortDescriptions.Add(new SortDescription("Status", ListSortDirection.Ascending));
+                    break;
+                case "По дате подачи":
+                    ApplicationsView.SortDescriptions.Add(new SortDescription("CreatedAt", ListSortDirection.Ascending));
+                    break;
+            }
+
+            ApplicationsView.Refresh();
         }
 
         public void SendEmail()
