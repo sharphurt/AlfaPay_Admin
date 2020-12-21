@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using AlfaPay_Admin.Model;
@@ -71,6 +72,16 @@ namespace AlfaPay_Admin.WindowPage
         {
             var url = "mailto:someone@somewhere.com?subject=Команда AlfaPay";
             Process.Start(url);
+        }
+
+        private void FiltersButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var openAnimation = FindResource("OpenApplicationFiltersPanel") as Storyboard;
+            var closeAnimation = FindResource("CloseApplicationFiltersPanel") as Storyboard;
+            if ((bool) FiltersButton.IsChecked)
+                BeginStoryboard(openAnimation);
+            else
+                BeginStoryboard(closeAnimation);
         }
     }
 }

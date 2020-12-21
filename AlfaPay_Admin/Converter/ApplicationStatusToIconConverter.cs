@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using AlfaPay_Admin.Enum;
 using AlfaPay_Admin.Properties;
 
 namespace AlfaPay_Admin.Converter
@@ -11,17 +12,13 @@ namespace AlfaPay_Admin.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch ((string) value)
+            return (ApplicationStatus) value switch
             {
-                case "REJECTED":
-                    return (BitmapImage) Application.Current.FindResource("RejectedPlate");
-                case "ACCEPTED":
-                    return (BitmapImage) Application.Current.FindResource("AcceptedPlate");
-                case "NOT_CONSIDERED":
-                    return (BitmapImage) Application.Current.FindResource("NewPlate");
-            }
-
-            return null;
+                ApplicationStatus.Rejected => (BitmapImage) Application.Current.FindResource("RejectedPlate"),
+                ApplicationStatus.Accepted => (BitmapImage) Application.Current.FindResource("AcceptedPlate"),
+                ApplicationStatus.NotConsidered => (BitmapImage) Application.Current.FindResource("NewPlate"),
+                _ => null
+            };
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -44,6 +44,7 @@ namespace AlfaPay_Admin.CustomControl
         public HintedInput()
         {
             InitializeComponent();
+            SearchString = "";
             HintedInputWindow.DataContext = SearchString;
         }
 

@@ -151,13 +151,16 @@
                                 <TabItem.Header>Заявки</TabItem.Header>
                                 <DockPanel LastChildFill="True">
                                     <DockPanel DockPanel.Dock="Top" LastChildFill="True">
-                                        <Button Style="{StaticResource WhiteRoundedButtonStyle}"
-                                                Margin="0,0,15,10"
-                                                DockPanel.Dock="Right"
-                                                Width="32" Height="32">
+                                        <ToggleButton x:Name="FiltersButton"
+                                                      Style="{StaticResource WhiteRoundedToggleButtonStyle}"
+                                                      Margin="0,0,15,10"
+                                                      DockPanel.Dock="Right"
+                                                      IsThreeState="False"
+                                                      Click="FiltersButton_OnClick"
+                                                      Width="32" Height="32">
                                             <Image Stretch="Uniform" Source="{StaticResource FilterIcon}" Width="18"
                                                    Height="18" />
-                                        </Button>
+                                        </ToggleButton>
                                         <customControl:HintedInput Margin="15,0,15,10"
                                                                    DockPanel.Dock="Top"
                                                                    DataContext="{Binding ApplicationsSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -165,6 +168,44 @@
                                                                    Hint="Введите имя" />
 
                                     </DockPanel>
+                                    <Border Margin="15,0,0,0" DockPanel.Dock="Top" x:Name="ApplicationsFilterPanel"
+                                            Height="0"
+                                            DataContext="{Binding ApplicationFilter, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
+                                        <StackPanel>
+                                            <Label Style="{StaticResource SecondaryText}" Content="Включать в список:" />
+                                            <StackPanel Orientation="Horizontal" Margin="5,5,20,0" Width="350"
+                                                         HorizontalAlignment="Left">
+                                                <CheckBox x:Name="IncludeNew" IsThreeState="False"
+                                                          IsChecked="{Binding IncludeNew, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Height="20"
+                                                          Margin="0,0,20,0">
+                                                    <Image Height="18" Source="{StaticResource NewPlate}" />
+                                                </CheckBox>
+                                                <CheckBox x:Name="IncludeAccepted" IsThreeState="False"
+                                                          IsChecked="{Binding IncludeAccepted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Height="20" Margin="0,0,20,0">
+                                                    <Image Height="18" Source="{StaticResource AcceptedPlate}" />
+                                                </CheckBox>
+                                                <CheckBox x:Name="IncludeRejected" IsThreeState="False"
+                                                          IsChecked="{Binding IncludeRejected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Height="20">
+                                                    <Image Height="18" Source="{StaticResource RejectedPlate}" />
+                                                </CheckBox>
+                                            </StackPanel>
+                                            <Label Margin="0,10,0,0" Style="{StaticResource SecondaryText}"
+                                                   Content="Сортировать:" />
+                                            <ComboBox IsEditable="False"
+                                                      Margin="5,5,20,0"
+                                                      Height="25" FontFamily="Segoe UI" FontSize="14"
+                                                      FontWeight="Normal" SelectedIndex="0">
+                                                <ComboBoxItem Content="По имени" />
+                                                <ComboBoxItem Content="По email" />
+                                                <ComboBoxItem Content="По ИНН" />
+                                                <ComboBoxItem Content="По статусу" />
+                                                <ComboBoxItem Content="По дате подачи" />
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </Border>
                                     <ListBox x:Name="ApplicationsListBox"
                                              DockPanel.Dock="Top"
                                              HorizontalContentAlignment="Stretch"
@@ -192,6 +233,7 @@
                                                    Height="18" />
                                         </Button>
                                         <customControl:HintedInput Margin="15,0,15,10"
+                                                                   x:Name="UsersSearchInput"
                                                                    DockPanel.Dock="Top"
                                                                    DataContext="{Binding UsersSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                    HorizontalAlignment="Stretch"
@@ -237,6 +279,21 @@
                             <Button Content="Попробовать снова" x:Name="RefreshButton"
                                     Style="{StaticResource OutlinedWhiteButtonStyle}" Margin="0,10,0,0"
                                     Height="30" Width="150" Command="{Binding RefreshCommand}" />
+                        </WrapPanel>
+                        <WrapPanel Panel.ZIndex="1"
+                                   Orientation="Vertical" HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,30">
+                            <WrapPanel.Visibility>
+                                <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
+                                    <Binding ElementName="UsersListBox" Path="Items.IsEmpty" />
+                                    <Binding ElementName="UsersSearchInput" Path="DataContext"
+                                             Converter="{StaticResource IsStringNotEmptyConverter}" />
+                                </MultiBinding>
+                            </WrapPanel.Visibility>
+                            <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
+                                   Content="Ничего не найдено :("
+                                   Margin="0,7,0,0" />
                         </WrapPanel>
                     </Grid>
                 </Border>

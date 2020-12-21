@@ -9,6 +9,7 @@ using System.Windows.Data;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Entity;
+using AlfaPay_Admin.Enum;
 using Flurl.Http;
 using RestSharp;
 using RestSharp.Serializers.NewtonsoftJson;
@@ -42,7 +43,8 @@ namespace AlfaPay_Admin.Model
                 OnPropertyChanged(nameof(ApplicationsView));
             }
         }
-
+        
+        
         private ObservableCollection<User> _users;
 
         public ObservableCollection<User> Users
@@ -81,6 +83,19 @@ namespace AlfaPay_Admin.Model
             }
         }
 
+        private ApplicationFilter _applicationFilter;
+
+        public ApplicationFilter ApplicationFilter
+        {
+            get => _applicationFilter;
+            set
+            {
+                _applicationFilter = value;
+                OnPropertyChanged(nameof(ApplicationFilter));
+            }
+        }
+
+
         private string _usersSearch;
 
         public string UsersSearch
@@ -93,7 +108,7 @@ namespace AlfaPay_Admin.Model
                 OnPropertyChanged(nameof(UsersSearch));
             }
         }
-        
+
         private Application _selectedApplication;
 
         public Application SelectedApplication
@@ -106,7 +121,6 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-
         private User _selectedUser;
 
         public User SelectedUser
@@ -118,7 +132,6 @@ namespace AlfaPay_Admin.Model
                 OnPropertyChanged(nameof(SelectedUser));
             }
         }
-
 
         private RelayCommand _refreshCommand;
 
@@ -195,15 +208,22 @@ namespace AlfaPay_Admin.Model
             GetApplicationsRequestManager = new ApiRequestManager<ObservableCollection<Application>>();
             RejectApplicationRequestManager = new ApiRequestManager<string>();
             UsersRequestManager = new ApiRequestManager<ObservableCollection<User>>();
+            ApplicationFilter = new ApplicationFilter(true, false, false);
+            ApplicationFilter.PropertyChanged += (sender, args) => FilterApplications(ApplicationsSearch);
             GetApplicationsFromServer(0, 100);
             GetUsersFromServer(0, 100);
+        }
+
+        private void ApplicationsOnSuccessfulLoading()
+        {
+            Applications = GetApplicationsRequestManager.Response.Response;
+            FilterApplications(ApplicationsSearch);
         }
 
         private void GetApplicationsFromServer(int from, int count)
         {
             GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/get?from={from}&count={count}",
-                null,
-                () => Applications = GetApplicationsRequestManager.Response.Response,
+                null, ApplicationsOnSuccessfulLoading,
                 () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
         }
 
@@ -223,8 +243,11 @@ namespace AlfaPay_Admin.Model
 
         private void FilterApplications(string searchString)
         {
+            if (GetApplicationsRequestManager.Status != RequestStatus.CompletedSuccessfully)
+                return;
             ApplicationsView.Filter =
-                o => o is Application application && application.MatchToSearchString(searchString);
+                o => o is Application application && application.MatchToSearchString(searchString) &&
+                     application.MatchToFilter(ApplicationFilter);
         }
 
         private void FilterUsers(string searchString)

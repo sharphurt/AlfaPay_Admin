@@ -40,6 +40,18 @@
         </Grid>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="RoundedFilledToggleButtonTemplate" TargetType="ToggleButton">
+        <Grid>
+            <Border x:Name="ButtonBorder" BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}"
+                    CornerRadius="100"
+                    Background="{TemplateBinding Background}">
+                <AdornerDecorator HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ContentPresenter x:Name="Content" />
+                </AdornerDecorator>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
     <Style x:Key="RedButtonStyle" TargetType="Button">
         <Style.Resources>
             <Color x:Key="PrimaryColor" R="242" G="81" B="70" A="255" />
@@ -199,7 +211,7 @@
         </Style.Triggers>
     </Style>
 
-    
+
     <Style x:Key="GrayButtonStyle" TargetType="Button">
         <Style.Resources>
             <Color x:Key="PrimaryColor" R="11" G="31" B="53" A="15" />
@@ -278,7 +290,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
     <Style x:Key="OutlinedWhiteButtonStyle" TargetType="Button">
         <Style.Resources>
             <Color x:Key="PrimaryBackgroundColor" R="255" G="255" B="255" A="255" />
@@ -379,6 +391,86 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="WhiteRoundedToggleButtonStyle" TargetType="ToggleButton">
+        <Style.Resources>
+            <Color x:Key="PrimaryColor" B="0" G="0" R="0" A="0" />
+            <Color x:Key="MouseOverColor" B="11" G="31" R="53" A="38" />
+            <Color x:Key="MousePressedColor" B="11" G="31" R="53" A="76" />
+            <Color x:Key="DisabledColor" R="236" G="237" B="239" A="255" />
+
+            <SolidColorBrush x:Key="PrimaryColorBrush" Color="{StaticResource PrimaryColor}" />
+        </Style.Resources>
+        <Style.Setters>
+            <Setter Property="Background" Value="{StaticResource PrimaryColorBrush}" />
+            <Setter Property="Template" Value="{StaticResource RoundedFilledToggleButtonTemplate}" />
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <BeginStoryboard.Storyboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                                To="{StaticResource MouseOverColor}" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard.Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <BeginStoryboard.Storyboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                                From="{StaticResource MouseOverColor}" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard.Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource MousePressedColor}"
+                                            Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            From="{StaticResource MousePressedColor}"
+                                            Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            To="{StaticResource DisabledColor}"
+                                            Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)"
+                                            From="{StaticResource DisabledColor}"
+                                            Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 
     <Style x:Key="WhiteRoundedButtonStyle" TargetType="Button">
         <Style.Resources>
@@ -537,4 +629,90 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <BulletDecorator Background="Transparent">
+                        <BulletDecorator.Bullet>
+                            <Border x:Name="Border"
+                                    Width="18"
+                                    Height="18"
+                                    CornerRadius="4"
+                                    BorderThickness="1"
+                                    Background="#f3f4f5"
+                                    BorderBrush="#6D7986">
+                                <Grid>
+                                    <Image x:Name="CheckMark" RenderOptions.BitmapScalingMode="HighQuality"
+                                           Source="{DynamicResource TickWhite}" Opacity="0"
+                                           Width="14"
+                                           Height="14" />
+                                </Grid>
+                            </Border>
+                        </BulletDecorator.Bullet>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                        Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                        To="#CED2D7" Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter Margin="5,0,0,2"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Left"
+                                          RecognizesAccessKey="True" />
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation
+                                            Storyboard.TargetProperty="Margin"
+                                            Storyboard.TargetName="CheckMark"
+                                            From="0,-5,0,0"
+                                            To="0" Duration="0:0:0.15" />
+                                        <DoubleAnimation Storyboard.TargetName="CheckMark"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" Duration="0:0:0.15" />
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                        Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                        To="#f15045" Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation
+                                            Storyboard.TargetProperty="Margin"
+                                            Storyboard.TargetName="CheckMark"
+                                            To="0,5,0,0" Duration="0:0:0.15" />
+                                        <DoubleAnimation Storyboard.TargetName="CheckMark"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" Duration="0:0:0.15" />
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                        Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                        From="#f15045"
+                                                        Duration="0:0:0.15" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

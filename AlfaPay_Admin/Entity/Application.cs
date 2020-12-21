@@ -2,6 +2,9 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Text.Json.Serialization;
+using AlfaPay_Admin.Converter;
+using AlfaPay_Admin.Enum;
+using Newtonsoft.Json.Converters;
 
 namespace AlfaPay_Admin.Entity
 {
@@ -17,9 +20,11 @@ namespace AlfaPay_Admin.Entity
 
         [JsonPropertyName("inn")] public string Inn { get; set; }
 
-        [JsonPropertyName("createdAt")] public DateTime CreatedAt { get; set; }     
-        
-        [JsonPropertyName("status")] public string Status { get; set; }
+        [JsonPropertyName("createdAt")] public DateTime CreatedAt { get; set; }
+
+        [JsonPropertyName("status")]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ApplicationStatus Status { get; set; }
 
         public string DaysPassed
         {
@@ -43,7 +48,16 @@ namespace AlfaPay_Admin.Entity
             return "дней";
         }
 
-        public bool MatchToSearchString(string searchString) => searchString.Split(' ').Any(Match);
+        public bool MatchToSearchString(string searchString) =>
+            string.IsNullOrEmpty(searchString) || searchString.Split(' ').Any(Match);
+
+        public bool MatchToFilter(ApplicationFilter filter)
+        {
+            return Status == ApplicationStatus.NotConsidered && filter.IncludeNew
+                   || Status == ApplicationStatus.Accepted && filter.IncludeAccepted
+                   || Status == ApplicationStatus.Rejected && filter.IncludeRejected;
+        }
+
 
         private bool Match(string search)
         {
@@ -51,7 +65,7 @@ namespace AlfaPay_Admin.Entity
                    || Inn.ToLower().Contains(search)
                    || Name.ToLower().Contains(search)
                    || Phone.ToLower().Contains(search)
-                   || Status.ToLower().Contains(search);
+                   || Status.ToString().ToLower().Contains(search);
         }
     }
 }

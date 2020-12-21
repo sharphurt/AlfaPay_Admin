@@ -74,6 +74,10 @@
           <HintPath>..\packages\IronPython.2.7.11\lib\net45\IronPython.Wpf.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Json.Net, Version=1.0.23.1, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Json.Net.1.0.23\lib\netstandard2.0\Json.Net.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="Markdig, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\Markdig.0.18.0\lib\net40\Markdig.dll</HintPath>
           <Private>True</Private>
@@ -191,6 +195,7 @@
           <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="System.Runtime.Serialization" />
         <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
           <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
           <Private>True</Private>
@@ -274,6 +279,7 @@
         </ApplicationDefinition>
         <Compile Include="Context\AuthenticationContext.cs" />
         <Compile Include="Context\ApiRequestManager.cs" />
+        <Compile Include="Converter\ApplicationStatusStringToEnumConverter.cs" />
         <Compile Include="Converter\ApplicationStatusToIconConverter.cs" />
         <Compile Include="Converter\BoolOrOperationConverter.cs" />
         <Compile Include="Converter\CompareConverter.cs" />
@@ -283,6 +289,7 @@
         <Compile Include="Converter\InvertedObjectToBoolConverter.cs" />
         <Compile Include="Converter\InvertedRequestStatusInProgressToBoolConverter.cs" />
         <Compile Include="Converter\BoolAndOperationConverter.cs" />
+        <Compile Include="Converter\IsStringNotEmptyConverter.cs" />
         <Compile Include="Converter\RequestStatusInProgressToVisibility.cs" />
         <Compile Include="Converter\ObjectToStringConverter.cs" />
         <Compile Include="Converter\InvertedRequestStatusInProgressToVisibilityConverter.cs" />
@@ -312,11 +319,13 @@
         <Compile Include="CustomControl\UserInfo.xaml.cs">
           <DependentUpon>UserInfo.xaml</DependentUpon>
         </Compile>
+        <Compile Include="Entity\ApplicationFilter.cs" />
         <Compile Include="Entity\Company.cs" />
         <Compile Include="Entity\DeviceInfo.cs" />
         <Compile Include="Entity\JwtContainer.cs" />
         <Compile Include="Entity\Registration.cs" />
         <Compile Include="Entity\User.cs" />
+        <Compile Include="Enum\ApplicationStatus.cs" />
         <Compile Include="Model\ApplicationViewModel.cs" />
         <Compile Include="Model\CompanyModel.cs" />
         <Compile Include="Model\LoggedUser.cs" />
@@ -375,6 +384,7 @@
         <Page Include="Resources\InputStyle.xaml" />
         <Page Include="Resources\ResourcesDictionary.xaml" />
         <Page Include="Resources\TextStyle.xaml" />
+        <Page Include="Resources\UIElementsStyle.xaml" />
         <Page Include="TestWindow.xaml">
           <Generator>MSBuild:Compile</Generator>
           <SubType>Designer</SubType>
@@ -467,6 +477,9 @@
       </Resource>
     </ItemGroup>
     <ItemGroup>
+      <Resource Include="Resources\tick_white.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="Resources\clientPlateGray.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>

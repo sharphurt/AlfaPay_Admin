@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Resources/ButtonStyle.xaml" />
                 <ResourceDictionary Source="Resources/InputStyle.xaml" />
                 <ResourceDictionary Source="Resources/TextStyle.xaml" />
+                <ResourceDictionary Source="Resources/UIElementsStyle.xaml" />
                 <ResourceDictionary Source="Resources/AssetResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

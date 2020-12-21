@@ -44,7 +44,7 @@
             <TextBlock x:Name="ErrorTextBlock"
                        Style="{StaticResource ErrorMessageStyleTxtBlock}"
                        Margin="1,5,0,0"
-                       Height="30"
+                       Height="50"
                        TextWrapping="Wrap"
                        Text="{Binding Path=ErrorMessage, Mode=TwoWay}"
                        LineHeight="7"
