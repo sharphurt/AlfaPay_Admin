@@ -478,6 +478,9 @@
       </Resource>
     </ItemGroup>
     <ItemGroup>
+      <Resource Include="Resources\not_found_illustration.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="Resources\tick_white.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>

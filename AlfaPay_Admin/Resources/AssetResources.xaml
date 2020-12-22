@@ -29,6 +29,7 @@
     <BitmapImage x:Key="AcceptedPlate" UriSource="acceptedPlate.png" />
     <BitmapImage x:Key="RejectedPlate" UriSource="rejectedPlate.png" />
     <BitmapImage x:Key="TickWhite" UriSource="tick_white.png" />
+    <BitmapImage x:Key="NotFoundIllustration" UriSource="not_found_illustration.png" />
 
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converter:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
@@ -399,7 +400,7 @@
                          To="0"
                          DecelerationRatio="0.9" />
     </Storyboard>
-    
+
     <Storyboard x:Key="OpenUserFiltersPanel">
         <DoubleAnimation Duration="0:0:0.4"
                          Storyboard.TargetName="UsersFilterPanel"
@@ -415,4 +416,18 @@
                          To="0"
                          DecelerationRatio="0.9" />
     </Storyboard>
+
+    <Style x:Key="ImageFadeEffect" TargetType="Image">
+        <Style.Triggers>
+            <Trigger Property="Visibility" Value="Visible">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard TargetProperty="Opacity">
+                            <DoubleAnimation From="0" To="1" Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

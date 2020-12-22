@@ -254,34 +254,35 @@
                                                 </Grid>
                                             </StackPanel>
                                         </Border>
-                                        <ListBox x:Name="ApplicationsListBox"
-                                                 DockPanel.Dock="Top"
-                                                 HorizontalContentAlignment="Stretch"
-                                                 VerticalAlignment="Stretch"
-                                                 BorderThickness="0"
-                                                 Margin="-1,0,-1,0"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 ScrollViewer.CanContentScroll="False"
-                                                 SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
-                                                 ItemsSource="{Binding ApplicationsView, UpdateSourceTrigger=PropertyChanged}"
-                                                 ItemTemplate="{StaticResource ApplicationItem}"
-                                                 ItemContainerStyle="{StaticResource ItemContainerStyle}" />
+                                        <Grid>
+                                            <ListBox x:Name="ApplicationsListBox"
+                                                     DockPanel.Dock="Top"
+                                                     HorizontalContentAlignment="Stretch"
+                                                     VerticalAlignment="Stretch"
+                                                     BorderThickness="0"
+                                                     Margin="-1,0,-1,0"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                     ScrollViewer.CanContentScroll="False"
+                                                     SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
+                                                     ItemsSource="{Binding ApplicationsView, UpdateSourceTrigger=PropertyChanged}"
+                                                     ItemTemplate="{StaticResource ApplicationItem}"
+                                                     ItemContainerStyle="{StaticResource ItemContainerStyle}" />
+                                            <Image HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Style="{StaticResource ImageFadeEffect}"
+                                                   Source="{StaticResource NotFoundIllustration}" Width="300">
+                                                <Image.Visibility>
+                                                    <MultiBinding
+                                                        Converter="{StaticResource BoolAndOperationConverter}">
+                                                        <Binding ElementName="ApplicationsListBox" Path="Items.IsEmpty" />
+                                                        <Binding ElementName="ApplicationsSearchInput"
+                                                                 Path="DataContext"
+                                                                 Converter="{StaticResource IsStringNotEmptyConverter}" />
+                                                    </MultiBinding>
+                                                </Image.Visibility>
+                                            </Image>
+                                        </Grid>
                                     </DockPanel>
-                                    <WrapPanel Panel.ZIndex="1"
-                                               Orientation="Vertical" HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="0,0,0,30">
-                                        <WrapPanel.Visibility>
-                                            <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
-                                                <Binding ElementName="ApplicationsListBox" Path="Items.IsEmpty" />
-                                                <Binding ElementName="ApplicationsSearchInput" Path="DataContext"
-                                                         Converter="{StaticResource IsStringNotEmptyConverter}" />
-                                            </MultiBinding>
-                                        </WrapPanel.Visibility>
-                                        <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
-                                               Content="Ничего не найдено :("
-                                               Margin="0,7,0,0" />
-                                    </WrapPanel>
+
                                 </Grid>
                             </TabItem>
                             <TabItem x:Name="UsersTab" BorderThickness="0"
@@ -372,34 +373,34 @@
                                                 </Grid>
                                             </StackPanel>
                                         </Border>
-                                        <ListBox x:Name="UsersListBox"
-                                                 DockPanel.Dock="Top"
-                                                 HorizontalContentAlignment="Stretch"
-                                                 VerticalAlignment="Stretch"
-                                                 BorderThickness="0"
-                                                 Margin="-1,0,-1,0"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 ScrollViewer.CanContentScroll="False"
-                                                 SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-                                                 ItemsSource="{Binding UsersView, UpdateSourceTrigger=PropertyChanged}"
-                                                 ItemTemplate="{StaticResource UserTemplate}"
-                                                 ItemContainerStyle="{StaticResource ItemContainerStyle}" />
+                                        <Grid>
+                                            <ListBox x:Name="UsersListBox"
+                                                     DockPanel.Dock="Top"
+                                                     HorizontalContentAlignment="Stretch"
+                                                     VerticalAlignment="Stretch"
+                                                     BorderThickness="0"
+                                                     Margin="-1,0,-1,0"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                     ScrollViewer.CanContentScroll="False"
+                                                     SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                                                     ItemsSource="{Binding UsersView, UpdateSourceTrigger=PropertyChanged}"
+                                                     ItemTemplate="{StaticResource UserTemplate}"
+                                                     ItemContainerStyle="{StaticResource ItemContainerStyle}" />
+                                            <Image HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Style="{StaticResource ImageFadeEffect}"
+                                                   Source="{StaticResource NotFoundIllustration}" Width="300">
+                                                <Image.Visibility>
+                                                    <MultiBinding
+                                                        Converter="{StaticResource BoolAndOperationConverter}">
+                                                        <Binding ElementName="UsersListBox" Path="Items.IsEmpty" />
+                                                        <Binding ElementName="UsersSearchInput"
+                                                                 Path="DataContext"
+                                                                 Converter="{StaticResource IsStringNotEmptyConverter}" />
+                                                    </MultiBinding>
+                                                </Image.Visibility>
+                                            </Image>
+                                        </Grid>
                                     </DockPanel>
-                                    <WrapPanel Panel.ZIndex="1"
-                                               Orientation="Vertical" HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="0,0,0,30">
-                                        <WrapPanel.Visibility>
-                                            <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
-                                                <Binding ElementName="UsersListBox" Path="Items.IsEmpty" />
-                                                <Binding ElementName="UsersSearchInput" Path="DataContext"
-                                                         Converter="{StaticResource IsStringNotEmptyConverter}" />
-                                            </MultiBinding>
-                                        </WrapPanel.Visibility>
-                                        <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
-                                               Content="Ничего не найдено :("
-                                               Margin="0,7,0,0" />
-                                    </WrapPanel>
                                 </Grid>
                             </TabItem>
                         </TabControl>
