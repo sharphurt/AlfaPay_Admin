@@ -325,6 +325,7 @@
         <Compile Include="Entity\JwtContainer.cs" />
         <Compile Include="Entity\Registration.cs" />
         <Compile Include="Entity\User.cs" />
+        <Compile Include="Entity\UserFilter.cs" />
         <Compile Include="Enum\ApplicationStatus.cs" />
         <Compile Include="Model\ApplicationViewModel.cs" />
         <Compile Include="Model\CompanyModel.cs" />

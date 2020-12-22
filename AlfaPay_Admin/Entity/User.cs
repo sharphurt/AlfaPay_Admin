@@ -33,15 +33,25 @@ namespace AlfaPay_Admin.Entity
             ? $"{LastName} {FirstName} {Patronymic}"
             : $"{LastName} {FirstName}";
 
-        public bool MatchToSearchString(string searchString) => searchString.Split(' ').Any(Match);
+        public bool MatchToSearchString(string searchString) =>
+            string.IsNullOrEmpty(searchString) || searchString.Split(new []{' '}, StringSplitOptions.RemoveEmptyEntries).All(Match);
 
         private bool Match(string search)
         {
             return FirstName.ToLower().Contains(search)
-                            || LastName.ToLower().Contains(search)
-                            || Patronymic.ToLower().Contains(search)
-                            || Phone.ToLower().Contains(search)
-                            || Email.ToLower().Contains(search);
+                   || LastName.ToLower().Contains(search)
+                   || Patronymic.ToLower().Contains(search)
+                   || Phone.ToLower().Contains(search)
+                   || Email.ToLower().Contains(search);
+        }
+
+        public bool MatchToFilter(UserFilter filter)
+        {
+            return (UserPrivilege == "ADMIN" && filter.IncludeAdmins ||
+                    UserPrivilege == "CLIENT" && filter.IncludeClients)
+                   && (UserStatus == "LOCKED" && filter.IncludeBanned ||
+                       UserStatus == "DELETED" && filter.IncludeDeleted ||
+                       UserStatus == "ACTIVE");
         }
     }
 }

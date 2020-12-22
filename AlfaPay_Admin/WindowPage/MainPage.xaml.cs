@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -74,14 +75,32 @@ namespace AlfaPay_Admin.WindowPage
             Process.Start(url);
         }
 
-        private void FiltersButton_OnClick(object sender, RoutedEventArgs e)
+        private void ApplicationsFiltersButton_OnClick(object sender, RoutedEventArgs e)
         {
             var openAnimation = FindResource("OpenApplicationFiltersPanel") as Storyboard;
             var closeAnimation = FindResource("CloseApplicationFiltersPanel") as Storyboard;
-            if ((bool) FiltersButton.IsChecked)
+            if ((bool) ApplicationsFiltersButton.IsChecked)
                 BeginStoryboard(openAnimation);
             else
                 BeginStoryboard(closeAnimation);
+        }
+
+        private void UsersFiltersButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var openAnimation = FindResource("OpenUserFiltersPanel") as Storyboard;
+            var closeAnimation = FindResource("CloseUserFiltersPanel") as Storyboard;
+            if ((bool) UsersFiltersButton.IsChecked)
+                BeginStoryboard(openAnimation);
+            else
+                BeginStoryboard(closeAnimation);
+        }
+
+        private void SortDirectionButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if ((bool) ((ToggleButton) sender).IsChecked)
+                ((Label)((ToggleButton) sender).Content).Content = "Я → А";
+            else
+                ((Label)((ToggleButton) sender).Content).Content = "A → Я";
         }
     }
 }

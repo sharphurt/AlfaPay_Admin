@@ -38,9 +38,34 @@
                                    FontWeight="Light"
                                    FontSize="20"
                                    Opacity="0.5"
-                                   Visibility="{Binding ElementName=ApplicationsListBox, Path=Items.IsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"
-                                   Content="Выберите заявку из списка" />
-
+                                   Content="Выберите заявку из списка">
+                                <Label.Visibility>
+                                    <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
+                                        <Binding ElementName="ApplicationsListBox" Path="Items.IsEmpty"
+                                                 Converter="{StaticResource InvertedBoolConverter}" />
+                                        <Binding ElementName="TabControl" Path="SelectedValue"
+                                                 Converter="{StaticResource CompareConverter}"
+                                                 ConverterParameter="Заявки" />
+                                    </MultiBinding>
+                                </Label.Visibility>
+                            </Label>
+                            <Label HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontFamily="Segoe UI"
+                                   FontWeight="Light"
+                                   FontSize="20"
+                                   Opacity="0.5"
+                                   Content="Выберите запись из списка">
+                                <Label.Visibility>
+                                    <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
+                                        <Binding ElementName="UsersListBox" Path="Items.IsEmpty"
+                                                 Converter="{StaticResource InvertedBoolConverter}" />
+                                        <Binding ElementName="TabControl" Path="SelectedValue"
+                                                 Converter="{StaticResource CompareConverter}"
+                                                 ConverterParameter="Пользователи" />
+                                    </MultiBinding>
+                                </Label.Visibility>
+                            </Label>
                             <WrapPanel
                                 Visibility="{Binding GetApplicationsRequestManager.Status, Converter={StaticResource RequestStatusInProgressToVisibility}}"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -149,111 +174,233 @@
                             <TabItem x:Name="ApplicationsTab" BorderThickness="0"
                                      Style="{StaticResource TabItemStyle}">
                                 <TabItem.Header>Заявки</TabItem.Header>
-                                <DockPanel LastChildFill="True">
-                                    <DockPanel DockPanel.Dock="Top" LastChildFill="True">
-                                        <ToggleButton x:Name="FiltersButton"
-                                                      Style="{StaticResource WhiteRoundedToggleButtonStyle}"
-                                                      Margin="0,0,15,10"
-                                                      DockPanel.Dock="Right"
-                                                      IsThreeState="False"
-                                                      Click="FiltersButton_OnClick"
-                                                      Width="32" Height="32">
-                                            <Image Stretch="Uniform" Source="{StaticResource FilterIcon}" Width="18"
-                                                   Height="18" />
-                                        </ToggleButton>
-                                        <customControl:HintedInput Margin="15,0,15,10"
-                                                                   DockPanel.Dock="Top"
-                                                                   DataContext="{Binding ApplicationsSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                   HorizontalAlignment="Stretch"
-                                                                   Hint="Введите имя" />
+                                <Grid>
+                                    <DockPanel LastChildFill="True">
+                                        <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+                                            <ToggleButton x:Name="ApplicationsFiltersButton"
+                                                          Style="{StaticResource WhiteRoundedToggleButtonStyle}"
+                                                          Margin="0,0,15,10"
+                                                          DockPanel.Dock="Right"
+                                                          IsThreeState="False"
+                                                          Click="ApplicationsFiltersButton_OnClick"
+                                                          Width="32" Height="32">
+                                                <Image Stretch="Uniform" Source="{StaticResource FilterIcon}"
+                                                       Width="18"
+                                                       Height="18" />
+                                            </ToggleButton>
+                                            <customControl:HintedInput x:Name="ApplicationsSearchInput"
+                                                                       Margin="15,0,15,10"
+                                                                       DockPanel.Dock="Top"
+                                                                       DataContext="{Binding ApplicationsSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                       HorizontalAlignment="Stretch"
+                                                                       Hint="Введите имя" />
 
-                                    </DockPanel>
-                                    <Border Margin="15,0,0,0" DockPanel.Dock="Top" x:Name="ApplicationsFilterPanel"
-                                            Height="0">
-                                        <StackPanel>
-                                            <Label Style="{StaticResource SecondaryText}" Content="Включать в список:" />
-                                            <StackPanel Orientation="Horizontal" Margin="5,5,20,0" Width="350"
-                                                        HorizontalAlignment="Left">
-                                                <CheckBox x:Name="IncludeNew" IsThreeState="False"
-                                                          IsChecked="{Binding ApplicationFilter.IncludeNew, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          Height="20"
-                                                          Margin="0,0,20,0">
-                                                    <Image Height="18" Source="{StaticResource NewPlate}" />
-                                                </CheckBox>
-                                                <CheckBox x:Name="IncludeAccepted" IsThreeState="False"
-                                                          IsChecked="{Binding ApplicationFilter.IncludeAccepted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          Height="20" Margin="0,0,20,0">
-                                                    <Image Height="18" Source="{StaticResource AcceptedPlate}" />
-                                                </CheckBox>
-                                                <CheckBox x:Name="IncludeRejected" IsThreeState="False"
-                                                          IsChecked="{Binding ApplicationFilter.IncludeRejected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          Height="20">
-                                                    <Image Height="18" Source="{StaticResource RejectedPlate}" />
-                                                </CheckBox>
+                                        </DockPanel>
+                                        <Border Margin="15,0,0,0" DockPanel.Dock="Top" x:Name="ApplicationsFilterPanel"
+                                                Height="0">
+                                            <StackPanel>
+                                                <Label Style="{StaticResource SecondaryText}"
+                                                       Content="Включать в список:" />
+                                                <StackPanel Orientation="Horizontal" Margin="5,5,20,0" Width="350"
+                                                            HorizontalAlignment="Left">
+                                                    <CheckBox x:Name="IncludeNew" IsThreeState="False"
+                                                              IsChecked="{Binding ApplicationFilter.IncludeNew, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Height="20"
+                                                              Margin="0,0,20,0">
+                                                        <Image Height="18" Source="{StaticResource NewPlate}" />
+                                                    </CheckBox>
+                                                    <CheckBox x:Name="IncludeAccepted" IsThreeState="False"
+                                                              IsChecked="{Binding ApplicationFilter.IncludeAccepted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Height="20" Margin="0,0,20,0">
+                                                        <Image Height="18" Source="{StaticResource AcceptedPlate}" />
+                                                    </CheckBox>
+                                                    <CheckBox x:Name="IncludeRejected" IsThreeState="False"
+                                                              IsChecked="{Binding ApplicationFilter.IncludeRejected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Height="20">
+                                                        <Image Height="18" Source="{StaticResource RejectedPlate}" />
+                                                    </CheckBox>
+                                                </StackPanel>
+                                                <Label Margin="0,10,0,0" Style="{StaticResource SecondaryText}"
+                                                       Content="Сортировать:" />
+                                                <Grid Margin="5,5,20,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="4*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ComboBox IsEditable="False"
+                                                              Grid.Column="0"
+                                                              SelectedIndex="0"
+                                                              Margin="0,0,3,0"
+                                                              SelectedItem="{Binding ApplicationsSortMethod, Mode=OneWayToSource}"
+                                                              Height="25" FontFamily="Segoe UI" FontSize="14"
+                                                              FontWeight="Normal">
+                                                        <ComboBoxItem Content="По имени" />
+                                                        <ComboBoxItem Content="По email" />
+                                                        <ComboBoxItem Content="По ИНН" />
+                                                        <ComboBoxItem Content="По статусу" />
+                                                        <ComboBoxItem Content="По дате подачи" />
+                                                    </ComboBox>
+                                                    <ToggleButton x:Name="ApplicationsSortDirectionButton"
+                                                                  Grid.Column="1"
+                                                                  Style="{StaticResource GrayToggleButtonStyle}"
+                                                                  Margin="2,0,0,0"
+                                                                  IsChecked="{Binding ApplicationsSortDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  Click="SortDirectionButton_OnClick"
+                                                                  Height="25">
+                                                        <Label Height="20" x:Name="ApplicationsSortDirectionLabel"
+                                                               Padding="0,0,0,3" Content="A → Я"
+                                                               Style="{StaticResource SecondaryText}" FontSize="14" />
+                                                    </ToggleButton>
+                                                </Grid>
                                             </StackPanel>
-                                            <Label Margin="0,10,0,0" Style="{StaticResource SecondaryText}"
-                                                   Content="Сортировать:" />
-                                            <ComboBox IsEditable="False"
-                                                      Margin="5,5,20,0"  
-                                                      SelectedIndex="0"
-                                                      SelectedItem="{Binding ApplicationsSortMethod, Mode=OneWayToSource}"
-                                                      Height="25" FontFamily="Segoe UI" FontSize="14"
-                                                      FontWeight="Normal">
-                                                <ComboBoxItem Content="По имени" />
-                                                <ComboBoxItem Content="По email" />
-                                                <ComboBoxItem Content="По ИНН" />
-                                                <ComboBoxItem Content="По статусу" />
-                                                <ComboBoxItem Content="По дате подачи" />
-                                            </ComboBox>
-                                        </StackPanel>
-                                    </Border>
-                                    <ListBox x:Name="ApplicationsListBox"
-                                             DockPanel.Dock="Top"
-                                             HorizontalContentAlignment="Stretch"
-                                             VerticalAlignment="Stretch"
-                                             BorderThickness="0"
-                                             Margin="-1,0,-1,0"
-                                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                             ScrollViewer.CanContentScroll="False"
-                                             SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
-                                             ItemsSource="{Binding ApplicationsView, UpdateSourceTrigger=PropertyChanged}"
-                                             ItemTemplate="{StaticResource ApplicationItem}"
-                                             ItemContainerStyle="{StaticResource ItemContainerStyle}" />
-                                </DockPanel>
+                                        </Border>
+                                        <ListBox x:Name="ApplicationsListBox"
+                                                 DockPanel.Dock="Top"
+                                                 HorizontalContentAlignment="Stretch"
+                                                 VerticalAlignment="Stretch"
+                                                 BorderThickness="0"
+                                                 Margin="-1,0,-1,0"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 ScrollViewer.CanContentScroll="False"
+                                                 SelectedItem="{Binding SelectedApplication, Mode=TwoWay}"
+                                                 ItemsSource="{Binding ApplicationsView, UpdateSourceTrigger=PropertyChanged}"
+                                                 ItemTemplate="{StaticResource ApplicationItem}"
+                                                 ItemContainerStyle="{StaticResource ItemContainerStyle}" />
+                                    </DockPanel>
+                                    <WrapPanel Panel.ZIndex="1"
+                                               Orientation="Vertical" HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,0,30">
+                                        <WrapPanel.Visibility>
+                                            <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
+                                                <Binding ElementName="ApplicationsListBox" Path="Items.IsEmpty" />
+                                                <Binding ElementName="ApplicationsSearchInput" Path="DataContext"
+                                                         Converter="{StaticResource IsStringNotEmptyConverter}" />
+                                            </MultiBinding>
+                                        </WrapPanel.Visibility>
+                                        <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
+                                               Content="Ничего не найдено :("
+                                               Margin="0,7,0,0" />
+                                    </WrapPanel>
+                                </Grid>
                             </TabItem>
                             <TabItem x:Name="UsersTab" BorderThickness="0"
                                      Style="{StaticResource TabItemStyle}">
                                 <TabItem.Header>Пользователи</TabItem.Header>
-                                <DockPanel LastChildFill="True">
-                                    <DockPanel DockPanel.Dock="Top" LastChildFill="True">
-                                        <Button Style="{StaticResource WhiteRoundedButtonStyle}"
-                                                Margin="0,0,15,10"
-                                                DockPanel.Dock="Right"
-                                                Width="32" Height="32">
-                                            <Image Stretch="Uniform" Source="{StaticResource FilterIcon}" Width="18"
-                                                   Height="18" />
-                                        </Button>
-                                        <customControl:HintedInput Margin="15,0,15,10"
-                                                                   x:Name="UsersSearchInput"
-                                                                   DockPanel.Dock="Top"
-                                                                   DataContext="{Binding UsersSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                   HorizontalAlignment="Stretch"
-                                                                   Hint="Введите имя" />
+                                <Grid>
+                                    <DockPanel LastChildFill="True">
+                                        <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+                                            <ToggleButton x:Name="UsersFiltersButton"
+                                                          Style="{StaticResource WhiteRoundedToggleButtonStyle}"
+                                                          Margin="0,0,15,10"
+                                                          DockPanel.Dock="Right"
+                                                          IsThreeState="False"
+                                                          Click="UsersFiltersButton_OnClick"
+                                                          Width="32" Height="32">
+                                                <Image Stretch="Uniform" Source="{StaticResource FilterIcon}"
+                                                       Width="18"
+                                                       Height="18" />
+                                            </ToggleButton>
+                                            <customControl:HintedInput Margin="15,0,15,10"
+                                                                       DockPanel.Dock="Top"
+                                                                       x:Name="UsersSearchInput"
+                                                                       DataContext="{Binding UsersSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                       HorizontalAlignment="Stretch"
+                                                                       Hint="Введите имя" />
 
+                                        </DockPanel>
+                                        <Border Margin="15,0,0,0" DockPanel.Dock="Top" x:Name="UsersFilterPanel"
+                                                Height="0">
+                                            <StackPanel>
+                                                <Label Style="{StaticResource SecondaryText}"
+                                                       Content="Включать в список:" />
+                                                <StackPanel Orientation="Horizontal" Margin="5,5,20,0" Width="400"
+                                                            HorizontalAlignment="Left">
+                                                    <CheckBox x:Name="IncludeClients" IsThreeState="False"
+                                                              IsChecked="{Binding UserFilter.IncludeClients, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Height="20"
+                                                              Margin="0,0,20,0">
+                                                        <Image Height="18" Source="{StaticResource ClientPlate}" />
+                                                    </CheckBox>
+                                                    <CheckBox x:Name="IncludeAdmins" IsThreeState="False"
+                                                              IsChecked="{Binding UserFilter.IncludeAdmins, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Height="20" Margin="0,0,20,0">
+                                                        <Image Height="18" Source="{StaticResource AdminPlate}" />
+                                                    </CheckBox>
+                                                    <CheckBox x:Name="IncludeBanned" IsThreeState="False"
+                                                              IsChecked="{Binding UserFilter.IncludeBanned, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Height="20" Margin="0,0,20,0">
+                                                        <Image Height="18" Source="{StaticResource LockIcon}" />
+                                                    </CheckBox>
+                                                    <CheckBox x:Name="IncludeDeleted" IsThreeState="False"
+                                                              IsChecked="{Binding UserFilter.IncludeDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              Height="20">
+                                                        <Image Height="18" Source="{StaticResource DeleteIcon}" />
+                                                    </CheckBox>
+                                                </StackPanel>
+                                                <Label Margin="0,10,0,0" Style="{StaticResource SecondaryText}"
+                                                       Content="Сортировать:" />
+                                                <Grid Margin="5,5,20,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="4*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ComboBox IsEditable="False"
+                                                              Grid.Column="0"
+                                                              SelectedIndex="0"
+                                                              Margin="0,0,3,0"
+                                                              SelectedItem="{Binding UsersSortMethod, Mode=OneWayToSource}"
+                                                              Height="25" FontFamily="Segoe UI" FontSize="14"
+                                                              FontWeight="Normal">
+                                                        <ComboBoxItem Content="По имени" />
+                                                        <ComboBoxItem Content="По фамилии" />
+                                                        <ComboBoxItem Content="По отчеству" />
+                                                        <ComboBoxItem Content="По статусу" />
+                                                        <ComboBoxItem Content="По дате регистрации" />
+                                                    </ComboBox>
+                                                    <ToggleButton x:Name="UsersSortDirectionButton"
+                                                                  Grid.Column="1"
+                                                                  Style="{StaticResource GrayToggleButtonStyle}"
+                                                                  Margin="2,0,0,0"
+                                                                  Click="SortDirectionButton_OnClick"
+                                                                  IsChecked="{Binding UsersSortDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  Height="25">
+                                                        <Label Height="20" x:Name="UsersSortDirectionLabel"
+                                                               Padding="0,0,0,3" Content="A → Я"
+                                                               Style="{StaticResource SecondaryText}" FontSize="14" />
+                                                    </ToggleButton>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Border>
+                                        <ListBox x:Name="UsersListBox"
+                                                 DockPanel.Dock="Top"
+                                                 HorizontalContentAlignment="Stretch"
+                                                 VerticalAlignment="Stretch"
+                                                 BorderThickness="0"
+                                                 Margin="-1,0,-1,0"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 ScrollViewer.CanContentScroll="False"
+                                                 SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                                                 ItemsSource="{Binding UsersView, UpdateSourceTrigger=PropertyChanged}"
+                                                 ItemTemplate="{StaticResource UserTemplate}"
+                                                 ItemContainerStyle="{StaticResource ItemContainerStyle}" />
                                     </DockPanel>
-                                    <ListBox x:Name="UsersListBox"
-                                             DockPanel.Dock="Top"
-                                             HorizontalContentAlignment="Stretch"
-                                             VerticalAlignment="Stretch"
-                                             BorderThickness="0"
-                                             Margin="-1,0,-1,0"
-                                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                             ScrollViewer.CanContentScroll="False"
-                                             SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-                                             ItemsSource="{Binding UsersView, UpdateSourceTrigger=PropertyChanged}"
-                                             ItemTemplate="{StaticResource UserTemplate}"
-                                             ItemContainerStyle="{StaticResource ItemContainerStyle}" />
-                                </DockPanel>
+                                    <WrapPanel Panel.ZIndex="1"
+                                               Orientation="Vertical" HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,0,30">
+                                        <WrapPanel.Visibility>
+                                            <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
+                                                <Binding ElementName="UsersListBox" Path="Items.IsEmpty" />
+                                                <Binding ElementName="UsersSearchInput" Path="DataContext"
+                                                         Converter="{StaticResource IsStringNotEmptyConverter}" />
+                                            </MultiBinding>
+                                        </WrapPanel.Visibility>
+                                        <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
+                                               Content="Ничего не найдено :("
+                                               Margin="0,7,0,0" />
+                                    </WrapPanel>
+                                </Grid>
                             </TabItem>
                         </TabControl>
                         <WrapPanel Panel.ZIndex="1"
@@ -281,21 +428,7 @@
                                     Style="{StaticResource OutlinedWhiteButtonStyle}" Margin="0,10,0,0"
                                     Height="30" Width="150" Command="{Binding RefreshCommand}" />
                         </WrapPanel>
-                        <WrapPanel Panel.ZIndex="1"
-                                   Orientation="Vertical" HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,0,30">
-                            <WrapPanel.Visibility>
-                                <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
-                                    <Binding ElementName="UsersListBox" Path="Items.IsEmpty" />
-                                    <Binding ElementName="UsersSearchInput" Path="DataContext"
-                                             Converter="{StaticResource IsStringNotEmptyConverter}" />
-                                </MultiBinding>
-                            </WrapPanel.Visibility>
-                            <Label Style="{StaticResource LightPrimaryText}" HorizontalAlignment="Center"
-                                   Content="Ничего не найдено :("
-                                   Margin="0,7,0,0" />
-                        </WrapPanel>
+
                     </Grid>
                 </Border>
             </Grid>

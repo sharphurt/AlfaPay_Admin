@@ -399,4 +399,20 @@
                          To="0"
                          DecelerationRatio="0.9" />
     </Storyboard>
+    
+    <Storyboard x:Key="OpenUserFiltersPanel">
+        <DoubleAnimation Duration="0:0:0.4"
+                         Storyboard.TargetName="UsersFilterPanel"
+                         Storyboard.TargetProperty="Height"
+                         To="125"
+                         DecelerationRatio="0.9" />
+    </Storyboard>
+
+    <Storyboard x:Key="CloseUserFiltersPanel">
+        <DoubleAnimation Duration="0:0:0.4"
+                         Storyboard.TargetName="UsersFilterPanel"
+                         Storyboard.TargetProperty="Height"
+                         To="0"
+                         DecelerationRatio="0.9" />
+    </Storyboard>
 </ResourceDictionary>

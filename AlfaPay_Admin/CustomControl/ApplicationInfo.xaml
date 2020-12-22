@@ -10,9 +10,13 @@
     <GroupBox BorderThickness="0" BorderBrush="Transparent"
               MinHeight="300">
         <GroupBox.Header>
-            <Label Background="White" Style="{StaticResource PrimaryHeader}" Padding="5,0,5,5"
-                   Margin="0,5,0,0"
-                   Content="Подробнее о заявке" />
+            <StackPanel Orientation="Horizontal"> 
+                <Label Background="White" Style="{StaticResource PrimaryHeader}" Padding="5,0,5,5"
+                       Margin="0,5,0,4"
+                       Content="Подробнее о заявке" VerticalAlignment="Center" />
+                <Image Source="{Binding Status, Converter={StaticResource ApplicationStatusToIconConverter}}"
+                       Height="18" Margin="5,0,0,0" VerticalAlignment="Center" />
+            </StackPanel>
         </GroupBox.Header>
         <Grid Margin="15,0,15,0" ZIndex="1"
               DataContext="{Binding ElementName=ApplicationsInfoControl, Path=DataContext}"

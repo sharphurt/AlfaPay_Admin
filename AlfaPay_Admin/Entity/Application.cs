@@ -49,7 +49,8 @@ namespace AlfaPay_Admin.Entity
         }
 
         public bool MatchToSearchString(string searchString) =>
-            string.IsNullOrEmpty(searchString) || searchString.Split(' ').Any(Match);
+            string.IsNullOrEmpty(searchString) ||
+            searchString.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries).All(Match);
 
         public bool MatchToFilter(ApplicationFilter filter)
         {
