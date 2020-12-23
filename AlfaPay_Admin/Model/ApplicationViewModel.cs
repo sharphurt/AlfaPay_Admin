@@ -135,7 +135,7 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        
+
         private UserFilter _userFilter;
 
         public UserFilter UserFilter
@@ -148,7 +148,7 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        
+
         private bool _usersSortDirection;
 
         public bool UsersSortDirection
@@ -162,7 +162,7 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        
+
         private ComboBoxItem _usersSortMethod;
 
         public ComboBoxItem UsersSortMethod
@@ -175,7 +175,7 @@ namespace AlfaPay_Admin.Model
                 OnPropertyChanged(nameof(UsersSortMethod));
             }
         }
-        
+
 
         private Application _selectedApplication;
 
@@ -205,7 +205,14 @@ namespace AlfaPay_Admin.Model
 
         public RelayCommand RefreshCommand
         {
-            get { return _refreshCommand ??= new RelayCommand(obj => { GetApplicationsFromServer(0, 10); }); }
+            get
+            {
+                return _refreshCommand ??= new RelayCommand(obj =>
+                {
+                    GetApplicationsFromServer(0, 100);
+                    GetUsersFromServer(0, 100);
+                });
+            }
         }
 
         private RelayCommand _rejectCommand;
@@ -215,6 +222,14 @@ namespace AlfaPay_Admin.Model
             get { return _rejectCommand ??= new RelayCommand(obj => { RejectApplication(SelectedApplication.Id); }); }
         }
 
+        private RelayCommand _reviveCommand;
+
+        public RelayCommand ReviveCommand
+        {
+            get { return _reviveCommand ??= new RelayCommand(obj => { ReviveApplication(SelectedApplication.Id); }); }
+        }
+
+        
         private RelayCommand _sendMessageCommand;
 
         public RelayCommand SendMessageCommand
@@ -315,7 +330,14 @@ namespace AlfaPay_Admin.Model
         private void RejectApplication(long id)
         {
             RejectApplicationRequestManager.MakeRequest(Method.POST, $"applications/reject?id={id}", null,
-                () => { GetApplicationsFromServer(0, 10); },
+                () => { RefreshCommand.Execute(null); },
+                () => ErrorMessage = RejectApplicationRequestManager.Response.ToString());
+        }
+        
+        private void ReviveApplication(long id)
+        {
+            RejectApplicationRequestManager.MakeRequest(Method.GET, $"applications/setStatus?id={id}&status=NOT_CONSIDERED", null,
+                () => { RefreshCommand.Execute(null); },
                 () => ErrorMessage = RejectApplicationRequestManager.Response.ToString());
         }
 
@@ -388,7 +410,7 @@ namespace AlfaPay_Admin.Model
             UsersView.Refresh();
         }
 
-        
+
         public void SendEmail()
         {
         }

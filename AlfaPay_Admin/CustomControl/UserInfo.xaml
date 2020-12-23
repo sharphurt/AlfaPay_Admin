@@ -7,13 +7,13 @@
              mc:Ignorable="d"
              x:Name="UserInfoControlWindow"
              d:DesignHeight="300" d:DesignWidth="300">
-    <GroupBox BorderThickness="0" BorderBrush="Transparent"
+    <!--<GroupBox BorderThickness="0" BorderBrush="Transparent"
               MinHeight="300">
         <GroupBox.Header>
             <Label Background="White" Style="{StaticResource PrimaryHeader}" Padding="5,0,5,5"
                    Margin="0,5,0,0"
                    Content="{Binding FullName, Converter={StaticResource FullNameToHeaderConverter}}" />
-        </GroupBox.Header>
+        </GroupBox.Header>-->
         <Grid Margin="15,0,15,0"
               DataContext="{Binding ElementName=UserInfoControlWindow, Path=DataContext}"
               Background="White">
@@ -57,5 +57,7 @@
                    Style="{StaticResource TertiaryText}"
                    Content="{Binding DaysPassed}" />
         </Grid>
+    <!--
     </GroupBox>
+-->
 </UserControl>

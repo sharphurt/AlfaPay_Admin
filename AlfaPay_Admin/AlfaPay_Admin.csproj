@@ -279,10 +279,11 @@
         </ApplicationDefinition>
         <Compile Include="Context\AuthenticationContext.cs" />
         <Compile Include="Context\ApiRequestManager.cs" />
+        <Compile Include="Converter\ApplicationStatusCompareConverter.cs" />
         <Compile Include="Converter\ApplicationStatusStringToEnumConverter.cs" />
         <Compile Include="Converter\ApplicationStatusToIconConverter.cs" />
         <Compile Include="Converter\BoolOrOperationConverter.cs" />
-        <Compile Include="Converter\CompareConverter.cs" />
+        <Compile Include="Converter\TabHeadersCompareConverter.cs" />
         <Compile Include="Converter\DouleSubtractConverter.cs" />
         <Compile Include="Converter\FullNameToHeaderConverter.cs" />
         <Compile Include="Converter\InvertedBoolConverter.cs" />
@@ -478,6 +479,9 @@
       </Resource>
     </ItemGroup>
     <ItemGroup>
+      <Resource Include="Resources\sandclock_icon.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="Resources\not_found_illustration.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>

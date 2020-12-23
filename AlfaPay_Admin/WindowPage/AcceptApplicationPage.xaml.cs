@@ -34,7 +34,7 @@ namespace AlfaPay_Admin.WindowPage
                 _errorPlateVisibilityTimer.Stop();
             };
 
-            _returnDelayTimer1.Interval = TimeSpan.FromSeconds(1.5);
+            _returnDelayTimer1.Interval = TimeSpan.FromSeconds(0.4);
             _returnDelayTimer1.Tick += (sender, args) =>
             {
                 TriggerTextBox.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);

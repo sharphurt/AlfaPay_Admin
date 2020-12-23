@@ -30,6 +30,7 @@
     <BitmapImage x:Key="RejectedPlate" UriSource="rejectedPlate.png" />
     <BitmapImage x:Key="TickWhite" UriSource="tick_white.png" />
     <BitmapImage x:Key="NotFoundIllustration" UriSource="not_found_illustration.png" />
+    <BitmapImage x:Key="SandClockIcon" UriSource="sandclock_icon.png" />
 
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converter:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
@@ -49,7 +50,7 @@
     <converter:RequestStatusNotStartedToVisibility x:Key="RequestStatusNotStartedToVisibility" />
     <converter:InvertedRequestStatusInProgressToBool x:Key="InvertedRequestStatusInProgressToBool" />
     <converter:DoubleSubtractConverter x:Key="DoubleSubtractConverter" />
-    <converter:CompareConverter x:Key="CompareConverter" />
+    <converter:TabHeadersCompareConverter x:Key="TabHeadersCompareConverter" />
     <converter:BoolAndOperationConverter x:Key="BoolAndOperationConverter" />
     <converter:UserStatusToIconConverter x:Key="UserStatusToIconConverter" />
     <converter:UserStatusToReadableConverter x:Key="UserStatusToReadableConverter" />
@@ -58,6 +59,7 @@
     <converter:FullNameToHeaderConverter x:Key="FullNameToHeaderConverter" />
     <converter:ApplicationStatusToIconConverter x:Key="ApplicationStatusToIconConverter" />
     <converter:IsStringNotEmptyConverter x:Key="IsStringNotEmptyConverter" />
+    <converter:ApplicationStatusCompareConverter x:Key="ApplicationStatusCompareConverter" />
 
     <Style x:Key="ListBoxElement" TargetType="Grid">
         <Setter Property="Background" Value="Transparent" />
