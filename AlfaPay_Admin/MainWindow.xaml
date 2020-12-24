@@ -25,7 +25,7 @@
                 <DropShadowEffect Opacity="0.1" BlurRadius="25" ShadowDepth="0" Color="#0B1F35" />
             </Border.Effect>-->
             <DockPanel Margin="5,2,0,2" VerticalAlignment="Center">
-                <WrapPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="15,0,0,0"
+                <!--<WrapPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="15,0,0,0"
                            Background="Transparent"
                            VerticalAlignment="Center">
                     <Image Source="{StaticResource SearchIcon}" x:Name="SearchIcon"
@@ -44,7 +44,7 @@
                               Y1="0"
                               X2="250" Y2="0" />
                     </WrapPanel>
-                </WrapPanel>
+                </WrapPanel>-->
                 <Button DockPanel.Dock="Right" Width="32" Height="32" Margin="10,0,15,0"
                         Style="{StaticResource WhiteRoundedButtonStyle}" Command="{Binding LogoutCommand}">
                     <Grid>

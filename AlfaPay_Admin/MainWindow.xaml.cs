@@ -38,6 +38,7 @@ namespace AlfaPay_Admin
             }
         }
 
+        /*
         private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
             if (SearchTextBox.Text == "Поиск по компаниям")
@@ -55,6 +56,7 @@ namespace AlfaPay_Admin
             SearchTextBox.Foreground = new SolidColorBrush(Color.FromRgb(182, 188, 195));
             LineUnderSearch.Stroke = new SolidColorBrush(Color.FromRgb(182, 188, 195));
         }
+        */
 
         private void MainWindow_OnLoaded(object sender, EventArgs args)
         {

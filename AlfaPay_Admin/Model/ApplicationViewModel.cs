@@ -209,6 +209,8 @@ namespace AlfaPay_Admin.Model
             {
                 return _refreshCommand ??= new RelayCommand(obj =>
                 {
+                    Applications.Clear();
+                    Users.Clear();
                     GetApplicationsFromServer(0, 100);
                     GetUsersFromServer(0, 100);
                 });
@@ -236,16 +238,37 @@ namespace AlfaPay_Admin.Model
         {
             get { return _sendMessageCommand ??= new RelayCommand(obj => { SendEmail(); }); }
         }
+        
+        private RelayCommand _lockCommand;
 
-        private ApiRequestManager<ObservableCollection<Application>> _getApplicationsRequestManager;
-
-        public ApiRequestManager<ObservableCollection<Application>> GetApplicationsRequestManager
+        public RelayCommand LockCommand
         {
-            get => _getApplicationsRequestManager;
+            get { return _lockCommand ??= new RelayCommand(obj => { LockUser(SelectedUser); }); }
+        }
+        
+        private RelayCommand _deleteCommand;
+
+        public RelayCommand DeleteCommand
+        {
+            get { return _deleteCommand ??= new RelayCommand(obj => { DeleteUser(SelectedUser); }); }
+        }
+        
+        private RelayCommand _activateCommand;
+
+        public RelayCommand ActivateCommand
+        {
+            get { return _activateCommand ??= new RelayCommand(obj => { ActivateUser(SelectedUser); }); }
+        }
+
+        private ApiRequestManager<ObservableCollection<Application>> _applicationsRequestManager;
+
+        public ApiRequestManager<ObservableCollection<Application>> ApplicationsRequestManager
+        {
+            get => _applicationsRequestManager;
             set
             {
-                _getApplicationsRequestManager = value;
-                OnPropertyChanged(nameof(GetApplicationsRequestManager));
+                _applicationsRequestManager = value;
+                OnPropertyChanged(nameof(ApplicationsRequestManager));
             }
         }
 
@@ -261,7 +284,6 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-
         private ApiRequestManager<ObservableCollection<User>> _usersRequestManager;
 
         public ApiRequestManager<ObservableCollection<User>> UsersRequestManager
@@ -271,6 +293,18 @@ namespace AlfaPay_Admin.Model
             {
                 _usersRequestManager = value;
                 OnPropertyChanged(nameof(UsersRequestManager));
+            }
+        }
+
+        private ApiRequestManager<string> _manageUsersRequestManager;
+
+        public ApiRequestManager<string> ManageUsersRequestManager
+        {
+            get => _manageUsersRequestManager;
+            set
+            {
+                _manageUsersRequestManager = value;
+                OnPropertyChanged(nameof(ManageUsersRequestManager));
             }
         }
 
@@ -288,9 +322,10 @@ namespace AlfaPay_Admin.Model
 
         public ApplicationViewModel()
         {
-            GetApplicationsRequestManager = new ApiRequestManager<ObservableCollection<Application>>();
+            ApplicationsRequestManager = new ApiRequestManager<ObservableCollection<Application>>();
             RejectApplicationRequestManager = new ApiRequestManager<string>();
             UsersRequestManager = new ApiRequestManager<ObservableCollection<User>>();
+            ManageUsersRequestManager = new ApiRequestManager<string>();
             ApplicationFilter = new ApplicationFilter(true, false, false);
             UserFilter = new UserFilter(true, false, false, false);
             ApplicationFilter.PropertyChanged += (sender, args) => FilterApplications(ApplicationsSearch);
@@ -301,7 +336,7 @@ namespace AlfaPay_Admin.Model
 
         private void ApplicationsOnSuccessfulLoading()
         {
-            Applications = GetApplicationsRequestManager.Response.Response;
+            Applications = ApplicationsRequestManager.Response.Response;
             FilterApplications(ApplicationsSearch);
             SortApplications(ApplicationsSortMethod != null ? ApplicationsSortMethod.Content.ToString() : "По имени",
                 ApplicationsSortDirection);
@@ -315,16 +350,16 @@ namespace AlfaPay_Admin.Model
 
         private void GetApplicationsFromServer(int from, int count)
         {
-            GetApplicationsRequestManager.MakeRequest(Method.GET, $"applications/get?from={from}&count={count}",
+            ApplicationsRequestManager.MakeRequest(Method.GET, $"applications/get?from={from}&count={count}",
                 null, ApplicationsOnSuccessfulLoading,
-                () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
+                () => ErrorMessage = ApplicationsRequestManager.Response.ToString());
         }
 
         private void GetUsersFromServer(int from, int count)
         {
             UsersRequestManager.MakeRequest(Method.GET, $"users/get?from={from}&count={count}", null,
                 UsersOnSuccessfulLoading,
-                () => ErrorMessage = GetApplicationsRequestManager.Response.ToString());
+                () => ErrorMessage = ApplicationsRequestManager.Response.ToString());
         }
 
         private void RejectApplication(long id)
@@ -343,7 +378,7 @@ namespace AlfaPay_Admin.Model
 
         private void FilterApplications(string searchString)
         {
-            if (GetApplicationsRequestManager.Status != RequestStatus.CompletedSuccessfully)
+            if (ApplicationsRequestManager.Status != RequestStatus.CompletedSuccessfully)
                 return;
             ApplicationsView.Filter =
                 o => o is Application application && application.MatchToSearchString(searchString) &&
@@ -408,6 +443,27 @@ namespace AlfaPay_Admin.Model
             }
 
             UsersView.Refresh();
+        }
+
+        public void LockUser(User user)
+        {
+            ManageUsersRequestManager.MakeRequest(Method.GET, $"users/ban?id={user.Id}", null,
+                () => { RefreshCommand.Execute(null); },
+                () => ErrorMessage = UsersRequestManager.Response.ToString());
+        }
+        
+        public void DeleteUser(User user)
+        {
+            ManageUsersRequestManager.MakeRequest(Method.GET, $"users/delete?id={user.Id}", null,
+                () => { RefreshCommand.Execute(null); },
+                () => ErrorMessage = UsersRequestManager.Response.ToString());
+        }
+        
+        public void ActivateUser(User user)
+        {
+            ManageUsersRequestManager.MakeRequest(Method.GET, $"users/activate?id={user.Id}", null,
+                () => { RefreshCommand.Execute(null); },
+                () => ErrorMessage = UsersRequestManager.Response.ToString());
         }
 
 

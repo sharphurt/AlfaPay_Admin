@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              x:Name="ApplicationsInfoControl"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="15,0,15,0" Height="300"
+    <Grid Margin="15,0,15,0"
           DataContext="{Binding ElementName=ApplicationsInfoControl, Path=DataContext}"
           Background="White">
         <Grid.ColumnDefinitions>

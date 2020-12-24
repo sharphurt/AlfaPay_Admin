@@ -51,6 +51,7 @@ namespace AlfaPay_Admin.Context
 
         public async void MakeRequest(Method method, string path, object toJson, Action onSuccessful, Action onError)
         {
+            Status = RequestStatus.InProgress;
             var request = new RestRequest(path);
             if (!(toJson is null))
                 request.AddJsonBody(toJson);

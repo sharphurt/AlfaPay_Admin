@@ -283,6 +283,7 @@
         <Compile Include="Converter\ApplicationStatusStringToEnumConverter.cs" />
         <Compile Include="Converter\ApplicationStatusToIconConverter.cs" />
         <Compile Include="Converter\BoolOrOperationConverter.cs" />
+        <Compile Include="Converter\RequestStatusCompareConverter.cs" />
         <Compile Include="Converter\TabHeadersCompareConverter.cs" />
         <Compile Include="Converter\DouleSubtractConverter.cs" />
         <Compile Include="Converter\FullNameToHeaderConverter.cs" />
@@ -298,6 +299,7 @@
         <Compile Include="Converter\InvertedRequestStatusIsSuccessfulToVisibilityConverter.cs" />
         <Compile Include="Converter\RequestStatusNotStartedToVisibilityConverter.cs" />
         <Compile Include="Converter\UserPrivilegeToIconConverter.cs" />
+        <Compile Include="Converter\UserStatusCompareConverter.cs" />
         <Compile Include="Converter\UserStatusToColorConverter.cs" />
         <Compile Include="Converter\UserStatusToIconConverter.cs" />
         <Compile Include="Converter\UserStatusToReadableConverter.cs" />
@@ -479,6 +481,12 @@
       </Resource>
     </ItemGroup>
     <ItemGroup>
+      <Resource Include="Resources\unlock.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="Resources\refresh.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="Resources\sandclock_icon.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
