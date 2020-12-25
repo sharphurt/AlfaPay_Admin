@@ -33,7 +33,7 @@ namespace AlfaPay_Admin.Model
 
         [JsonProperty("phone")] public string Phone { get; set; }
 
-        [JsonProperty("password")] public string Password => Membership.GeneratePassword(10, 4);
+        [JsonProperty("password")] public string Password => Membership.GeneratePassword(15, 2);
         
         [JsonProperty("privilege")]
         public string Privilege => "CLIENT";

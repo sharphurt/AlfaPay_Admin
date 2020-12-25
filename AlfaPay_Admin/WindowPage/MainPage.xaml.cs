@@ -69,12 +69,6 @@ namespace AlfaPay_Admin.WindowPage
             navigationService?.Navigate(acceptApplicationPage);
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            var url = "mailto:someone@somewhere.com?subject=Команда AlfaPay";
-            Process.Start(url);
-        }
-
         private void ApplicationsFiltersButton_OnClick(object sender, RoutedEventArgs e)
         {
             var openAnimation = FindResource("OpenApplicationFiltersPanel") as Storyboard;

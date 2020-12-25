@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
@@ -231,28 +232,28 @@ namespace AlfaPay_Admin.Model
             get { return _reviveCommand ??= new RelayCommand(obj => { ReviveApplication(SelectedApplication.Id); }); }
         }
 
-        
+
         private RelayCommand _sendMessageCommand;
 
         public RelayCommand SendMessageCommand
         {
-            get { return _sendMessageCommand ??= new RelayCommand(obj => { SendEmail(); }); }
+            get { return _sendMessageCommand ??= new RelayCommand(obj => { SendEmail((string) obj); }); }
         }
-        
+
         private RelayCommand _lockCommand;
 
         public RelayCommand LockCommand
         {
             get { return _lockCommand ??= new RelayCommand(obj => { LockUser(SelectedUser); }); }
         }
-        
+
         private RelayCommand _deleteCommand;
 
         public RelayCommand DeleteCommand
         {
             get { return _deleteCommand ??= new RelayCommand(obj => { DeleteUser(SelectedUser); }); }
         }
-        
+
         private RelayCommand _activateCommand;
 
         public RelayCommand ActivateCommand
@@ -368,10 +369,11 @@ namespace AlfaPay_Admin.Model
                 () => { RefreshCommand.Execute(null); },
                 () => ErrorMessage = RejectApplicationRequestManager.Response.ToString());
         }
-        
+
         private void ReviveApplication(long id)
         {
-            RejectApplicationRequestManager.MakeRequest(Method.GET, $"applications/setStatus?id={id}&status=NOT_CONSIDERED", null,
+            RejectApplicationRequestManager.MakeRequest(Method.GET,
+                $"applications/setStatus?id={id}&status=NOT_CONSIDERED", null,
                 () => { RefreshCommand.Execute(null); },
                 () => ErrorMessage = RejectApplicationRequestManager.Response.ToString());
         }
@@ -435,7 +437,7 @@ namespace AlfaPay_Admin.Model
                     UsersView.SortDescriptions.Add(new SortDescription("Patronymic", dir));
                     break;
                 case "По статусу":
-                    UsersView.SortDescriptions.Add(new SortDescription("Patronymic", dir));
+                    UsersView.SortDescriptions.Add(new SortDescription("Status", dir));
                     break;
                 case "По дате регистрации":
                     UsersView.SortDescriptions.Add(new SortDescription("CreatedAt", dir));
@@ -451,14 +453,14 @@ namespace AlfaPay_Admin.Model
                 () => { RefreshCommand.Execute(null); },
                 () => ErrorMessage = UsersRequestManager.Response.ToString());
         }
-        
+
         public void DeleteUser(User user)
         {
             ManageUsersRequestManager.MakeRequest(Method.GET, $"users/delete?id={user.Id}", null,
                 () => { RefreshCommand.Execute(null); },
                 () => ErrorMessage = UsersRequestManager.Response.ToString());
         }
-        
+
         public void ActivateUser(User user)
         {
             ManageUsersRequestManager.MakeRequest(Method.GET, $"users/activate?id={user.Id}", null,
@@ -467,8 +469,10 @@ namespace AlfaPay_Admin.Model
         }
 
 
-        public void SendEmail()
+        public void SendEmail(string to)
         {
+            var url = $"mailto:{to}?subject=Команда AlfaPay";
+            Process.Start(url);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

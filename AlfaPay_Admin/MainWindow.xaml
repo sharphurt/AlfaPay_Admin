@@ -20,7 +20,8 @@
         SizeChanged="MainWindow_OnSizeChanged"
         Loaded="MainWindow_OnLoaded">
     <DockPanel LastChildFill="True">
-        <Border DockPanel.Dock="Top" Margin="10" x:Name="SearchPanel" CornerRadius="4" Background="White" Visibility="Collapsed">
+        <Border DockPanel.Dock="Top" Margin="10" x:Name="SearchPanel" CornerRadius="4" Background="White"
+                Visibility="Collapsed">
             <!--<Border.Effect>
                 <DropShadowEffect Opacity="0.1" BlurRadius="25" ShadowDepth="0" Color="#0B1F35" />
             </Border.Effect>-->
@@ -61,7 +62,10 @@
                        Content="{Binding LoggedInUser}" FontSize="14" />
             </DockPanel>
         </Border>
-        <Frame DockPanel.Dock="Top" x:Name="MainFrame" Source="WindowPage/LoginPage.xaml" Navigated="MainFrame_OnNavigated"
-               NavigationUIVisibility="Hidden" />
+        <Grid DockPanel.Dock="Top">
+            <Frame x:Name="MainFrame" Source="WindowPage/LoginPage.xaml"
+                   Navigated="MainFrame_OnNavigated"
+                   NavigationUIVisibility="Hidden" />
+        </Grid>
     </DockPanel>
 </Window>

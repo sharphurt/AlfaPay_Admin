@@ -9,8 +9,6 @@
       xmlns:alfaPayAdmin="clr-namespace:AlfaPay_Admin"
       mc:Ignorable="d"
       Title="MainPage"
-      Height="630"
-      Width="1200"
       ShowsNavigationUI="False"
       KeepAlive="True"
       x:Name="MainPageObj"
@@ -42,6 +40,9 @@
                                Content="Выберите что нибудь">
                             <Label.Visibility>
                                 <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
+                                    <Binding Path="ApplicationsRequestManager.Status"
+                                             Converter="{StaticResource RequestStatusCompareConverter}"
+                                             ConverterParameter="CompletedSuccessfully" />
                                     <Binding ElementName="TabControl" Path="SelectedValue"
                                              Converter="{StaticResource TabHeadersCompareConverter}"
                                              ConverterParameter="Заявки" />
@@ -57,6 +58,9 @@
                                Content="Выберите что нибудь">
                             <Label.Visibility>
                                 <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
+                                    <Binding Path="UsersRequestManager.Status"
+                                             Converter="{StaticResource RequestStatusCompareConverter}"
+                                             ConverterParameter="CompletedSuccessfully" />
                                     <Binding ElementName="TabControl" Path="SelectedValue"
                                              Converter="{StaticResource TabHeadersCompareConverter}"
                                              ConverterParameter="Пользователи" />
@@ -85,7 +89,8 @@
                             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="0,-10,20,0"
                                         HorizontalAlignment="Right">
                                 <Button Style="{StaticResource WhiteRoundedButtonStyle}"
-                                        Command="{Binding SendMessageCommand}" Margin="0,0,10,0"
+                                        Command="{Binding SendMessageCommand}"
+                                        CommandParameter="{Binding SelectedApplication.Email}" Margin="0,0,10,0"
                                         Width="40" Height="40">
                                     <Image Source="{StaticResource SendIcon}" Width="15" Height="15" />
                                 </Button>
@@ -112,7 +117,8 @@
                             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="0,-10,20,0"
                                         HorizontalAlignment="Right">
                                 <Button Style="{StaticResource WhiteRoundedButtonStyle}"
-                                        Command="{Binding SendMessageCommand}" Margin="0,0,10,0"
+                                        Command="{Binding SendMessageCommand}"
+                                        CommandParameter="{Binding SelectedUser.Email}" Margin="0,0,10,0"
                                         Width="40" Height="40">
                                     <Image Source="{StaticResource SendIcon}" Width="15" Height="15" />
                                 </Button>
@@ -143,14 +149,15 @@
                             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="0,-10,20,0"
                                         HorizontalAlignment="Right">
                                 <Button Style="{StaticResource WhiteRoundedButtonStyle}"
-                                        Command="{Binding SendMessageCommand}" Margin="0,0,10,0"
+                                        Command="{Binding SendMessageCommand}"
+                                        CommandParameter="{Binding SelectedUser.Email}" Margin="0,0,10,0"
                                         Width="40" Height="40">
                                     <Image Source="{StaticResource SendIcon}" Width="15" Height="15" />
                                 </Button>
                                 <Button Style="{StaticResource WhiteRoundedButtonStyle}"
                                         Command="{Binding ActivateCommand}" Margin="0,0,10,0"
                                         Width="40" Height="40">
-                                    <Image Source="{StaticResource LockIcon}" Width="15" Height="15" />
+                                    <Image Source="{StaticResource UnlockIcon}" Width="15" Height="15" />
                                 </Button>
                                 <StackPanel.Visibility>
                                     <MultiBinding Converter="{StaticResource BoolAndOperationConverter}">
@@ -162,15 +169,16 @@
                                         <Binding Path="SelectedUser"
                                                  Converter="{StaticResource UserStatusCompareConverter}"
                                                  ConverterParameter="DELETED" />
-                                       </MultiBinding>
+                                    </MultiBinding>
                                 </StackPanel.Visibility>
                             </StackPanel>
-                            
-                            
+
+
                             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="0,-10,20,0"
                                         HorizontalAlignment="Right">
                                 <Button Style="{StaticResource WhiteRoundedButtonStyle}"
-                                        Command="{Binding SendMessageCommand}" Margin="0,0,10,0"
+                                        Command="{Binding SendMessageCommand}"
+                                        CommandParameter="{Binding SelectedUser.Email}" Margin="0,0,10,0"
                                         Width="40" Height="40">
                                     <Image Source="{StaticResource SendIcon}" Width="15" Height="15" />
                                 </Button>
@@ -189,7 +197,7 @@
                                         <Binding Path="SelectedUser"
                                                  Converter="{StaticResource UserStatusCompareConverter}"
                                                  ConverterParameter="LOCKED" />
-                                       </MultiBinding>
+                                    </MultiBinding>
                                 </StackPanel.Visibility>
                             </StackPanel>
 
@@ -197,7 +205,8 @@
                             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="0,0,20,0"
                                         HorizontalAlignment="Right">
                                 <Button Style="{StaticResource WhiteRoundedButtonStyle}"
-                                        Command="{Binding SendMessageCommand}" Margin="0,0,10,0"
+                                        Command="{Binding SendMessageCommand}"
+                                        CommandParameter="{Binding SelectedApplication.Email}" Margin="0,0,10,0"
                                         Width="40" Height="40">
                                     <Image Source="{StaticResource SendIcon}" Width="15" Height="15" />
                                 </Button>
