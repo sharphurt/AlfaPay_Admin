@@ -6,47 +6,46 @@
              xmlns:local="clr-namespace:AlfaPay_Admin.CustomControl"
              mc:Ignorable="d"
              x:Name="UserInfoControlWindow">
-        <Grid Margin="15,0,15,0"
-              DataContext="{Binding ElementName=UserInfoControlWindow, Path=DataContext}"
-              Background="White">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"
-                   Style="{StaticResource SecondaryHeader}" Content="Имя" />
-            <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"
-                   Style="{StaticResource SecondaryHeader}" Content="Фамилия" />
-            <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"
-                   Style="{StaticResource SecondaryHeader}" Content="Email" />
-            <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"
-                   Style="{StaticResource SecondaryHeader}"
-                   Content="Телефон" />
-            <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"
-                   Style="{StaticResource SecondaryHeader}" Content="Дата регистрации" />
+    <Grid Margin="15,0,15,0"
+          DataContext="{Binding ElementName=UserInfoControlWindow, Path=DataContext}"
+          Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"
+               Style="{StaticResource SecondaryHeader}" Content="Имя" />
+        <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"
+               Style="{StaticResource SecondaryHeader}" Content="Фамилия" />
+        <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"
+               Style="{StaticResource SecondaryHeader}" Content="Отчество" />
+        <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"
+               Style="{StaticResource SecondaryHeader}" Content="Email" />
+        <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"
+               Style="{StaticResource SecondaryHeader}" Content="Телефон" />
+        <Label Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left"
+               Style="{StaticResource SecondaryHeader}" Content="Дата регистрации" />
 
-            <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"
-                   Style="{StaticResource PrimaryText}" Content="{Binding FirstName}" />
-            <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"
-                   Style="{StaticResource PrimaryText}" Content="{Binding LastName}" />
-            <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"
-                   Style="{StaticResource PrimaryText}" Content="{Binding Email}" />
-            <Label Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right"
-                   Style="{StaticResource PrimaryText}" Content="{Binding Phone}" />
-            <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right"
-                   Style="{StaticResource PrimaryText}"
-                   Content="{Binding CreatedAt, Converter={StaticResource DateTimeConverter}}" />
-            
-            <Label Grid.Column="2" Margin="10,0,0,0" HorizontalAlignment="Left" Grid.Row="4"
-                   Style="{StaticResource TertiaryText}"
-                   Content="{Binding DaysPassed}" />
-        </Grid>
+        <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"
+               Style="{StaticResource PrimaryText}" Content="{Binding FirstName}" />
+        <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"
+               Style="{StaticResource PrimaryText}" Content="{Binding LastName}" />
+        <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" x:Name="PatronymicLabel"
+               Style="{StaticResource PrimaryText}" Content="{Binding Patronymic}" />
+        <Label Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right"
+               Style="{StaticResource PrimaryText}" Content="{Binding Email}" />
+        <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right"
+               Style="{StaticResource PrimaryText}" Content="{Binding Phone}" />
+        <Label Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right"
+               Style="{StaticResource PrimaryText}"
+               Content="{Binding CreatedAt, Converter={StaticResource DateTimeConverter}}" />
+    </Grid>
 </UserControl>

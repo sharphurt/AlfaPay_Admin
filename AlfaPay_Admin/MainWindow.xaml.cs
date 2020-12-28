@@ -26,7 +26,10 @@ namespace AlfaPay_Admin
         public MainWindow()
         {
             InitializeComponent();
+            NavigationCommands.BrowseBack.InputGestures.Clear();
+            NavigationCommands.BrowseForward.InputGestures.Clear();
         }
+
 
         private void OnServiceModelPropertyChanged(object sender, PropertyChangedEventArgs args)
         {

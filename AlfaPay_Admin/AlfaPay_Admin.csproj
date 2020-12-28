@@ -283,7 +283,10 @@
         <Compile Include="Converter\ApplicationStatusStringToEnumConverter.cs" />
         <Compile Include="Converter\ApplicationStatusToIconConverter.cs" />
         <Compile Include="Converter\BoolOrOperationConverter.cs" />
+        <Compile Include="Converter\CompanyNameToReadableConverter.cs" />
+        <Compile Include="Converter\FoundedCompanyToToolTipTextConverter.cs" />
         <Compile Include="Converter\RequestStatusCompareConverter.cs" />
+        <Compile Include="Converter\RequestStatusToIconConverter.cs" />
         <Compile Include="Converter\TabHeadersCompareConverter.cs" />
         <Compile Include="Converter\DouleSubtractConverter.cs" />
         <Compile Include="Converter\FullNameToHeaderConverter.cs" />
@@ -305,6 +308,9 @@
         <Compile Include="Converter\UserStatusToReadableConverter.cs" />
         <Compile Include="CustomControl\ApplicationInfo.xaml.cs">
           <DependentUpon>ApplicationInfo.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="CustomControl\CompanyInfo.xaml.cs">
+          <DependentUpon>CompanyInfo.xaml</DependentUpon>
         </Compile>
         <Compile Include="CustomControl\HeadedTextBlock.xaml.cs">
           <DependentUpon>HeadedTextBlock.xaml</DependentUpon>
@@ -353,6 +359,7 @@
           <DependentUpon>MainPage.xaml</DependentUpon>
         </Compile>
         <Page Include="CustomControl\ApplicationInfo.xaml" />
+        <Page Include="CustomControl\CompanyInfo.xaml" />
         <Page Include="CustomControl\HeadedTextBlock.xaml" />
         <Page Include="CustomControl\HintedInput.xaml" />
         <Page Include="CustomControl\InputTextBox.xaml" />
@@ -481,6 +488,9 @@
       </Resource>
     </ItemGroup>
     <ItemGroup>
+      <Resource Include="Resources\attention_icon.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
       <Resource Include="Resources\unlock.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>

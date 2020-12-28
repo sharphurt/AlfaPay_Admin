@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 using AlfaPay_Admin.Context;
@@ -63,7 +64,7 @@ namespace AlfaPay_Admin.WindowPage
 
         private void AcceptApplicationPage_OnMouseDown(object sender, MouseButtonEventArgs e) => Grid.Focus();
 
-        private void AutocompleteListBox_OnSelected(object sender, RoutedEventArgs e)
+        private void AddressesAutocompleteListBox_OnSelected(object sender, RoutedEventArgs e)
         {
             AddressTextBox.Text = AutocompleteListBox.SelectedItem as string ?? AddressTextBox.Text;
             if (AutocompleteListBox.Items.Count == 1)
@@ -72,7 +73,8 @@ namespace AlfaPay_Admin.WindowPage
 
         private void AddressTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            PopupNonTopmost.IsOpen = true;
+            if (AddressTextBox.IsFocused)
+                PopupNonTopmost.IsOpen = true;
         }
 
         private void ContinueButton_OnClick(object sender, RoutedEventArgs e)
@@ -96,6 +98,33 @@ namespace AlfaPay_Admin.WindowPage
         private void CloseWindowButton_OnClick(object sender, RoutedEventArgs e)
         {
             TriggerTextBox.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void CompaniesSearchButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var openAnimation = FindResource("OpenCompaniesSearchInput") as Storyboard;
+            var closeAnimation = FindResource("CloseCompaniesSearchInput") as Storyboard;
+            if ((bool) CompaniesSearchButton.IsChecked)
+            {
+                CompaniesSearchInput.Clear();
+                CompaniesSearchInput.Focus();
+                BeginStoryboard(openAnimation);
+            }
+            else
+                BeginStoryboard(closeAnimation);
+        }
+
+        private void CompaniesAutocomplete_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CompaniesSearchInput.Text = CompaniesAutocomplete.SelectedItem as string ?? CompaniesSearchInput.Text;
+            if (CompaniesAutocomplete.Items.Count == 1)
+                CompaniesSearchPopupNonTopmost.IsOpen = false;
+        }
+
+        private void CompaniesSearchInput_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (CompaniesSearchInput.IsFocused)
+                CompaniesSearchPopupNonTopmost.IsOpen = true;
         }
     }
 }

@@ -46,6 +46,7 @@ namespace AlfaPay_Admin.CustomControl
             InitializeComponent();
             SearchString = "";
             HintedInputWindow.DataContext = SearchString;
+            SearchTextBox.Text = Hint;
         }
 
         private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)

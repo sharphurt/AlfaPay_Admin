@@ -1,10 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Configuration;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
 using AlfaPay_Admin.Entity;
+using AlfaPay_Admin.Enum;
+using Dadata;
+using Dadata.Model;
 using RestSharp;
 using RestSharp.Serializers.NewtonsoftJson;
 using RestClient = RestSharp.RestClient;
@@ -85,6 +91,31 @@ namespace AlfaPay_Admin.Model
             }
         }
         
+        
+        private Party _company;
+
+        public Party Company
+        {
+            get => _company;
+            set
+            {
+                _company = value;
+                OnPropertyChanged(nameof(Company));
+            }
+        }
+
+        private Suggestion<Address> _selectedAddress;
+
+        public Suggestion<Address> SelectedAddress
+        {
+            get => _selectedAddress;
+            set
+            {
+                _selectedAddress = value;
+                OnPropertyChanged(nameof(SelectedAddress));
+            }
+        }
+
         private RelayCommand _registerCommand;
 
         public RelayCommand RegisterCommand =>
@@ -99,13 +130,16 @@ namespace AlfaPay_Admin.Model
         {
             RegistrationRequestManager.Reset();
         }
-        
-        
+
+
         public RegistrationModel(Application application)
         {
             Application = application;
-            ClientModel = new ClientModel();
-            CompanyModel = new CompanyModel();
+            ClientModel = new ClientModel
+            {
+                Email = Application.Email, Name = Application.Name, Phone = Application.Phone
+            };
+            CompanyModel = new CompanyModel(Application.Inn);
             RegistrationRequestManager = new ApiRequestManager<string>();
         }
 
@@ -120,14 +154,14 @@ namespace AlfaPay_Admin.Model
                 Phone = "+79922132226"
             };
 
-            var testCompany = new CompanyModel()
+            /*var testCompany = new CompanyModel()
             {
                 Address = "екатеринбург коминтерна 5",
                 Inn = "1242261097",
                 Name = "Catstack7",
                 TaxSystem = "ОСН"
-            };
-            
+            };*/
+
 
             RegistrationRequestManager.MakeRequest(Method.POST, "/auth/register", new
                 {

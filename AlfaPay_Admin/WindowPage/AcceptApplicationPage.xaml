@@ -52,7 +52,7 @@
                     <Label Style="{StaticResource PrimaryHeader}"
                            Content="Укажите данные пользователя" />
                     <WrapPanel Orientation="Vertical" Margin="10,0,10,0" Focusable="True">
-                        <Grid Margin="0,10,0,0">
+                        <Grid Margin="0,16,0,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="2*" />
@@ -150,9 +150,113 @@
             <Border Grid.Column="1" Grid.Row="0" Background="White" CornerRadius="5" BorderBrush="Transparent"
                     BorderThickness="0" Margin="5,0,5,0" Padding="10">
                 <StackPanel x:Name="CompanyInfoInputStackPanel">
-                    <Label Style="{DynamicResource PrimaryHeader}" Content="Укажите данные компании" />
+                    <Grid>
+                        <Label Style="{DynamicResource PrimaryHeader}" Content="Укажите данные компании" />
+
+                        <TextBox x:Name="CompaniesSearchInput" Style="{StaticResource InputFilledStyle}"
+                                 TextChanged="CompaniesSearchInput_OnTextChanged"
+                                 Text="{Binding CompanyModel.CompaniesSearchString, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="1000,0,36,0" Padding="3,8,3,0" />
+
+                        <ToggleButton x:Name="CompaniesSearchButton" IsThreeState="False" Width="32" Height="32"
+                                      HorizontalAlignment="Right"
+                                      Style="{StaticResource WhiteRoundedToggleButtonStyle}"
+                                      Click="CompaniesSearchButton_OnClick">
+                            <Grid>
+                                <Grid
+                                    Visibility="{Binding CompanyModel.CompaniesRequestStatus, Converter={StaticResource InvertedRequestStatusInProgressToVisibility}}">
+                                    <Image Source="{StaticResource SearchIcon}" Width="16" Height="16"
+                                           RenderOptions.BitmapScalingMode="HighQuality">
+                                        <Image.Visibility>
+                                            <Binding ElementName="CompaniesSearchButton" Path="IsChecked"
+                                                     Converter="{StaticResource BoolToVisibilityConverter}" />
+                                        </Image.Visibility>
+                                    </Image>
+                                    <Image Source="{StaticResource CloseIcon}" Width="12" Height="12"
+                                           RenderOptions.BitmapScalingMode="HighQuality">
+                                        <Image.Visibility>
+                                            <Binding ElementName="CompaniesSearchButton" Path="IsChecked"
+                                                     Converter="{StaticResource InvertedBoolToVisibilityConverter}" />
+                                        </Image.Visibility>
+                                    </Image>
+                                </Grid>
+                                <fa:ImageAwesome Source="{StaticResource SpinSmallIcon}"
+                                                 SpinDuration="0.8"
+                                                 Spin="true" Height="16" Width="16"
+                                                 Visibility="{Binding CompanyModel.CompaniesRequestStatus, Converter={StaticResource RequestStatusInProgressToVisibility}}"
+                                                 HorizontalAlignment="Right"
+                                                 VerticalAlignment="Center" />
+                            </Grid>
+                        </ToggleButton>
+                        <Popup Placement="Left" x:Name="CompaniesSearchPopupNonTopmost"
+                               Style="{StaticResource PopupStyle}"
+                               VerticalAlignment="Center"
+                               Focusable="False"
+                               HorizontalOffset="{Binding ElementName=CompaniesSearchInput, Path=ActualWidth}"
+                               VerticalOffset="{Binding ElementName=CompaniesSearchInput, Path=ActualHeight}"
+                               MinWidth="{Binding ElementName=CompaniesSearchInput, Path=ActualWidth}"
+                               PlacementTarget="{Binding ElementName=CompaniesSearchInput}">
+                            <Grid>
+                                <ListBox
+                                    x:Name="CompaniesAutocomplete"
+                                    BorderThickness="0.5"
+                                    SelectedItem="{Binding CompanyModel.SelectedCompany, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectionChanged="CompaniesAutocomplete_OnSelectionChanged"
+                                    ItemsSource="{Binding Path=CompanyModel.AutocompleteCompanies, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListBoxItem">
+                                                        <ContentPresenter />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Height="30" Background="White"
+                                                  Style="{StaticResource ListBoxElement}">
+                                                <Label Content="{Binding name.short_with_opf}" Margin="5,0,0,0"
+                                                       Style="{StaticResource PrimaryText}" FontSize="14" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Label
+                                        Margin="30"
+                                        Visibility="{Binding CompanyModel.CompaniesRequestStatus, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource LightPrimaryText}"
+                                        Content="Нет результатов" />
+                                </WrapPanel>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+
                     <WrapPanel Orientation="Vertical" Margin="10,0,10,0">
                         <Grid Margin="0,10,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="2*" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Style="{StaticResource SecondaryText}" Focusable="True" Content="ИНН" />
+
+                            <TextBox Grid.Row="1" Style="{StaticResource InputFilledStyle}"
+                                     MaxLength="10"
+                                     x:Name="InnTextBox"
+                                     VerticalContentAlignment="Center">
+                                <Binding Path="CompanyModel.Inn" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <DataErrorValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox>
+                        </Grid>
+
+                        <Grid Margin="0,25,0,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="2*" />
@@ -190,7 +294,7 @@
                                     <ListBox
                                         x:Name="AutocompleteListBox"
                                         BorderThickness="0.5"
-                                        SelectionChanged="AutocompleteListBox_OnSelected"
+                                        SelectionChanged="AddressesAutocompleteListBox_OnSelected"
                                         ItemsSource="{Binding Path=CompanyModel.AutocompleteAddresses, UpdateSourceTrigger=PropertyChanged}">
                                         <ListBox.ItemContainerStyle>
                                             <Style TargetType="ListBoxItem">
@@ -216,7 +320,7 @@
                                     <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Label
                                             Margin="30"
-                                            Visibility="{Binding CompanyModel.IsResponseEmpty, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                                            Visibility="{Binding CompanyModel.AddressesRequestStatus, Converter={StaticResource RequestStatusIsErrorToVisibility}}"
                                             HorizontalAlignment="Center"
                                             Style="{StaticResource LightPrimaryText}"
                                             Content="Нет результатов" />
@@ -235,30 +339,13 @@
                                 <fa:ImageAwesome Panel.ZIndex="1" Source="{StaticResource SpinSmallIcon}"
                                                  SpinDuration="0.8"
                                                  Spin="true" Height="16" Width="16"
-                                                 Visibility="{Binding CompanyModel.IsLoading, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                                                 Visibility="{Binding CompanyModel.AddressesRequestStatus, Converter={StaticResource RequestStatusInProgressToVisibility}}"
                                                  HorizontalAlignment="Right"
                                                  VerticalAlignment="Center"
                                                  Margin="0,0,10,0" />
                             </Grid>
+                        </Grid>
 
-                        </Grid>
-                        <Grid Margin="0,25,0,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="2*" />
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Style="{StaticResource SecondaryText}" Focusable="True" Content="ИНН" />
-                            <TextBox Grid.Row="1" Style="{StaticResource InputFilledStyle}"
-                                     MaxLength="10"
-                                     x:Name="InnTextBox"
-                                     VerticalContentAlignment="Center">
-                                <Binding Path="CompanyModel.Inn" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <DataErrorValidationRule />
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox>
-                        </Grid>
                         <Grid Margin="0,25,0,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
@@ -283,17 +370,58 @@
             <Border Grid.Column="2" Grid.Row="0" Background="White" CornerRadius="5" BorderBrush="Transparent"
                     BorderThickness="0" Margin="5,0,0,0" Padding="10">
                 <StackPanel>
-                    <Label Style="{StaticResource PrimaryHeader}" Content="Информация о клиенте" />
-                    <WrapPanel Orientation="Vertical" Margin="10,0,0,0" DataContext="{Binding Application}">
-                        <customControl:HeadedTextBlock TbHeader="Имя" TbContent="{Binding Name}" />
-                        <customControl:HeadedTextBlock TbHeader="Телефон" TbContent="{Binding Phone}" />
-                        <customControl:HeadedTextBlock TbHeader="Email" TbContent="{Binding Email}" />
-                        <customControl:HeadedTextBlock TbHeader="ИНН компании" TbContent="{Binding Inn}" />
-                    </WrapPanel>
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <fa:ImageAwesome Grid.Column="1" Grid.Row="0" Source="{StaticResource SpinSmallIcon}"
+                                         SpinDuration="0.8"
+                                         Spin="true" Height="15" Width="15"
+                                         Visibility="{Binding Path=CompanyModel.CompanyByInnRequestStatus, Converter={StaticResource RequestStatusInProgressToVisibility}}"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,10,0" />
+                        <Image Grid.Column="1" Grid.Row="0" Width="18" Height="18" HorizontalAlignment="Right"
+                               VerticalAlignment="Center" Margin="0,0,10,0"
+                               RenderOptions.BitmapScalingMode="HighQuality"
+                               Source="{Binding CompanyModel.FoundedCompany, Converter={StaticResource RequestStatusToIconConverter}}"
+                               Visibility="{Binding CompanyModel.CompanyByInnRequestStatus, Converter={StaticResource RequestStatusIsSuccessfulToVisibility}}">
+                            <Image.ToolTip>
+                                <ToolTip
+                                    Content="{Binding CompanyModel.FoundedCompany, Converter={StaticResource FoundedCompanyToToolTipTextConverter} }" />
+                            </Image.ToolTip>
+                        </Image>
+
+                        <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"
+                               Style="{StaticResource PrimaryHeader}"
+                               Content="Информация о клиенте" />
+
+
+                        <customControl:HeadedTextBlock Grid.Column="0" Grid.Row="1" TbHeader="Имя"
+                                                       TbContent="{Binding Application.Name}" />
+                        <customControl:HeadedTextBlock Grid.Column="0" Grid.Row="2" TbHeader="Телефон"
+                                                       TbContent="{Binding Application.Phone}" />
+                        <customControl:HeadedTextBlock Grid.Column="0" Grid.Row="3" TbHeader="Email"
+                                                       TbContent="{Binding Application.Email}" />
+                        <customControl:HeadedTextBlock Grid.Column="0" Grid.Row="4"
+                                                       TbHeader="ИНН компании"
+                                                       TbContent="{Binding Application.Inn}" />
+                    </Grid>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,10,0,10" CornerRadius="5" Background="White">
+            <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,10,0,10" CornerRadius="5"
+                    Background="White">
                 <Grid Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />

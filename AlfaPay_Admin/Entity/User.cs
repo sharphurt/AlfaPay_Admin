@@ -27,6 +27,8 @@ namespace AlfaPay_Admin.Entity
 
         [JsonProperty("registrations")] public List<Registration> Registrations { get; set; }
 
+        public Company Company => Registrations[0].Company;
+
         [JsonPropertyName("createdAt")] public DateTime CreatedAt { get; set; }
 
         public string FullName => !string.IsNullOrEmpty(Patronymic)

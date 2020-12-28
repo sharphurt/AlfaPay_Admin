@@ -33,6 +33,7 @@
     <BitmapImage x:Key="SandClockIcon" UriSource="sandclock_icon.png" />
     <BitmapImage x:Key="RefreshIcon" UriSource="refresh.png" />
     <BitmapImage x:Key="UnlockIcon" UriSource="unlock.png" />
+    <BitmapImage x:Key="AttentionIcon" UriSource="attention_icon.png" />
 
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converter:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
@@ -65,6 +66,9 @@
     <converter:RequestStatusCompareConverter x:Key="RequestStatusCompareConverter" />
     <converter:UserStatusCompareConverter x:Key="UserStatusCompareConverter" />
     <converter:BoolOrOperationConverter x:Key="BoolOrOperationConverter" />
+    <converter:CompanyNameToHeaderConverter x:Key="CompanyNameToHeaderConverter" />
+    <converter:RequestStatusToIconConverter x:Key="RequestStatusToIconConverter" />
+    <converter:FoundedCompanyToToolTipTextConverter x:Key="FoundedCompanyToToolTipTextConverter" />
 
     <Style x:Key="ListBoxElement" TargetType="Grid">
         <Setter Property="Background" Value="Transparent" />
@@ -437,4 +441,20 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+    <Storyboard x:Key="OpenCompaniesSearchInput">
+        <ThicknessAnimation Duration="0:0:0.3"
+                            Storyboard.TargetName="CompaniesSearchInput"
+                            Storyboard.TargetProperty="Margin"
+                            To="0,0,36,0"
+                            DecelerationRatio="0.9"/>
+    </Storyboard>    
+    
+    <Storyboard x:Key="CloseCompaniesSearchInput">
+        <ThicknessAnimation Duration="0:0:0.3"
+                            Storyboard.TargetName="CompaniesSearchInput"
+                            Storyboard.TargetProperty="Margin"
+                            To="1000,0,36,0"
+                            AccelerationRatio="0.9"/>
+    </Storyboard>
 </ResourceDictionary>

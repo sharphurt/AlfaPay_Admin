@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using AlfaPay_Admin.Annotations;
 using AlfaPay_Admin.Context;
+using AlfaPay_Admin.Enum;
 using Dadata;
 using Dadata.Model;
 using Newtonsoft.Json;
@@ -55,7 +59,7 @@ namespace AlfaPay_Admin.Model
         }
 
         private string _taxSystem;
-        
+
         [JsonProperty("taxSystem")]
         public string TaxSystem
         {
@@ -68,6 +72,7 @@ namespace AlfaPay_Admin.Model
         }
 
         private string _kkt;
+
         [JsonProperty("kkt")]
         public string Kkt
         {
@@ -79,39 +84,15 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        private bool _responseReceived;
+        private RequestStatus _addressesRequestStatus;
 
-        public bool ResponseReceived
+        public RequestStatus AddressesRequestStatus
         {
-            get => _responseReceived;
+            get => _addressesRequestStatus;
             set
             {
-                _responseReceived = value;
-                OnPropertyChanged(nameof(ResponseReceived));
-            }
-        }
-
-        private bool _isLoading;
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        private bool _isResponseEmpty;
-
-        public bool IsResponseEmpty
-        {
-            get => _isResponseEmpty;
-            set
-            {
-                _isResponseEmpty = value;
-                OnPropertyChanged(nameof(IsResponseEmpty));
+                _addressesRequestStatus = value;
+                OnPropertyChanged(nameof(AddressesRequestStatus));
             }
         }
 
@@ -127,41 +108,154 @@ namespace AlfaPay_Admin.Model
             }
         }
 
-        private Suggestion<Address> _selectedAddress;
+        private string _companiesSearchString;
 
-        public Suggestion<Address> SelectedAddress
+        public string CompaniesSearchString
         {
-            get => _selectedAddress;
+            get => _companiesSearchString;
             set
             {
-                _selectedAddress = value;
-                OnPropertyChanged(nameof(SelectedAddress));
+                _companiesSearchString = value;
+                GetCompaniesAutocomplete(_companiesSearchString);
+                OnPropertyChanged(nameof(CompaniesSearchString));
             }
         }
 
-        public CompanyModel()
+        private RequestStatus _companiesRequestStatus;
+
+        public RequestStatus CompaniesRequestStatus
         {
-            IsResponseEmpty = true;
+            get => _companiesRequestStatus;
+            set
+            {
+                _companiesRequestStatus = value;
+                OnPropertyChanged(nameof(CompaniesRequestStatus));
+            }
+        }
+
+        private ObservableCollection<Party> _autocompleteCompanies;
+
+        public ObservableCollection<Party> AutocompleteCompanies
+        {
+            get => _autocompleteCompanies;
+            set
+            {
+                _autocompleteCompanies = value;
+                OnPropertyChanged(nameof(AutocompleteCompanies));
+            }
+        }
+
+        private Party _foundedCompany;
+
+        public Party FoundedCompany
+        {
+            get => _foundedCompany;
+            set
+            {
+                _foundedCompany = value;
+                OnPropertyChanged(nameof(FoundedCompany));
+            }
+        }
+        
+        private Party _selectedCompany;
+
+        public Party SelectedCompany
+        {
+            get => _selectedCompany;
+            set
+            {
+                _selectedCompany = value;
+                CompaniesSearchString = _selectedCompany.name.short_with_opf;
+                FillInputsWithData(_selectedCompany);
+                OnPropertyChanged(nameof(SelectedCompany));
+            }
+        }
+
+        private RequestStatus _companyByInnRequestStatus;
+
+        public RequestStatus CompanyByInnRequestStatus
+        {
+            get => _companyByInnRequestStatus;
+            set
+            {
+                _companyByInnRequestStatus = value;
+                OnPropertyChanged(nameof(CompanyByInnRequestStatus));
+            }
+        }
+
+        public CompanyModel(string inn)
+        {
+            AddressesRequestStatus = RequestStatus.NotStarted;
+            CompanyByInnRequestStatus = RequestStatus.NotStarted;
             AutocompleteAddresses = new ObservableCollection<string>();
             Kkt = _random.Next(10000000, 99999999).ToString() + _random.Next(10000000, 99999999);
+            GetCompanyInfoByInn(inn, FillInputsWithData);
         }
 
         private async void GetAddressAutocomplete(string input)
         {
-            ResponseReceived = false;
-            IsLoading = true;
-            
-            const string token = "e597dac2837d17460c9f3fecb15f3705dce952aa";
-            var api = new SuggestClientAsync(token);
-            var result = await api.SuggestAddress(input, 10);
-            
-            AutocompleteAddresses = new ObservableCollection<string>();
-            foreach (var suggestion in result.suggestions)
-                AutocompleteAddresses.Add(suggestion.value);
-            
-            ResponseReceived = true;
-            IsLoading = false;
-            IsResponseEmpty = AutocompleteAddresses.Count == 0;
+            try
+            {
+                AddressesRequestStatus = RequestStatus.InProgress;
+                var dadataApiKey = ConfigurationManager.AppSettings["DadataApiKey"];
+                var api = new SuggestClientAsync(dadataApiKey);
+                var result = await api.SuggestAddress(input, 10);
+                AutocompleteAddresses = new ObservableCollection<string>(result.suggestions.Select(s => s.value));
+                AddressesRequestStatus = AutocompleteAddresses.Count == 0
+                    ? RequestStatus.CompletedWithError
+                    : RequestStatus.CompletedSuccessfully;
+            }
+            catch
+            {
+                AddressesRequestStatus = RequestStatus.CompletedWithError;
+            }
+        }
+
+        private void FillInputsWithData(Party company)
+        {
+            if (company == null) return;
+            Inn = company.inn;
+            Address = company.address.unrestricted_value;
+            Name = company.name.full_with_opf;
+        }
+
+
+        private async void GetCompanyInfoByInn(string inn, Action<Party> onSuccessful)
+        {
+            CompanyByInnRequestStatus = RequestStatus.InProgress;
+            try
+            {
+                var dadataApiKey = ConfigurationManager.AppSettings["DadataApiKey"];
+                var api = new SuggestClientAsync(dadataApiKey);
+                var result = await api.FindParty(inn);
+                FoundedCompany = result.suggestions.Select(s => s.data).FirstOrDefault();
+                CompanyByInnRequestStatus = RequestStatus.CompletedSuccessfully;
+                onSuccessful.Invoke(FoundedCompany);
+            }
+            catch
+            {
+                CompanyByInnRequestStatus = RequestStatus.CompletedWithError;
+            }
+        }
+
+
+        private async void GetCompaniesAutocomplete(string input)
+        {
+            try
+            {
+                CompaniesRequestStatus = RequestStatus.InProgress;
+                var dadataApiKey = ConfigurationManager.AppSettings["DadataApiKey"];
+                var api = new SuggestClientAsync(dadataApiKey);
+                var result = await api.SuggestParty(input, 10);
+                AutocompleteCompanies = new ObservableCollection<Party>(result.suggestions.Select(s => s.data));
+                CompaniesRequestStatus = AutocompleteCompanies.Count == 0
+                    ? RequestStatus.CompletedWithError
+                    : RequestStatus.CompletedSuccessfully;
+            }
+            catch
+            {
+                CompaniesRequestStatus = RequestStatus.CompletedWithError;
+            }
         }
 
         public string this[string columnName]

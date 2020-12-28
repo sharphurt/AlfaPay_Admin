@@ -12,8 +12,8 @@
           Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -46,6 +46,7 @@
                Style="{StaticResource PrimaryText}"
                Content="{Binding CreatedAt, Converter={StaticResource DateTimeConverter}}" />
 
+        <!--
         <TextBlock Grid.Column="2" Margin="10,0,0,0" Grid.Row="3"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center">
@@ -53,6 +54,7 @@
                 Подробнее о компании
             </Hyperlink>
         </TextBlock>
+        -->
 
         <Label Grid.Column="2" Margin="10,0,0,0" HorizontalAlignment="Left" Grid.Row="4"
                Style="{StaticResource TertiaryText}"

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Web.Security;
@@ -22,10 +23,7 @@ namespace AlfaPay_Admin.Model
         [JsonProperty("patronymic")]
         public string Patronymic
         {
-            get
-            {
-                return string.IsNullOrEmpty(_patronymic) ? "" : _patronymic;
-            }
+            get => string.IsNullOrEmpty(_patronymic) ? "" : _patronymic;
             set => _patronymic = value;
         }
 
@@ -37,7 +35,7 @@ namespace AlfaPay_Admin.Model
         
         [JsonProperty("privilege")]
         public string Privilege => "CLIENT";
-
+        
         public string this[string columnName]
         {
             get
