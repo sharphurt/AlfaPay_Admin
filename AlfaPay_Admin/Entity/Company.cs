@@ -12,6 +12,8 @@ namespace AlfaPay_Admin.Entity
         [JsonProperty("taxSystem")] public string TaxSystem { get; set; }
 
         [JsonProperty("inn")] public string Inn { get; set; }
+        
+        [JsonProperty("kkt")] public string Kkt { get; set; }
     }
     
 }

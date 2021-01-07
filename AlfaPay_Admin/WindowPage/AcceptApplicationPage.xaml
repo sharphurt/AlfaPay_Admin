@@ -95,9 +95,7 @@
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" Style="{StaticResource SecondaryText}" Focusable="True"
                                    Content="Отчество" />
-                            <TextBox Grid.Row="1" Style="{StaticResource InputFilledStyle}"
-                                     MinWidth="270"
-                                     x:Name="PatronymicTextBox"
+                            <TextBox Grid.Row="1" Style="{StaticResource InputFilledStyle}" x:Name="PatronymicTextBox"
                                      VerticalContentAlignment="Center">
                                 <Binding Path="ClientModel.Patronymic" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -114,7 +112,6 @@
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" Style="{StaticResource SecondaryText}" Focusable="True" Content="Email" />
                             <TextBox Grid.Row="1" Style="{StaticResource InputFilledStyle}"
-                                     MinWidth="270"
                                      x:Name="EmailTextBox"
                                      VerticalContentAlignment="Center">
                                 <Binding Path="ClientModel.Email" UpdateSourceTrigger="PropertyChanged">
@@ -156,7 +153,7 @@
                         <TextBox x:Name="CompaniesSearchInput" Style="{StaticResource InputFilledStyle}"
                                  TextChanged="CompaniesSearchInput_OnTextChanged"
                                  Text="{Binding CompanyModel.CompaniesSearchString, UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="1000,0,36,0" Padding="3,8,3,0" />
+                                 Margin="1000,0,42,0" Padding="10,8,10,0" />
 
                         <ToggleButton x:Name="CompaniesSearchButton" IsThreeState="False" Width="32" Height="32"
                                       HorizontalAlignment="Right"
@@ -281,7 +278,7 @@
                                 <RowDefinition Height="2*" />
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" Style="{StaticResource SecondaryText}" Focusable="True" Content="Адрес" />
-                            <customControl:PopupNonTopmost Grid.Row="1"
+                            <Popup Grid.Row="1"
                                                            Placement="Left"
                                                            x:Name="PopupNonTopmost"
                                                            Style="{StaticResource PopupStyle}"
@@ -326,7 +323,7 @@
                                             Content="Нет результатов" />
                                     </WrapPanel>
                                 </Grid>
-                            </customControl:PopupNonTopmost>
+                            </Popup>
                             <Grid Grid.Row="1">
                                 <TextBox Style="{StaticResource InputFilledStyle}"
                                          MinWidth="270"

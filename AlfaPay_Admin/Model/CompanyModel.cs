@@ -200,7 +200,7 @@ namespace AlfaPay_Admin.Model
                 var dadataApiKey = ConfigurationManager.AppSettings["DadataApiKey"];
                 var api = new SuggestClientAsync(dadataApiKey);
                 var result = await api.SuggestAddress(input, 10);
-                AutocompleteAddresses = new ObservableCollection<string>(result.suggestions.Select(s => s.value));
+                AutocompleteAddresses = new ObservableCollection<string>(result.suggestions.Select(s => s.unrestricted_value));
                 AddressesRequestStatus = AutocompleteAddresses.Count == 0
                     ? RequestStatus.CompletedWithError
                     : RequestStatus.CompletedSuccessfully;

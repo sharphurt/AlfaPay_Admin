@@ -446,7 +446,7 @@
         <ThicknessAnimation Duration="0:0:0.3"
                             Storyboard.TargetName="CompaniesSearchInput"
                             Storyboard.TargetProperty="Margin"
-                            To="0,0,36,0"
+                            To="0,0,42,0"
                             DecelerationRatio="0.9"/>
     </Storyboard>    
     
@@ -454,7 +454,7 @@
         <ThicknessAnimation Duration="0:0:0.3"
                             Storyboard.TargetName="CompaniesSearchInput"
                             Storyboard.TargetProperty="Margin"
-                            To="1000,0,36,0"
+                            To="1000,0,42,0"
                             AccelerationRatio="0.9"/>
     </Storyboard>
 </ResourceDictionary>
